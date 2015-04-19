@@ -23,49 +23,27 @@
 	</script>
     
     <script type="text/javascript">
-	function initialize() 
-    {
+	function initialize(){
 		// 百度地图API功能
 		map = new BMap.Map("allmap");
 		var point = new BMap.Point(112.956087,28.190991);
 		map.centerAndZoom(point, 18);
-		map.enableScrollWheelZoom();
-		// 编写自定义函数,创建标注
-		
 	}
 	</script>
     
     <script type="text/javascript">
-	function TansTo(lat, lng)//转到指定位置
-    {
+	function TansTo(lat, lng){
+		//转到指定位置
+	    map = new BMap.Map("allmap");
         var point = new BMap.Point(lng,lat);
 		map.centerAndZoom(point, 18);
     }
     </script>
-
-    <script type="text/javascript">
-	function clearpoint()//清除标志
-    {
-        // 百度地图API功能
-		map = new BMap.Map("allmap");
-		var point = new BMap.Point(112.956087,28.190991);
-		map.centerAndZoom(point, 18);
-		// 编写自定义函数,创建标注
-    }
-    </script>
     
     <script type="text/javascript">
-    function setpiont()
-    {
-	    // 随机向地图添加25个标注
-		var bounds = map.getBounds();
-		var sw = bounds.getSouthWest();
-		var ne = bounds.getNorthEast();
-		var lngSpan = Math.abs(sw.lng - ne.lng);
-		var latSpan = Math.abs(ne.lat - sw.lat);
-		for (var i = 0; i < 25; i ++) {
-			var point = new BMap.Point(sw.lng + lngSpan * Math.random(), ne.lat - latSpan * Math.random());
-			addMarker(point);
-		}
+    function setpiont(lat, lng){
+	    //添加标注
+	    var point = new BMap.Point(lng,lat);
+		addMarker(point);
     }
 </script>

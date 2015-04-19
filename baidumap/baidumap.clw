@@ -28,14 +28,14 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_EDIT1
+LastObject=CBaidumapDlg
 
 
 
 [DLG:IDD_BAIDUMAP_DIALOG]
 Type=1
 Class=CBaidumapDlg
-ControlCount=13
+ControlCount=12
 Control1=IDOK,button,1342242817
 Control2=IDCANCEL,button,1342242816
 Control3=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
@@ -48,5 +48,4 @@ Control9=IDC_STATIC,button,1342177287
 Control10=IDC_STATIC,static,1342308352
 Control11=IDC_STATIC,static,1342308352
 Control12=IDC_STATIC,button,1342177287
-Control13=IDC_BUTTON2,button,1342242816
 

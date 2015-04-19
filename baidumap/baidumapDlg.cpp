@@ -42,7 +42,6 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -107,12 +106,13 @@ void CBaidumapDlg::OnOK()
 	UpdateData(TRUE);  
     CWebPage web;
     web.SetDocument(m_map.GetDocument());  
-    CComVariant varResult;  
-    //const CString funcName("TansTo");  
+    CComVariant varResult;   
 	const CString funcName("setpiont"); 
-    //const CString m_latitude(m_lat);  //传递的参数：纬度  
-    //const CString m_longtitude(m_long);  //传递的参数：经度   
-    web.CallJScript(funcName); 
+    const CString m_latitude(m_lat);  //传递的参数：纬度  
+    const CString m_longtitude(m_long);  //传递的参数：经度 
+	//const CString m_latitude("28.190991");//传递的参数：纬度  
+    //const CString m_longtitude("112.956086");//经度  
+    web.CallJScript(funcName,m_lat,m_long); 
 
 	//CDialog::OnOK();
 }
@@ -127,16 +127,5 @@ void CBaidumapDlg::OnButton1()
     const CString m_latitude("28.190991");//传递的参数：纬度  
     const CString m_longtitude("112.956087");//经度  
     web.CallJScript(funcName,m_latitude,m_longtitude); 
-
-}
-
-void CBaidumapDlg::OnButton2() 
-{
-	// TODO: Add your control notification handler code here
-	UpdateData(TRUE);  
-    CWebPage web;
-    web.SetDocument(m_map.GetDocument()); 
-    const CString funcName("clearpoint");  
-    web.CallJScript(funcName); 
 
 }
