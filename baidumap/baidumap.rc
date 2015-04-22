@@ -73,26 +73,28 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\baidumap.ico"
 // Dialog
 //
 
-IDD_BAIDUMAP_DIALOG DIALOGEX 0, 0, 560, 339
+IDD_BAIDUMAP_DIALOG DIALOGEX 0, 0, 891, 499
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "baidumap"
 FONT 9, "宋体"
 BEGIN
-    DEFPUSHBUTTON   "标记",IDOK,459,53,78,12
-    PUSHBUTTON      "退出",IDCANCEL,499,287,54,45
+    DEFPUSHBUTTON   "标记",IDOK,65,93,78,12
+    PUSHBUTTON      "退出",IDCANCEL,245,45,28,67
     CONTROL         "",IDC_EXPLORER1,"{8856F961-340A-11D0-A96B-00C04FD705A2}",
-                    WS_TABSTOP,13,13,401,294
-    PUSHBUTTON      "复位",IDC_BUTTON1,434,131,57,14
-    EDITTEXT        IDC_EDIT1,460,15,78,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,460,35,78,12,ES_AUTOHSCROLL
-    LTEXT           "纬度:",IDC_STATIC,428,17,21,8
-    LTEXT           "经度:",IDC_STATIC,428,36,21,8
-    GROUPBOX        "标记",IDC_STATIC,425,7,122,66
-    LTEXT           "纬度:28.190991",IDC_STATIC,434,97,57,8
-    LTEXT           "经度:112.956087",IDC_STATIC,434,114,61,8
-    GROUPBOX        "复位",IDC_STATIC,426,80,78,73
+                    WS_TABSTOP,406,7,478,485
+    PUSHBUTTON      "复位",IDC_BUTTON1,171,92,57,14
+    EDITTEXT        IDC_EDIT1,67,55,78,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,67,75,78,12,ES_AUTOHSCROLL
+    LTEXT           "纬度:",IDC_STATIC,35,57,21,8
+    LTEXT           "经度:",IDC_STATIC,35,76,21,8
+    GROUPBOX        "标记",IDC_STATIC,31,41,122,72
+    LTEXT           "纬度:28.190991",IDC_STATIC,171,58,57,8
+    LTEXT           "经度:112.956087",IDC_STATIC,171,74,61,8
+    GROUPBOX        "复位",IDC_STATIC,163,41,78,72
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,31,119,240,334
 END
 
 
@@ -117,8 +119,9 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "080404B0"
+        BLOCK "080404b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "baidumap Microsoft 基础类应用程序\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
@@ -126,8 +129,10 @@ BEGIN
             VALUE "LegalCopyright", "版权所有 (C) 2015\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "baidumap.EXE\0"
+            VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "baidumap 应用程序\0"
             VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -150,9 +155,9 @@ BEGIN
     IDD_BAIDUMAP_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 553
+        RIGHTMARGIN, 884
         TOPMARGIN, 7
-        BOTTOMMARGIN, 332
+        BOTTOMMARGIN, 492
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -166,7 +171,7 @@ END
 IDD_BAIDUMAP_DIALOG DLGINIT
 BEGIN
     IDC_EXPLORER1, 0x376, 160, 0
-0x0000, 0x0000, 0x004c, 0x0000, 0x3e38, 0x0000, 0x2d94, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x4a1b, 0x0000, 0x4b3e, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
 0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
