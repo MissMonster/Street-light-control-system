@@ -23,6 +23,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CBaidumapDlg)
 	enum { IDD = IDD_BAIDUMAP_DIALOG };
+	CListCtrl	m_list_light;
 	CListCtrl	m_list;
 	CWebBrowser2	m_map;
 	CString	m_long;
@@ -47,6 +48,7 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnButton1();
 	afx_msg void OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDblclkList2(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

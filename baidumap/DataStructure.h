@@ -7,8 +7,23 @@
  *EMAIL   :gtsoft_wk@foxmail.com
 ***************************************/
 #include <string>
+#include <iostream>
+#include <vector>
 
-typedef struct data
+using namespace std;
+
+typedef struct lightdata
+{
+	int id;					//编号
+	double voltage;			//电压
+	double current;			//电流
+	double Longitude;		//纬度
+	double Latitude;		//经度
+	char status;			//状态
+	
+}LIGHTDATA;
+
+typedef struct controldata
 {
 	int id;					//标识码
 	char lightmessage[30];	//信息
@@ -16,5 +31,6 @@ typedef struct data
 	double Latitude;		//经度
 	int lightsum;			//路灯数量
 	char theway;			//运行方式
-	
+	vector<LIGHTDATA> lightline;//路灯队列
+
 }CONTROLDATA;
