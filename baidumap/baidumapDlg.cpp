@@ -18,9 +18,11 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+/////////////////////////////////////////////////////////////////////
 vector<CONTROLDATA> controller;
-int controller_number=-1;
-int light_number=-1;
+int controller_number = -1;
+int light_number = -1;
+/////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
 // CBaidumapDlg dialog
@@ -55,6 +57,8 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, OnDblclkList1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST2, OnDblclkList2)
+	ON_NOTIFY(NM_RCLICK, IDC_LIST1, OnRclickList1)
+	ON_NOTIFY(NM_RCLICK, IDC_LIST2, OnRclickList2)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -201,7 +205,7 @@ void setpointinmap(CWebBrowser2 m_map,double lat,double lon)
 {
 	// TODO: Add extra validation here
     CWebPage web;
-     web.SetDocument(m_map.GetDocument());  
+    web.SetDocument(m_map.GetDocument());  
 	CString latnum;
 	CString longnum;
 	latnum.Format(_T("%lf"),lat);
@@ -220,13 +224,10 @@ void CBaidumapDlg::OnOK()
 	UpdateData(TRUE);  
     CWebPage web;
     web.SetDocument(m_map.GetDocument());  
-    CComVariant varResult;   
-	const CString funcName("setpiont"); 
+    CComVariant varResult;
     const CString m_latitude(m_lat);  //传递的参数：纬度  
     const CString m_longtitude(m_long);  //传递的参数：经度 
-	//const CString m_latitude("28.190991");//传递的参数：纬度  
-    //const CString m_longtitude("112.956086");//经度  
-    //web.CallJScript(funcName,m_lat,m_long); 
+    //web.CallJScript("setstapiont",m_lat,m_long); 
 
 	double tempnum[22][2]={112.941650,28.171610,
 		112.942123,28.169699,
@@ -256,16 +257,8 @@ void CBaidumapDlg::OnOK()
 		CString longnum;
 		latnum.Format(_T("%lf"),tempnum[i][1]+0.002506);
 		longnum.Format(_T("%lf"),tempnum[i][0]+0.011969);
-		web.CallJScript(funcName,latnum,longnum,"0");
+		web.CallJScript("setstapiont",latnum,longnum);
 	}
-	/*for(vector<CONTROLDATA>::iterator it=controller.begin();it<controller.end();it++)
-	{
-		CString latnum;
-		CString longnum;
-		latnum.Format(_T("%lf"),it->Latitude);
-		longnum.Format(_T("%lf"),it->Longitude);
-		web.CallJScript(funcName,latnum,longnum,"0");
-	}*/
 	//CDialog::OnOK();
 }
 
@@ -287,8 +280,7 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	pos = m_list.GetFirstSelectedItemPosition();
 	if(pos)
 	{
-		nItem = m_list.GetNextSelectedItem(pos); 
-		//web.CallJScript("refresh"); 
+		nItem = m_list.GetNextSelectedItem(pos);
 	}
 	else return ;
 	if(nItem==controller_number)return ;
@@ -304,7 +296,7 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	//web.CallJScript("refresh");
 	web.CallJScript("removeall");
 	web.CallJScript("movetoplace",latnum,longnum);
-	web.CallJScript("setpiont",latnum,longnum,"1");
+	web.CallJScript("setanipiont",latnum,longnum,"控制器");
 
 	/////////////////////////////////////////////////////////////////////
 	//CString str;
@@ -317,27 +309,35 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	for(int i=0;i<controller[nItem].lightsum;i++)
 	{
 		CString str;
+		CString temp;
 		str.Format(_T("%03d"),controller[nItem].lightline[i].id);
 		m_list_light.InsertItem(i,str);
+		temp="编号:"+str+"<br>";
 
 		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].voltage);
 		m_list_light.SetItemText(i,1,str);
+		temp=temp+"电压:"+str+"<br>";
 		
 		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].current);
 		m_list_light.SetItemText(i,2,str);
+		temp=temp+"电流:"+str+"<br>";
 		
 		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
 		m_list_light.SetItemText(i,3,str);
+		temp=temp+"纬度:"+str+"<br>";
 		
 		str.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
 		m_list_light.SetItemText(i,4,str);
+		temp=temp+"经度:"+str+"<br>";
 		
 		str.Format(_T("%d"),controller[nItem].lightline[i].status);
 		m_list_light.SetItemText(i,5,str);
+		temp=temp+"状态:"+str;
 
 		latnum.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
 		longnum.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
-		web.CallJScript("setpiont",latnum,longnum,"0");
+
+		web.CallJScript("setstapiont",latnum,longnum,temp);
 	}
 
 	*pResult = 0;
@@ -350,23 +350,68 @@ void CBaidumapDlg::OnDblclkList2(NMHDR* pNMHDR, LRESULT* pResult)
     web.SetDocument(m_map.GetDocument()); 
 	POSITION pos;
 	int nItem; //保存双击行的行号
-	pos = m_list.GetFirstSelectedItemPosition();
+	pos = m_list_light.GetFirstSelectedItemPosition();
 	if(pos)
 	{
-		nItem = m_list.GetNextSelectedItem(pos); 
+		nItem = m_list_light.GetNextSelectedItem(pos); 
 		//web.CallJScript("refresh"); 
 	}
 	else return ;
-	if(nItem==light_number)return ;
-	else light_number=nItem;
-	CString latnum;
-	CString longnum;
-	latnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Latitude);
-	longnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Longitude);
-	//web.CallJScript("refresh");
-	//web.CallJScript("removeall");
-	web.CallJScript("movetoplace",latnum,longnum);
+
+	/////////////////////////////////////////////////////////////////////
+	//CString str;
+	//str.Format(_T("%d:%d"),nItem,controller[controller_number].lightline[nItem].id);
+	//MessageBox(str,NULL,MB_OK);
+	/////////////////////////////////////////////////////////////////////
+
+	if(nItem!=light_number)
+	{
+		light_number=nItem;
+		CString latnum;
+		CString longnum;
+		latnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Latitude);
+		longnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Longitude);
+		//web.CallJScript("refresh");
+		//web.CallJScript("removeall");
+		web.CallJScript("movetoplace",latnum,longnum);
+	}
 
 	*pResult = 0;
 }
 
+
+void CBaidumapDlg::OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	if(pNMListView->iItem != -1)
+	{
+		DWORD dwPos = GetMessagePos(); //返回表示屏幕坐标下光标位置的长整数值
+		CPoint point( LOWORD(dwPos), HIWORD(dwPos) );
+		CMenu menu;
+		VERIFY( menu.LoadMenu( IDR_MENU1 ) );
+		CMenu* popup = menu.GetSubMenu(0); //取得被指定菜单激活的下拉式菜单或子菜单的句柄
+		ASSERT( popup != NULL );
+		popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,point.x, point.y, this ); //在指定位置显示快捷菜单，并跟踪菜单项的选择	
+	}
+	
+	*pResult = 0;
+}
+
+void CBaidumapDlg::OnRclickList2(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	if(pNMListView->iItem != -1)
+	{
+		DWORD dwPos = GetMessagePos(); //返回表示屏幕坐标下光标位置的长整数值
+		CPoint point( LOWORD(dwPos), HIWORD(dwPos) );
+		CMenu menu;
+		VERIFY( menu.LoadMenu( IDR_MENU2 ) );
+		CMenu* popup = menu.GetSubMenu(0); //取得被指定菜单激活的下拉式菜单或子菜单的句柄
+		ASSERT( popup != NULL );
+		popup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,point.x, point.y, this ); //在指定位置显示快捷菜单，并跟踪菜单项的选择	
+	}
+	
+	*pResult = 0;
+}

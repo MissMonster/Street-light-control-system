@@ -185,6 +185,34 @@ BEGIN
     0
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "menu"
+    BEGIN
+        MENUITEM "新增",                        ID_MENUITEM32777
+        MENUITEM SEPARATOR
+        MENUITEM "修改",                        ID_MENUITEM32773
+        MENUITEM SEPARATOR
+        MENUITEM "删除",                        ID_MENUITEM32774
+    END
+END
+
+IDR_MENU2 MENU DISCARDABLE 
+BEGIN
+    POPUP "menu"
+    BEGIN
+        MENUITEM "打开",                        ID_MENUITEM32775
+        MENUITEM SEPARATOR
+        MENUITEM "关闭",                        ID_MENUITEM32776
+    END
+END
+
 #endif    // Chinese (中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

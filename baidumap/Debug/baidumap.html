@@ -21,13 +21,6 @@
 </body>
 </html>
 <script type="text/javascript">
-	function addMarker(point){
-		var marker = new BMap.Marker(point);
-		map.addOverlay(marker);
-	}
-	</script>
-    
-    <script type="text/javascript">
 	function initialize(){
 		// 百度地图API功能
 		map = new BMap.Map("allmap");
@@ -35,15 +28,6 @@
 		map.centerAndZoom(point, 18);
 		//map.enableScrollWheelZoom();
 		map.enableScrollWheelZoom(true);
-		//创建右键菜单
-		//var removeMarker = function(e,ee,marker){
-		//	map.removeOverlay(marker);
-		//}
-		//var marker = new BMap.Marker(point);
-		//var markerMenu=new BMap.ContextMenu();
-		//markerMenu.addItem(new BMap.MenuItem('删除',removeMarker.bind(marker)));
-		//map.addOverlay(marker);
-		//marker.addContextMenu(markerMenu);
 	}
 	</script>
     
@@ -64,16 +48,48 @@
     </script>
     
     <script type="text/javascript">
-    function setpiont(lat, lng, ani){
-	    //添加标注
+    function setanipiont(lat, lng, message){
+	    //添加动态标注
 	    var point = new BMap.Point(lng,lat);
 	    var marker = new BMap.Marker(point);
-		if(ani==1)
-		{
-			map.addOverlay(marker);               // 将标注添加到地图中
-			marker.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
+
+	    var opts = {
+	  	width : 200,     // 信息窗口宽度
+	  	height: 200,     // 信息窗口高度
+	  	title : "信息" , // 信息窗口标题
+	  	enableMessage:false,//设置信息窗发送短息
+	  	message:""
 		}
-		else addMarker(point);
+		var infoWindow = new BMap.InfoWindow(message, opts);  // 创建信息窗口对象 
+		marker.addEventListener("click", function(){          
+			map.openInfoWindow(infoWindow,point); //开启信息窗口
+		});
+	    
+		map.addOverlay(marker);               // 将标注添加到地图中
+		marker.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
+    }
+    </script>
+
+    <script type="text/javascript">
+    function setstapiont(lat, lng, message){
+	    //添加静态标注
+	    var point = new BMap.Point(lng,lat);
+	    var marker = new BMap.Marker(point);
+	    
+	    var opts = {
+	  	width : 200,     // 信息窗口宽度
+	  	height: 200,     // 信息窗口高度
+	  	title : "信息" , // 信息窗口标题
+	  	enableMessage:false,//设置信息窗发送短息
+	  	message:""
+		}
+		var infoWindow = new BMap.InfoWindow(message, opts);  // 创建信息窗口对象 
+		marker.addEventListener("click", function(){          
+			map.openInfoWindow(infoWindow,point); //开启信息窗口
+		});
+		
+		map.addOverlay(marker);
+
     }
     </script>
 

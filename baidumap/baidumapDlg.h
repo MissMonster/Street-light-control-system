@@ -49,6 +49,8 @@ protected:
 	afx_msg void OnButton1();
 	afx_msg void OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDblclkList2(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnRclickList2(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -11,9 +11,11 @@ ClassCount=2
 Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
-ResourceCount=3
+ResourceCount=5
 Resource2=IDR_MAINFRAME
 Resource3=IDD_BAIDUMAP_DIALOG
+Resource4=IDR_MENU1
+Resource5=IDR_MENU2
 
 [CLS:CBaidumapApp]
 Type=0
@@ -28,7 +30,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDOK
+LastObject=IDC_LIST2
 
 
 
@@ -50,4 +52,19 @@ Control11=IDC_STATIC,static,1342308352
 Control12=IDC_STATIC,button,1342177287
 Control13=IDC_LIST1,SysListView32,1350631433
 Control14=IDC_LIST2,SysListView32,1350631425
+
+[MNU:IDR_MENU1]
+Type=1
+Class=?
+Command1=ID_MENUITEM32777
+Command2=ID_MENUITEM32773
+Command3=ID_MENUITEM32774
+CommandCount=3
+
+[MNU:IDR_MENU2]
+Type=1
+Class=?
+Command1=ID_MENUITEM32775
+Command2=ID_MENUITEM32776
+CommandCount=2
 
