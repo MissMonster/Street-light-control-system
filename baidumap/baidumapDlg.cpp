@@ -201,18 +201,6 @@ HCURSOR CBaidumapDlg::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
-void setpointinmap(CWebBrowser2 m_map,double lat,double lon)
-{
-	// TODO: Add extra validation here
-    CWebPage web;
-    web.SetDocument(m_map.GetDocument());  
-	CString latnum;
-	CString longnum;
-	latnum.Format(_T("%lf"),lat);
-	longnum.Format(_T("%lf"),lon);
-	web.CallJScript("setpiont",latnum,longnum,"0");
-}
-
 void CBaidumapDlg::OnOK() 
 {
 	// TODO: Add extra validation here
