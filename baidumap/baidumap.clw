@@ -12,9 +12,9 @@ Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
 ResourceCount=5
-Resource2=IDD_DIALOG1
-Resource3=IDD_BAIDUMAP_DIALOG
-Resource4=IDR_MENU1
+Resource2=IDD_BAIDUMAP_DIALOG
+Resource3=IDR_MENU1
+Resource4=IDD_DIALOG1
 Resource1=IDR_MAINFRAME
 Class3=login
 Resource5=IDR_MENU2
