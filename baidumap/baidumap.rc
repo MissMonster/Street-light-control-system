@@ -95,8 +95,9 @@ BEGIN
     GROUPBOX        "¸´Î»",IDC_STATIC,139,7,78,72
     CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,85,181,318
-    CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | WS_BORDER | 
-                    WS_TABSTOP,195,85,181,318
+    CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,195,85,181,
+                    318
 END
 
 

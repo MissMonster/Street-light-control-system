@@ -215,40 +215,11 @@ void CBaidumapDlg::OnOK()
     CWebPage web;
     web.SetDocument(m_map.GetDocument());  
     CComVariant varResult;
+	if(m_lat<=0)return ;
+	if(m_long<=0)return ;
     const CString m_latitude(m_lat);  //传递的参数：纬度  
     const CString m_longtitude(m_long);  //传递的参数：经度 
-    //web.CallJScript("setstapiont",m_lat,m_long); 
-
-	double tempnum[22][2]={112.941650,28.171610,
-		112.942123,28.169699,
-		112.946030,28.167139,
-		112.947594,28.176163,
-		112.944305,28.182743,
-		112.941322,28.183662,
-		112.942825,28.188023,
-		112.942841,28.191589,
-		112.944664,28.194380,
-		112.944908,28.195711,
-		112.945511,28.197603,
-		112.944870,28.195898,
-		112.942673,28.189238,
-		112.941292,28.185274,
-		112.943588,28.182659,
-		112.947365,28.174421,
-		112.946205,28.167265,
-		112.943100,28.169024,
-		112.941620,28.171564,
-		112.943146,28.192247,
-		112.947052,28.182596,
-		112.947670,28.181625};
-	for(int i=0;i<22;i++)
-	{
-		CString latnum;
-		CString longnum;
-		latnum.Format(_T("%lf"),tempnum[i][1]+0.002506);
-		longnum.Format(_T("%lf"),tempnum[i][0]+0.011969);
-		web.CallJScript("setstapiont",latnum,longnum);
-	}
+    web.CallJScript("setstapiont",m_lat,m_long);
 	//CDialog::OnOK();
 }
 
@@ -453,13 +424,12 @@ void CBaidumapDlg::OnMenuitem32774()
 		p_cuntroller+=nItem;
 		controller.erase(p_cuntroller);
 		m_list.DeleteItem(nItem);
-		if(nItem==controller_number)m_list_light.DeleteAllItems();
 	}
-
+	m_list_light.DeleteAllItems();
 	/////////////////////////////////////////////////////////////////////
-	//记录删除之后原行的位置
-	POSITION pos = m_list.GetFirstSelectedItemPosition();
-	controller_number = m_list.GetNextSelectedItem(pos); 
+	//控制器位置初始化
+	//POSITION pos = m_list.GetFirstSelectedItemPosition();
+	controller_number = -1;//m_list.GetNextSelectedItem(pos); 
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -468,9 +438,12 @@ void CBaidumapDlg::OnMenuitem32775()
 {
 	// TODO: Add your command handler code here
 	POSITION pos = m_list_light.GetFirstSelectedItemPosition();
-	int nItem = m_list_light.GetNextSelectedItem(pos);
-	controller[controller_number].lightline[nItem].status=1;
-	m_list_light.SetItemText(nItem,5,"1");
+	while(pos)//判断单/多行
+	{
+		int nItem = m_list_light.GetNextSelectedItem(pos);
+		controller[controller_number].lightline[nItem].status=1;
+		m_list_light.SetItemText(nItem,5,"1");
+	}
 }
 
 //关闭路灯
@@ -478,8 +451,12 @@ void CBaidumapDlg::OnMenuitem32776()
 {
 	// TODO: Add your command handler code here
 	POSITION pos = m_list_light.GetFirstSelectedItemPosition();
-	int nItem = m_list_light.GetNextSelectedItem(pos);
-	controller[controller_number].lightline[nItem].status=0;
-	m_list_light.SetItemText(nItem,5,"0");
+	while(pos)//判断单/多行
+	{
+		
+		int nItem = m_list_light.GetNextSelectedItem(pos);
+		controller[controller_number].lightline[nItem].status=0;
+		m_list_light.SetItemText(nItem,5,"0");
+	}
 }
 /////////////////////////////////////////////////////////////////////

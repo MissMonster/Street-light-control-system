@@ -6,7 +6,7 @@
 --------------------Configuration: baidumap - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB920.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP607C.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/baidumap.pdb" /debug /machine:I386 /out:"Debug/baidumap.exe" /pdbtype:sept 
 .\Debug\baidumap.obj
@@ -16,9 +16,10 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB920.tmp" with 
 .\Debug\WebPage.obj
 .\Debug\baidumap.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPB920.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP607C.tmp"
 <h3>Output Window</h3>
 Linking...
+LINK : warning LNK4076: invalid incremental status file "Debug/baidumap.ilk"; linking nonincrementally
 Creating command line "bscmake.exe /nologo /o"Debug/baidumap.bsc"  .\Debug\StdAfx.sbr .\Debug\baidumap.sbr .\Debug\baidumapDlg.sbr .\Debug\webbrowser2.sbr .\Debug\WebPage.sbr"
 Creating browse info file...
 <h3>Output Window</h3>
