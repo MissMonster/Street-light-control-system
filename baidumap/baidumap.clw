@@ -13,8 +13,8 @@ Class2=CBaidumapDlg
 
 ResourceCount=5
 Resource2=IDR_MAINFRAME
-Resource3=IDD_BAIDUMAP_DIALOG
-Resource4=IDR_MENU1
+Resource3=IDR_MENU1
+Resource4=IDD_BAIDUMAP_DIALOG
 Resource5=IDR_MENU2
 
 [CLS:CBaidumapApp]
@@ -22,6 +22,9 @@ Type=0
 HeaderFile=baidumap.h
 ImplementationFile=baidumap.cpp
 Filter=N
+LastObject=ID_MENUITEM32776
+BaseClass=CWinApp
+VirtualFilter=AC
 
 [CLS:CBaidumapDlg]
 Type=0
@@ -30,7 +33,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_LIST2
+LastObject=ID_MENUITEM32774
 
 
 
@@ -55,7 +58,7 @@ Control14=IDC_LIST2,SysListView32,1350631425
 
 [MNU:IDR_MENU1]
 Type=1
-Class=?
+Class=CBaidumapApp
 Command1=ID_MENUITEM32777
 Command2=ID_MENUITEM32773
 Command3=ID_MENUITEM32774
@@ -63,7 +66,7 @@ CommandCount=3
 
 [MNU:IDR_MENU2]
 Type=1
-Class=?
+Class=CBaidumapApp
 Command1=ID_MENUITEM32775
 Command2=ID_MENUITEM32776
 CommandCount=2

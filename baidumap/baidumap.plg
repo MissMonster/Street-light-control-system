@@ -6,14 +6,7 @@
 --------------------Configuration: baidumap - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x804 /fo"Debug/baidumap.res" /d "_DEBUG" "D:\c\baidumap\baidumap.rc"" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP35C9.tmp" with contents
-[
-/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/baidumap.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"D:\c\baidumap\baidumap.cpp"
-]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP35C9.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP35DA.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB920.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/baidumap.pdb" /debug /machine:I386 /out:"Debug/baidumap.exe" /pdbtype:sept 
 .\Debug\baidumap.obj
@@ -23,12 +16,8 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP35DA.tmp" with 
 .\Debug\WebPage.obj
 .\Debug\baidumap.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP35DA.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPB920.tmp"
 <h3>Output Window</h3>
-Compiling resources...
-Compiling...
-Skipping... (no relevant changes detected)
-baidumap.cpp
 Linking...
 Creating command line "bscmake.exe /nologo /o"Debug/baidumap.bsc"  .\Debug\StdAfx.sbr .\Debug\baidumap.sbr .\Debug\baidumapDlg.sbr .\Debug\webbrowser2.sbr .\Debug\WebPage.sbr"
 Creating browse info file...

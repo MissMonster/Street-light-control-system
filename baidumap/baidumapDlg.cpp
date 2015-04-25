@@ -20,6 +20,7 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////
 vector<CONTROLDATA> controller;
+vector<CONTROLDATA>::iterator p_cuntroller;
 int controller_number = -1;
 int light_number = -1;
 /////////////////////////////////////////////////////////////////////
@@ -59,6 +60,11 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST2, OnDblclkList2)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST1, OnRclickList1)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST2, OnRclickList2)
+	ON_COMMAND(ID_MENUITEM32777, OnMenuitem32777)
+	ON_COMMAND(ID_MENUITEM32773, OnMenuitem32773)
+	ON_COMMAND(ID_MENUITEM32774, OnMenuitem32774)
+	ON_COMMAND(ID_MENUITEM32775, OnMenuitem32775)
+	ON_COMMAND(ID_MENUITEM32776, OnMenuitem32776)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -157,10 +163,6 @@ BOOL CBaidumapDlg::OnInitDialog()
 			controller[i].lightline.push_back(tempone);
 		}
 	}
-
-	/////////////////////////////////////////////////////////////////////
-	//MessageBox("数据初始化完成!",NULL,MB_OK);
-	/////////////////////////////////////////////////////////////////////
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -284,21 +286,39 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	//web.CallJScript("refresh");
 	web.CallJScript("removeall");
 	web.CallJScript("movetoplace",latnum,longnum);
-	web.CallJScript("setanipiont",latnum,longnum,"控制器");
 
 	/////////////////////////////////////////////////////////////////////
-	//CString str;
-	//str.Format(_T("%d:%d"),nItem,controller[nItem].lightsum);
-	//MessageBox(str,NULL,MB_OK);
-	/////////////////////////////////////////////////////////////////////
+	//显示控制器信息
+	CString str;
+	CString temp;
+	str.Format(_T("%04d"),controller[nItem].id);
+	temp="标识码:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].lightmessage);
+	temp=temp+"信息:"+str+"<br>";
+	
+	str.Format(_T("%8.3lf"),controller[nItem].Longitude);
+	temp=temp+"纬度:"+str+"<br>";
+	
+	str.Format(_T("%lf"),controller[nItem].Latitude);
+	temp=temp+"经度:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].lightsum);
+	temp=temp+"路灯数量:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].theway);
+	temp=temp+"运行方式:"+str;
+
+	web.CallJScript("setanipiont",latnum,longnum,temp);
 	 
+	/////////////////////////////////////////////////////////////////////
 	//在列表上显示路灯
 	m_list_light.DeleteAllItems();//重绘路灯列表
 	for(int i=0;i<controller[nItem].lightsum;i++)
 	{
 		CString str;
 		CString temp;
-		str.Format(_T("%03d"),controller[nItem].lightline[i].id);
+		str.Format(_T("%04d"),controller[nItem].lightline[i].id);
 		m_list_light.InsertItem(i,str);
 		temp="编号:"+str+"<br>";
 
@@ -327,6 +347,7 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 
 		web.CallJScript("setstapiont",latnum,longnum,temp);
 	}
+	/////////////////////////////////////////////////////////////////////
 
 	*pResult = 0;
 }
@@ -342,15 +363,8 @@ void CBaidumapDlg::OnDblclkList2(NMHDR* pNMHDR, LRESULT* pResult)
 	if(pos)
 	{
 		nItem = m_list_light.GetNextSelectedItem(pos); 
-		//web.CallJScript("refresh"); 
 	}
 	else return ;
-
-	/////////////////////////////////////////////////////////////////////
-	//CString str;
-	//str.Format(_T("%d:%d"),nItem,controller[controller_number].lightline[nItem].id);
-	//MessageBox(str,NULL,MB_OK);
-	/////////////////////////////////////////////////////////////////////
 
 	if(nItem!=light_number)
 	{
@@ -403,3 +417,69 @@ void CBaidumapDlg::OnRclickList2(NMHDR* pNMHDR, LRESULT* pResult)
 	
 	*pResult = 0;
 }
+
+//增加控制器
+void CBaidumapDlg::OnMenuitem32777() 
+{
+	// TODO: Add your command handler code here
+	CString str;
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	str.Format("当前选中的是第%d行",nItem+1);
+	MessageBox(str,NULL,MB_OK);
+}
+
+//修改控制器
+void CBaidumapDlg::OnMenuitem32773() 
+{
+	// TODO: Add your command handler code here
+	CString str;
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	str.Format("当前选中的是第%d行",nItem+1);
+	MessageBox(str,NULL,MB_OK);
+}
+
+//删除控制器
+void CBaidumapDlg::OnMenuitem32774() 
+{
+	// TODO: Add your command handler code here
+	if(MessageBox("确定要删除？","删除控制器",MB_ICONINFORMATION|MB_YESNO)==IDNO)return ;
+	while(m_list.GetNextItem(-1,LVNI_ALL|LVNI_SELECTED)!=-1)//判断单/多行
+	{
+		POSITION pos = m_list.GetFirstSelectedItemPosition();
+		int nItem = m_list.GetNextSelectedItem(pos);
+		p_cuntroller=controller.begin();
+		p_cuntroller+=nItem;
+		controller.erase(p_cuntroller);
+		m_list.DeleteItem(nItem);
+		if(nItem==controller_number)m_list_light.DeleteAllItems();
+	}
+
+	/////////////////////////////////////////////////////////////////////
+	//记录删除之后原行的位置
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	controller_number = m_list.GetNextSelectedItem(pos); 
+}
+
+/////////////////////////////////////////////////////////////////////
+//打开路灯
+void CBaidumapDlg::OnMenuitem32775() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list_light.GetFirstSelectedItemPosition();
+	int nItem = m_list_light.GetNextSelectedItem(pos);
+	controller[controller_number].lightline[nItem].status=1;
+	m_list_light.SetItemText(nItem,5,"1");
+}
+
+//关闭路灯
+void CBaidumapDlg::OnMenuitem32776() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list_light.GetFirstSelectedItemPosition();
+	int nItem = m_list_light.GetNextSelectedItem(pos);
+	controller[controller_number].lightline[nItem].status=0;
+	m_list_light.SetItemText(nItem,5,"0");
+}
+/////////////////////////////////////////////////////////////////////

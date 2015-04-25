@@ -16,9 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 BEGIN_MESSAGE_MAP(CBaidumapApp, CWinApp)
 	//{{AFX_MSG_MAP(CBaidumapApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
+	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
@@ -64,7 +62,7 @@ BOOL CBaidumapApp::InitInstance()
 	}
 	else if (nResponse == IDCANCEL)
 	{
-		// TODO: Place code here to handle when the dialog is
+		// TODO: Place code here to handle when the dialog issd
 		//  dismissed with Cancel
 	}
 
@@ -72,3 +70,4 @@ BOOL CBaidumapApp::InitInstance()
 	//  application, rather than start the application's message pump.
 	return FALSE;
 }
+
