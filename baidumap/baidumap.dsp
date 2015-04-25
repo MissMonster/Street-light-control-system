@@ -102,6 +102,10 @@ SOURCE=.\baidumapDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\login.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -131,6 +135,10 @@ SOURCE=.\DataStructure.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\login.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
@@ -156,6 +164,10 @@ SOURCE=.\res\baidumap.ico
 # Begin Source File
 
 SOURCE=.\res\baidumap.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\login.bmp
 # End Source File
 # End Group
 # Begin Source File

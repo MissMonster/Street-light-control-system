@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "baidumap.h"
 #include "baidumapDlg.h"
+#include "login.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -52,18 +53,22 @@ BOOL CBaidumapApp::InitInstance()
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
-	CBaidumapDlg dlg;
-	m_pMainWnd = &dlg;
-	int nResponse = dlg.DoModal();
-	if (nResponse == IDOK)
+	login ldlg;               //login windows
+	if(ldlg.DoModal()== IDOK)
 	{
-		// TODO: Place code here to handle when the dialog is
-		//  dismissed with OK
-	}
-	else if (nResponse == IDCANCEL)
-	{
-		// TODO: Place code here to handle when the dialog issd
-		//  dismissed with Cancel
+		CBaidumapDlg dlg;
+		m_pMainWnd = &dlg;
+		int nResponse = dlg.DoModal();
+		if (nResponse == IDOK)
+		{
+			// TODO: Place code here to handle when the dialog is
+			//  dismissed with OK
+		}
+		else if (nResponse == IDCANCEL)
+		{
+			// TODO: Place code here to handle when the dialog issd
+			//  dismissed with Cancel
+		}
 	}
 
 	// Since the dialog has been closed, return FALSE so that we exit the
