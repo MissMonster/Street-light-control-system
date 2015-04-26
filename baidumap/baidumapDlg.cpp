@@ -6,6 +6,7 @@
 #include "baidumapDlg.h"
 #include "webbrowser2.h"
 #include "WebPage.h"
+#include "controlinfo.h"
 #include "DataStructure.h"
 #include <iostream>
 #include <vector>
@@ -21,6 +22,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////
 vector<CONTROLDATA> controller;
 vector<CONTROLDATA>::iterator p_cuntroller;
+CONTROLDATA continfo;
 int controller_number = -1;
 int light_number = -1;
 /////////////////////////////////////////////////////////////////////
@@ -61,6 +63,7 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32775, OnMenuitem32775)
 	ON_COMMAND(ID_MENUITEM32776, OnMenuitem32776)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
+	ON_COMMAND(ID_MENUITEM32784, OnMenuitem32784)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -109,8 +112,8 @@ BOOL CBaidumapDlg::OnInitDialog()
 	m_list_light.InsertColumn(0,"编号"	,LVCFMT_CENTER, 60,0);
 	m_list_light.InsertColumn(1,"状态"	,LVCFMT_CENTER, 60,0);
 
-	//产生随机20个控制器数据
-	for(int i=0;i<100;i++)
+	//产生随机n个控制器数据
+	for(int i=0;i<23;i++)
 	{
 		CONTROLDATA temp;
 		temp.id=rand()%1000;
@@ -118,7 +121,7 @@ BOOL CBaidumapDlg::OnInitDialog()
 		temp.lightmessage[1]='\0';
 		temp.Latitude=28.190991+rand()%10000*0.00001;
 		temp.Longitude=112.956087+rand()%10000*0.00001;
-		temp.lightsum=50+rand()%50;
+		temp.lightsum=30+rand()%25;
 		temp.theway=rand()%2;
 		controller.push_back(temp);
 
@@ -229,10 +232,10 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	str.Format(_T("%04d"),controller[nItem].id);
 	temp="标识码:"+str+"<br>";
 	
-	str.Format(_T("%d"),controller[nItem].lightmessage);
+	str.Format(_T("%s"),controller[nItem].lightmessage);
 	temp=temp+"信息:"+str+"<br>";
 	
-	str.Format(_T("%8.3lf"),controller[nItem].Longitude);
+	str.Format(_T("%lf"),controller[nItem].Longitude);
 	temp=temp+"纬度:"+str+"<br>";
 	
 	str.Format(_T("%lf"),controller[nItem].Latitude);
@@ -251,16 +254,16 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 	m_list_light.DeleteAllItems();//重绘路灯列表
 	for(int i=0;i<controller[nItem].lightsum;i++)
 	{
-		CString str;
-		CString temp;
+		//CString str;
+		//CString temp;
 		str.Format(_T("%04d"),controller[nItem].lightline[i].id);
 		m_list_light.InsertItem(i,str);
 		temp="编号:"+str+"<br>";
 
-		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].voltage);
+		str.Format(_T("%lf"),controller[nItem].lightline[i].voltage);
 		temp=temp+"电压:"+str+"<br>";
 		
-		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].current);
+		str.Format(_T("%lf"),controller[nItem].lightline[i].current);
 		temp=temp+"电流:"+str+"<br>";
 		
 		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
@@ -364,22 +367,81 @@ void CBaidumapDlg::OnRclickList2(NMHDR* pNMHDR, LRESULT* pResult)
 void CBaidumapDlg::OnMenuitem32777() 
 {
 	// TODO: Add your command handler code here
-	CString str;
+	controlinfo dlg;
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	int nItem = m_list.GetNextSelectedItem(pos);
-	str.Format("当前选中的是第%d行",nItem+1);
-	MessageBox(str,NULL,MB_OK);
+	//continfo=controller[nItem];
+	continfo.id=-1;
+	if(dlg.DoModal()==IDOK)
+	{
+		int index=controller.size();
+		
+		CString str;
+		str.Format(_T("%03d"),continfo.id);
+		m_list.InsertItem(index,str);
+		
+		m_list.SetItemText(index,1,continfo.lightmessage);
+		
+		str.Format(_T("%d"),continfo.lightsum);
+		m_list.SetItemText(index,2,str);
+		
+		str.Format(_T("%d"),continfo.theway);
+		m_list.SetItemText(index,3,str);
+		
+		controller.push_back(continfo);
+
+		nItem=controller.size();
+		for(int j=0;j<continfo.lightsum;j++)
+		{
+			LIGHTDATA tempone;
+			tempone.id=j+1;
+			tempone.voltage=10+rand()%10;
+			tempone.current=1+rand()%10*0.1;
+			tempone.Latitude=controller[nItem-1].Latitude+rand()%1000*0.00001;
+			tempone.Longitude=controller[nItem-1].Longitude+rand()%1000*0.00001;
+			tempone.status=rand()%3;
+			controller[nItem-1].lightline.push_back(tempone);
+		}
+
+	}
+	//CString str;
+	//POSITION pos = m_list.GetFirstSelectedItemPosition();
+	//int nItem = m_list.GetNextSelectedItem(pos);
+	//str.Format("当前选中的是第%d行",nItem+1);
+	//MessageBox(str,NULL,MB_OK);
 }
 
 //修改控制器
 void CBaidumapDlg::OnMenuitem32773() 
 {
 	// TODO: Add your command handler code here
-	CString str;
+	controlinfo dlg;
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	int nItem = m_list.GetNextSelectedItem(pos);
-	str.Format("当前选中的是第%d行",nItem+1);
-	MessageBox(str,NULL,MB_OK);
+	continfo=controller[nItem];
+	if(dlg.DoModal()==IDOK)
+	{
+
+		m_list.DeleteItem(nItem);
+		CString str;
+		str.Format(_T("%03d"),continfo.id);
+		m_list.InsertItem(nItem,str);
+		
+		m_list.SetItemText(nItem,1,continfo.lightmessage);
+		
+		str.Format(_T("%d"),continfo.lightsum);
+		m_list.SetItemText(nItem,2,str);
+		
+		str.Format(_T("%d"),continfo.theway);
+		m_list.SetItemText(nItem,3,str);
+
+		controller[nItem]=continfo;
+	}
+	//CString str;
+	//POSITION pos = m_list.GetFirstSelectedItemPosition();
+	//int nItem = m_list.GetNextSelectedItem(pos);
+	//str.Format("当前选中的是第%d行",nItem+1);
+	//MessageBox(str,NULL,MB_OK);
 }
 
 //删除控制器
@@ -439,3 +501,93 @@ void CBaidumapDlg::OnMenuitem32776()
 }
 /////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////
+//显示路灯列表
+void CBaidumapDlg::OnMenuitem32784() 
+{
+	// TODO: Add your command handler code here
+	CWebPage web;
+    web.SetDocument(m_map.GetDocument()); 
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	controller_number=nItem;
+
+	CString latnum;
+	CString longnum;
+	latnum.Format(_T("%lf"),controller[nItem].Latitude);
+	longnum.Format(_T("%lf"),controller[nItem].Longitude);
+	//web.CallJScript("refresh");
+	web.CallJScript("removeall");
+	web.CallJScript("movetoplace",latnum,longnum);
+
+	/////////////////////////////////////////////////////////////////////
+	//显示控制器信息
+	CString str;
+	CString temp;
+	str.Format(_T("%04d"),controller[nItem].id);
+	temp="标识码:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].lightmessage);
+	temp=temp+"信息:"+str+"<br>";
+	
+	str.Format(_T("%8.3lf"),controller[nItem].Longitude);
+	temp=temp+"纬度:"+str+"<br>";
+	
+	str.Format(_T("%lf"),controller[nItem].Latitude);
+	temp=temp+"经度:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].lightsum);
+	temp=temp+"路灯数量:"+str+"<br>";
+	
+	str.Format(_T("%d"),controller[nItem].theway);
+	temp=temp+"运行方式:"+str;
+	
+	web.CallJScript("setanipiont",latnum,longnum,temp);
+
+	/////////////////////////////////////////////////////////////////////
+	//在列表上显示路灯
+	
+	m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		//CString str;
+		//CString temp;
+		str.Format(_T("%04d"),controller[nItem].lightline[i].id);
+		m_list_light.InsertItem(i,str);
+		temp="编号:"+str+"<br>";
+		
+		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].voltage);
+		temp=temp+"电压:"+str+"<br>";
+		
+		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].current);
+		temp=temp+"电流:"+str+"<br>";
+		
+		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
+		temp=temp+"纬度:"+str+"<br>";
+		
+		str.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
+		temp=temp+"经度:"+str+"<br>";
+		
+		switch(controller[nItem].lightline[i].status)
+		{
+		case 0:
+			str="关闭";
+			break;
+		case 1:
+			str="开启";
+			break;
+		case 2:
+			str="故障";
+			break;
+		}
+		m_list_light.SetItemText(i,1,str);
+		temp=temp+"状态:"+str;
+		
+		latnum.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
+		longnum.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
+		
+		web.CallJScript("setstapiont",latnum,longnum,temp);
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+/////////////////////////////////////////////////////////////////////

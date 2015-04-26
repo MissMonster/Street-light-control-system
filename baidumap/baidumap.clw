@@ -2,30 +2,32 @@
 
 [General Info]
 Version=1
-LastClass=CBaidumapDlg
+LastClass=controlinfo
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "baidumap.h"
 
-ClassCount=3
+ClassCount=4
 Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
-ResourceCount=6
-Resource2=IDD_BAIDUMAP_DIALOG
+ResourceCount=7
+Resource2=IDD_DIALOG2
 Resource3=IDR_MENU2
-Resource4=IDD_DIALOG1
+Resource4=IDD_BAIDUMAP_DIALOG
 Resource1=IDR_MAINFRAME
 Class3=login
 Resource5=IDR_MENU1
-Resource6=IDR_MENU3
+Resource6=IDD_DIALOG1
+Class4=controlinfo
+Resource7=IDR_MENU3
 
 [CLS:CBaidumapApp]
 Type=0
 HeaderFile=baidumap.h
 ImplementationFile=baidumap.cpp
 Filter=N
-LastObject=CBaidumapApp
+LastObject=ID_MENUITEM32773
 BaseClass=CWinApp
 VirtualFilter=AC
 
@@ -36,7 +38,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=CBaidumapDlg
+LastObject=ID_MENUITEM32784
 
 
 
@@ -58,10 +60,11 @@ Control10=IDC_STATIC,button,1342177287
 [MNU:IDR_MENU1]
 Type=1
 Class=CBaidumapApp
-Command1=ID_MENUITEM32777
-Command2=ID_MENUITEM32773
-Command3=ID_MENUITEM32774
-CommandCount=3
+Command1=ID_MENUITEM32784
+Command2=ID_MENUITEM32777
+Command3=ID_MENUITEM32773
+Command4=ID_MENUITEM32774
+CommandCount=4
 
 [MNU:IDR_MENU2]
 Type=1
@@ -100,4 +103,33 @@ Command3=ID_MENUITEM32782
 Command4=ID_MENUITEM32783
 Command5=ID_MENUITEM32779
 CommandCount=5
+
+[DLG:IDD_DIALOG2]
+Type=1
+Class=controlinfo
+ControlCount=15
+Control1=IDC_EDIT1,edit,1350631552
+Control2=IDC_EDIT2,edit,1350631552
+Control3=IDC_EDIT3,edit,1350631552
+Control4=IDC_EDIT4,edit,1350631552
+Control5=IDC_EDIT5,edit,1350631552
+Control6=IDC_COMBO1,combobox,1344340226
+Control7=IDOK,button,1342242817
+Control8=IDCANCEL,button,1342242816
+Control9=IDC_STATIC,static,1342308352
+Control10=IDC_STATIC,static,1342308352
+Control11=IDC_STATIC,static,1342308352
+Control12=IDC_STATIC,static,1342308352
+Control13=IDC_STATIC,static,1342308352
+Control14=IDC_STATIC,static,1342308352
+Control15=IDC_STATIC,button,1342177287
+
+[CLS:controlinfo]
+Type=0
+HeaderFile=controlinfo.h
+ImplementationFile=controlinfo.cpp
+BaseClass=CDialog
+Filter=D
+LastObject=IDC_COMBO1
+VirtualFilter=dWC
 

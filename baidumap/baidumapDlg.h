@@ -53,6 +53,7 @@ protected:
 	afx_msg void OnMenuitem32775();
 	afx_msg void OnMenuitem32776();
 	afx_msg void OnButton1();
+	afx_msg void OnMenuitem32784();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -111,6 +111,29 @@ BEGIN
     LTEXT           "密码:",IDC_STATIC,92,46,21,8
 END
 
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 173, 209
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "控制器信息"
+FONT 9, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT1,77,25,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,77,48,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,77,71,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,77,94,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,77,117,68,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO1,77,140,68,85,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "确定",IDOK,16,166,50,29
+    PUSHBUTTON      "取消",IDCANCEL,106,166,50,29
+    LTEXT           "标识码:",IDC_STATIC,25,28,29,8
+    LTEXT           "信息:",IDC_STATIC,25,51,21,8
+    LTEXT           "纬度:",IDC_STATIC,25,74,21,8
+    LTEXT           "经度:",IDC_STATIC,25,97,21,8
+    LTEXT           "路灯数量:",IDC_STATIC,25,120,37,8
+    LTEXT           "运行方式:",IDC_STATIC,25,142,37,8
+    GROUPBOX        "",IDC_STATIC,16,9,142,149
+END
+
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
@@ -181,6 +204,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 91
     END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 166
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -205,6 +236,25 @@ BEGIN
     0
 END
 
+IDD_DIALOG2 DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 2, 0
+0x0030, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0036, 
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -215,6 +265,8 @@ IDR_MENU1 MENU DISCARDABLE
 BEGIN
     POPUP "menu"
     BEGIN
+        MENUITEM "显示",                        ID_MENUITEM32784
+        MENUITEM SEPARATOR
         MENUITEM "新增",                        ID_MENUITEM32777
         MENUITEM SEPARATOR
         MENUITEM "修改",                        ID_MENUITEM32773
