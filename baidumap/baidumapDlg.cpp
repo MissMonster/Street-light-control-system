@@ -32,8 +32,6 @@ CBaidumapDlg::CBaidumapDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CBaidumapDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CBaidumapDlg)
-	m_long = _T("");
-	m_lat = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -46,8 +44,6 @@ void CBaidumapDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, m_list_light);
 	DDX_Control(pDX, IDC_LIST1, m_list);
 	DDX_Control(pDX, IDC_EXPLORER1, m_map);
-	DDX_Text(pDX, IDC_EDIT2, m_long);
-	DDX_Text(pDX, IDC_EDIT1, m_lat);
 	//}}AFX_DATA_MAP
 }
 
@@ -55,7 +51,6 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	//{{AFX_MSG_MAP(CBaidumapDlg)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST1, OnDblclkList1)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST2, OnDblclkList2)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST1, OnRclickList1)
@@ -65,6 +60,7 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32774, OnMenuitem32774)
 	ON_COMMAND(ID_MENUITEM32775, OnMenuitem32775)
 	ON_COMMAND(ID_MENUITEM32776, OnMenuitem32776)
+	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -100,10 +96,8 @@ BOOL CBaidumapDlg::OnInitDialog()
 
 	m_list.InsertColumn(0,"标识码"	,LVCFMT_CENTER, 60,0);
 	m_list.InsertColumn(1,"信息"	,LVCFMT_CENTER, 60,0);
-	m_list.InsertColumn(2,"纬度"	,LVCFMT_CENTER, 80,0);
-	m_list.InsertColumn(3,"经度"	,LVCFMT_CENTER, 80,0);
-	m_list.InsertColumn(4,"路灯数量",LVCFMT_CENTER, 70,0);
-	m_list.InsertColumn(5,"运行方式",LVCFMT_CENTER, 70,0);
+	m_list.InsertColumn(2,"路灯数量",LVCFMT_CENTER, 70,0);
+	m_list.InsertColumn(3,"运行方式",LVCFMT_CENTER, 70,0);
 
 	//设置路灯列表主题
 	m_list_light.SetExtendedStyle(
@@ -113,11 +107,7 @@ BOOL CBaidumapDlg::OnInitDialog()
 		);
 	
 	m_list_light.InsertColumn(0,"编号"	,LVCFMT_CENTER, 60,0);
-	m_list_light.InsertColumn(1,"电压"	,LVCFMT_CENTER, 60,0);
-	m_list_light.InsertColumn(2,"电流"	,LVCFMT_CENTER, 60,0);
-	m_list_light.InsertColumn(3,"纬度"	,LVCFMT_CENTER, 80,0);
-	m_list_light.InsertColumn(4,"经度"	,LVCFMT_CENTER, 80,0);
-	m_list_light.InsertColumn(5,"状态"	,LVCFMT_CENTER, 60,0);
+	m_list_light.InsertColumn(1,"状态"	,LVCFMT_CENTER, 60,0);
 
 	//产生随机20个控制器数据
 	for(int i=0;i<100;i++)
@@ -128,7 +118,7 @@ BOOL CBaidumapDlg::OnInitDialog()
 		temp.lightmessage[1]='\0';
 		temp.Latitude=28.190991+rand()%10000*0.00001;
 		temp.Longitude=112.956087+rand()%10000*0.00001;
-		temp.lightsum=100+rand()%50;
+		temp.lightsum=50+rand()%50;
 		temp.theway=rand()%2;
 		controller.push_back(temp);
 
@@ -138,17 +128,11 @@ BOOL CBaidumapDlg::OnInitDialog()
 
 		m_list.SetItemText(i,1,temp.lightmessage);
 		
-		str.Format(_T("%lf"),temp.Longitude);
+		str.Format(_T("%d"),temp.lightsum);
 		m_list.SetItemText(i,2,str);
 		
-		str.Format(_T("%lf"),temp.Latitude);
-		m_list.SetItemText(i,3,str);
-		
-		str.Format(_T("%d"),temp.lightsum);
-		m_list.SetItemText(i,4,str);
-		
 		str.Format(_T("%d"),temp.theway);
-		m_list.SetItemText(i,5,str);
+		m_list.SetItemText(i,3,str);
 
 		//产生随机n个路灯数据
 		for(int j=0;j<temp.lightsum;j++)
@@ -159,7 +143,7 @@ BOOL CBaidumapDlg::OnInitDialog()
 			tempone.current=1+rand()%10*0.1;
 			tempone.Latitude=controller[i].Latitude+rand()%1000*0.00001;
 			tempone.Longitude=controller[i].Longitude+rand()%1000*0.00001;
-			tempone.status=rand()%2;
+			tempone.status=rand()%3;
 			controller[i].lightline.push_back(tempone);
 		}
 	}
@@ -201,26 +185,6 @@ void CBaidumapDlg::OnPaint()
 HCURSOR CBaidumapDlg::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
-}
-
-void CBaidumapDlg::OnOK() 
-{
-	// TODO: Add extra validation here
-	//28.183518, 112.953093
-	//google
-	//-0.005969,-0.006506
-	//28.189487,112.959599
-	//baidu
-	UpdateData(TRUE);  
-    CWebPage web;
-    web.SetDocument(m_map.GetDocument());  
-    CComVariant varResult;
-	if(m_lat<=0)return ;
-	if(m_long<=0)return ;
-    const CString m_latitude(m_lat);  //传递的参数：纬度  
-    const CString m_longtitude(m_long);  //传递的参数：经度 
-    web.CallJScript("setstapiont",m_lat,m_long);
-	//CDialog::OnOK();
 }
 
 void CBaidumapDlg::OnButton1() 
@@ -294,23 +258,30 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 		temp="编号:"+str+"<br>";
 
 		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].voltage);
-		m_list_light.SetItemText(i,1,str);
 		temp=temp+"电压:"+str+"<br>";
 		
 		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].current);
-		m_list_light.SetItemText(i,2,str);
 		temp=temp+"电流:"+str+"<br>";
 		
 		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
-		m_list_light.SetItemText(i,3,str);
 		temp=temp+"纬度:"+str+"<br>";
 		
 		str.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
-		m_list_light.SetItemText(i,4,str);
 		temp=temp+"经度:"+str+"<br>";
 		
-		str.Format(_T("%d"),controller[nItem].lightline[i].status);
-		m_list_light.SetItemText(i,5,str);
+		switch(controller[nItem].lightline[i].status)
+		{
+		case 0:
+			str="关闭";
+			break;
+		case 1:
+			str="开启";
+			break;
+		case 2:
+			str="故障";
+			break;
+		}
+		m_list_light.SetItemText(i,1,str);
 		temp=temp+"状态:"+str;
 
 		latnum.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
@@ -430,6 +401,13 @@ void CBaidumapDlg::OnMenuitem32774()
 	//控制器位置初始化
 	//POSITION pos = m_list.GetFirstSelectedItemPosition();
 	controller_number = -1;//m_list.GetNextSelectedItem(pos); 
+
+	/////////////////////////////////////////////////////////////////////
+	//清除覆盖物
+	CWebPage web;
+	web.SetDocument(m_map.GetDocument()); 
+	web.CallJScript("removeall");
+	/////////////////////////////////////////////////////////////////////
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -442,7 +420,7 @@ void CBaidumapDlg::OnMenuitem32775()
 	{
 		int nItem = m_list_light.GetNextSelectedItem(pos);
 		controller[controller_number].lightline[nItem].status=1;
-		m_list_light.SetItemText(nItem,5,"1");
+		m_list_light.SetItemText(nItem,1,"开启");
 	}
 }
 
@@ -456,7 +434,8 @@ void CBaidumapDlg::OnMenuitem32776()
 		
 		int nItem = m_list_light.GetNextSelectedItem(pos);
 		controller[controller_number].lightline[nItem].status=0;
-		m_list_light.SetItemText(nItem,5,"0");
+		m_list_light.SetItemText(nItem,1,"关闭");
 	}
 }
 /////////////////////////////////////////////////////////////////////
+

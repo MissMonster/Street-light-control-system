@@ -7,7 +7,7 @@
 </h3>
 <h3>Command Lines</h3>
 Creating command line "rc.exe /l 0x804 /fo"Debug/baidumap.res" /d "_DEBUG" "D:\c\baidumap\baidumap.rc"" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPFD67.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPA1A3.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/baidumap.pdb" /debug /machine:I386 /out:"Debug/baidumap.exe" /pdbtype:sept 
 .\Debug\baidumap.obj
@@ -18,7 +18,7 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPFD67.tmp" with 
 .\Debug\WebPage.obj
 .\Debug\baidumap.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPFD67.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPA1A3.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Linking...

@@ -26,8 +26,6 @@ public:
 	CListCtrl	m_list_light;
 	CListCtrl	m_list;
 	CWebBrowser2	m_map;
-	CString	m_long;
-	CString	m_lat;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -45,8 +43,6 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
-	virtual void OnOK();
-	afx_msg void OnButton1();
 	afx_msg void OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDblclkList2(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult);
@@ -56,6 +52,7 @@ protected:
 	afx_msg void OnMenuitem32774();
 	afx_msg void OnMenuitem32775();
 	afx_msg void OnMenuitem32776();
+	afx_msg void OnButton1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -77,30 +77,23 @@ IDD_BAIDUMAP_DIALOG DIALOGEX 0, 0, 891, 499
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "baidumap"
+CAPTION "路灯控制系统服务器端"
+MENU IDR_MENU3
 FONT 9, "宋体"
 BEGIN
-    DEFPUSHBUTTON   "标记",IDOK,41,59,78,12
-    PUSHBUTTON      "退出",IDCANCEL,221,11,28,67
     CONTROL         "",IDC_EXPLORER1,"{8856F961-340A-11D0-A96B-00C04FD705A2}",
                     WS_TABSTOP,407,17,472,470
-    PUSHBUTTON      "复位",IDC_BUTTON1,147,58,57,14
-    EDITTEXT        IDC_EDIT1,43,21,78,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,43,41,78,12,ES_AUTOHSCROLL
-    LTEXT           "纬度:",IDC_STATIC,11,23,21,8
-    LTEXT           "经度:",IDC_STATIC,11,42,21,8
-    GROUPBOX        "标记",IDC_STATIC,7,7,122,72
-    LTEXT           "纬度:28.190991",IDC_STATIC,147,24,57,8
-    LTEXT           "经度:112.956087",IDC_STATIC,147,40,61,8
-    GROUPBOX        "复位",IDC_STATIC,139,7,78,72
+    PUSHBUTTON      "复位",IDC_BUTTON1,309,363,57,30
+    LTEXT           "纬度:28.190991",IDC_STATIC,243,367,57,8
+    LTEXT           "经度:112.956087",IDC_STATIC,243,383,61,8
+    GROUPBOX        "复位",IDC_STATIC,235,350,136,50
     CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
-                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,16,163,181,
-                    318
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,16,20,191,318
     CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | 
-                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,211,163,181,
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,218,20,106,
                     318
-    GROUPBOX        "路灯信息",IDC_STATIC,206,150,192,336
-    GROUPBOX        "控制器信息",IDC_STATIC,12,150,192,336
+    GROUPBOX        "路灯信息",IDC_STATIC,213,7,117,336
+    GROUPBOX        "控制器信息",IDC_STATIC,12,7,199,336
     GROUPBOX        "地图标注",IDC_STATIC,401,7,483,485
 END
 
@@ -237,6 +230,21 @@ BEGIN
         MENUITEM "打开",                        ID_MENUITEM32775
         MENUITEM SEPARATOR
         MENUITEM "关闭",                        ID_MENUITEM32776
+    END
+END
+
+IDR_MENU3 MENU DISCARDABLE 
+BEGIN
+    POPUP "设置"
+    BEGIN
+        MENUITEM "更改用户名",                  ID_MENUITEM32781
+        MENUITEM "更改密码",                    ID_MENUITEM32780
+        MENUITEM "设置关闭时间",                ID_MENUITEM32782
+    END
+    POPUP "帮助"
+    BEGIN
+        MENUITEM "内容",                        ID_MENUITEM32783
+        MENUITEM "关于",                        ID_MENUITEM32779
     END
 END
 

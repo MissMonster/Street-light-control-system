@@ -24,10 +24,29 @@
 	function initialize(){
 		// 百度地图API功能
 		map = new BMap.Map("allmap");
+
+		/////////////////////////////////////////////////////////////////////
+		// 左上角，添加比例尺
+		var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});
+		// 2D图，卫星图
+		var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+		// 带有定位的导航控件
+		var navigationControl = new BMap.NavigationControl({
+    	// 靠左上角位置
+    	anchor: BMAP_ANCHOR_TOP_LEFT,
+    	// LARGE类型
+    	type: BMAP_NAVIGATION_CONTROL_LARGE,
+    	// 是否显示定位
+    	enableGeolocation: false
+  		});
+  		map.addControl(mapType1);
+  		map.addControl(top_left_control); 
+ 		map.addControl(navigationControl);
+		/////////////////////////////////////////////////////////////////////
+		
 		var point = new BMap.Point(112.956087,28.190991);
 		map.centerAndZoom(point, 18);
-		//map.enableScrollWheelZoom();
-		map.enableScrollWheelZoom(true);
+		map.enableScrollWheelZoom(true);//鼠标缩放
 	}
 	</script>
     
@@ -53,6 +72,7 @@
 	    var point = new BMap.Point(lng,lat);
 	    var marker = new BMap.Marker(point);
 
+	    /////////////////////////////////////////////////////////////////////
 	    var opts = {
 	  	width : 200,     // 信息窗口宽度
 	  	height: 200,     // 信息窗口高度
@@ -64,6 +84,7 @@
 		marker.addEventListener("click", function(){          
 			map.openInfoWindow(infoWindow,point); //开启信息窗口
 		});
+	    /////////////////////////////////////////////////////////////////////
 	    
 		map.addOverlay(marker);               // 将标注添加到地图中
 		marker.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
@@ -75,7 +96,8 @@
 	    //添加静态标注
 	    var point = new BMap.Point(lng,lat);
 	    var marker = new BMap.Marker(point);
-	    
+
+	    /////////////////////////////////////////////////////////////////////
 	    var opts = {
 	  	width : 200,     // 信息窗口宽度
 	  	height: 200,     // 信息窗口高度
@@ -87,6 +109,7 @@
 		marker.addEventListener("click", function(){          
 			map.openInfoWindow(infoWindow,point); //开启信息窗口
 		});
+		/////////////////////////////////////////////////////////////////////
 		
 		map.addOverlay(marker);
 
