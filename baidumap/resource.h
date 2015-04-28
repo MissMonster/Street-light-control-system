@@ -22,6 +22,7 @@
 #define IDC_EDIT3                       1011
 #define IDC_EDIT4                       1012
 #define IDC_EDIT5                       1013
+#define IDC_LIST3                       1014
 #define ID_MENUITEM32773                32773
 #define ID_MENUITEM32774                32774
 #define ID_MENUITEM32775                32775
@@ -45,7 +46,6 @@
 #define ID_MENUITEM32798                32798
 #define ID_MENUITEM32799                32799
 #define ID_MENUITEM32800                32800
-#define ID_MENUITEM32801                32801
 
 // Next default values for new objects
 // 
@@ -53,7 +53,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        141
 #define _APS_NEXT_COMMAND_VALUE         32802
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

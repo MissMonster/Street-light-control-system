@@ -20,9 +20,9 @@ Class3=login
 Resource5=IDD_DIALOG1
 Resource6=IDR_MENU2
 Class4=controlinfo
-Resource7=IDR_MENU3
+Resource7=IDD_BAIDUMAP_DIALOG
 Class5=aboutdlg
-Resource8=IDD_BAIDUMAP_DIALOG
+Resource8=IDR_MENU3
 
 [CLS:CBaidumapApp]
 Type=0
@@ -40,20 +40,22 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_LIST1
+LastObject=CBaidumapDlg
 
 
 
 [DLG:IDD_BAIDUMAP_DIALOG]
 Type=1
 Class=CBaidumapDlg
-ControlCount=6
+ControlCount=8
 Control1=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
 Control2=IDC_LIST1,SysListView32,1350631433
 Control3=IDC_LIST2,SysListView32,1350631433
 Control4=IDC_STATIC,button,1342177287
 Control5=IDC_STATIC,button,1342177287
 Control6=IDC_STATIC,button,1342177287
+Control7=IDC_LIST3,SysListView32,1350631425
+Control8=IDC_STATIC,button,1342177287
 
 [MNU:IDR_MENU1]
 Type=1

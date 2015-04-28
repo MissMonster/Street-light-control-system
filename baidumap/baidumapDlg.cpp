@@ -44,6 +44,7 @@ void CBaidumapDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CBaidumapDlg)
+	DDX_Control(pDX, IDC_LIST3, m_list_error);
 	DDX_Control(pDX, IDC_LIST2, m_list_light);
 	DDX_Control(pDX, IDC_LIST1, m_list);
 	DDX_Control(pDX, IDC_EXPLORER1, m_map);
@@ -65,6 +66,7 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32776, OnMenuitem32776)
 	ON_COMMAND(ID_MENUITEM32784, OnMenuitem32784)
 	ON_COMMAND(ID_MENUITEM32791, OnMenuitem32791)
+	ON_COMMAND(ID_MENUITEM32792, OnMenuitem32792)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -113,7 +115,21 @@ BOOL CBaidumapDlg::OnInitDialog()
 	m_list_light.InsertColumn(0,"编号"	,LVCFMT_CENTER, 60,0);
 	m_list_light.InsertColumn(1,"状态"	,LVCFMT_CENTER, 60,0);
 
+	//设置故障列表主题
+	m_list_error.SetExtendedStyle(
+		LVS_EX_FLATSB				// 扁平风格滚动
+        | LVS_EX_FULLROWSELECT		// 允许正航选中
+        | LVS_EX_GRIDLINES			// 画出网格线
+		);
+	
+	m_list_error.InsertColumn(0,"标识码"	,LVCFMT_CENTER, 70,0);
+	m_list_error.InsertColumn(1,"信息"	,LVCFMT_CENTER, 70,0);
+	m_list_error.InsertColumn(2,"编号"	,LVCFMT_CENTER, 70,0);
+	m_list_error.InsertColumn(3,"纬度"	,LVCFMT_CENTER, 80,0);
+	m_list_error.InsertColumn(4,"经度"	,LVCFMT_CENTER, 80,0);
+
 	//产生随机n个控制器数据
+	int error_number=0;
 	for(int i=0;i<23;i++)
 	{
 		CONTROLDATA temp;
@@ -149,6 +165,25 @@ BOOL CBaidumapDlg::OnInitDialog()
 			tempone.Longitude=controller[i].Longitude+rand()%1000*0.00001;
 			tempone.status=rand()%3;
 			controller[i].lightline.push_back(tempone);
+
+			//将故障路灯信息输出到故障列表
+			if(tempone.status==2)
+			{
+				str.Format(_T("%d"),temp.id);
+				m_list_error.InsertItem(error_number,str);
+
+				m_list_error.SetItemText(error_number,1,temp.lightmessage);
+
+				str.Format(_T("%d"),tempone.id);
+				m_list_error.SetItemText(error_number,2,str);
+
+				str.Format(_T("%lf"),tempone.Latitude);
+				m_list_error.SetItemText(error_number,3,str);
+
+				str.Format(_T("%lf"),tempone.Longitude);
+				m_list_error.SetItemText(error_number,4,str);
+				error_number++;
+			}
 		}
 	}
 
@@ -591,4 +626,11 @@ void CBaidumapDlg::OnMenuitem32791()
 	// TODO: Add your command handler code here
 	aboutdlg dlg;
 	dlg.DoModal();
+}
+
+//退出
+void CBaidumapDlg::OnMenuitem32792() 
+{
+	// TODO: Add your command handler code here
+	DestroyWindow( );
 }
