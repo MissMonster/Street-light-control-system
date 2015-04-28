@@ -90,6 +90,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\aboutdlg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\baidumap.cpp
 # End Source File
 # Begin Source File
@@ -125,6 +129,10 @@ SOURCE=.\WebPage.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\aboutdlg.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\baidumap.h
@@ -175,6 +183,10 @@ SOURCE=.\res\baidumap.rc2
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\frame.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\login.bmp
 # End Source File
 # End Group
@@ -184,12 +196,12 @@ SOURCE=.\ReadMe.txt
 # End Source File
 # End Target
 # End Project
+# Section baidumap : {8856F961-340A-11D0-A96B-00C04FD705A2}
+# 	2:21:DefaultSinkHeaderFile:webbrowser2.h
+# 	2:16:DefaultSinkClass:CWebBrowser2
+# End Section
 # Section baidumap : {D30C1661-CDAF-11D0-8A3E-00C04FC9E26E}
 # 	2:5:Class:CWebBrowser2
 # 	2:10:HeaderFile:webbrowser2.h
 # 	2:8:ImplFile:webbrowser2.cpp
-# End Section
-# Section baidumap : {8856F961-340A-11D0-A96B-00C04FD705A2}
-# 	2:21:DefaultSinkHeaderFile:webbrowser2.h
-# 	2:16:DefaultSinkClass:CWebBrowser2
 # End Section

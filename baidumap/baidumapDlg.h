@@ -52,8 +52,8 @@ protected:
 	afx_msg void OnMenuitem32774();
 	afx_msg void OnMenuitem32775();
 	afx_msg void OnMenuitem32776();
-	afx_msg void OnButton1();
 	afx_msg void OnMenuitem32784();
+	afx_msg void OnMenuitem32791();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

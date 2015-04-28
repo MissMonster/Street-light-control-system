@@ -8,6 +8,7 @@
 #include "WebPage.h"
 #include "controlinfo.h"
 #include "DataStructure.h"
+#include "aboutdlg.h"
 #include <iostream>
 #include <vector>
 
@@ -62,8 +63,8 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32774, OnMenuitem32774)
 	ON_COMMAND(ID_MENUITEM32775, OnMenuitem32775)
 	ON_COMMAND(ID_MENUITEM32776, OnMenuitem32776)
-	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_COMMAND(ID_MENUITEM32784, OnMenuitem32784)
+	ON_COMMAND(ID_MENUITEM32791, OnMenuitem32791)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -188,14 +189,6 @@ void CBaidumapDlg::OnPaint()
 HCURSOR CBaidumapDlg::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
-}
-
-void CBaidumapDlg::OnButton1() 
-{
-	// TODO: Add your control notification handler code here   
-    CWebPage web;
-    web.SetDocument(m_map.GetDocument()); 
-    web.CallJScript("refresh"); 
 }
 
 void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -591,3 +584,11 @@ void CBaidumapDlg::OnMenuitem32784()
 	/////////////////////////////////////////////////////////////////////
 }
 /////////////////////////////////////////////////////////////////////
+
+//¹ØÓÚ
+void CBaidumapDlg::OnMenuitem32791() 
+{
+	// TODO: Add your command handler code here
+	aboutdlg dlg;
+	dlg.DoModal();
+}

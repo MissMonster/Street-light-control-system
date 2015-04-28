@@ -83,10 +83,6 @@ FONT 9, "宋体"
 BEGIN
     CONTROL         "",IDC_EXPLORER1,"{8856F961-340A-11D0-A96B-00C04FD705A2}",
                     WS_TABSTOP,407,17,472,470
-    PUSHBUTTON      "复位",IDC_BUTTON1,309,363,57,30
-    LTEXT           "纬度:28.190991",IDC_STATIC,243,367,57,8
-    LTEXT           "经度:112.956087",IDC_STATIC,243,383,61,8
-    GROUPBOX        "复位",IDC_STATIC,235,350,136,50
     CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
                     LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,16,20,191,318
     CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | 
@@ -132,6 +128,14 @@ BEGIN
     LTEXT           "路灯数量:",IDC_STATIC,25,120,37,8
     LTEXT           "运行方式:",IDC_STATIC,25,142,37,8
     GROUPBOX        "",IDC_STATIC,16,9,142,149
+END
+
+IDD_DIALOG3 DIALOG DISCARDABLE  0, 0, 751, 227
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于"
+FONT 9, "宋体"
+BEGIN
+    CONTROL         140,IDC_STATIC,"Static",SS_BITMAP,7,7,737,213
 END
 
 
@@ -212,6 +216,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 202
     END
+
+    IDD_DIALOG3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 744
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 220
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -266,12 +278,18 @@ BEGIN
     POPUP "menu"
     BEGIN
         MENUITEM "显示",                        ID_MENUITEM32784
-        MENUITEM SEPARATOR
         MENUITEM "新增",                        ID_MENUITEM32777
-        MENUITEM SEPARATOR
         MENUITEM "修改",                        ID_MENUITEM32773
-        MENUITEM SEPARATOR
         MENUITEM "删除",                        ID_MENUITEM32774
+        POPUP "运行方式"
+        BEGIN
+            MENUITEM "全开",                        ID_MENUITEM32794
+            MENUITEM "全关",                        ID_MENUITEM32795
+            MENUITEM "单号灯开",                    ID_MENUITEM32796
+            MENUITEM "单号灯关",                    ID_MENUITEM32797
+            MENUITEM "双号灯开",                    ID_MENUITEM32798
+            MENUITEM "双号灯关",                    ID_MENUITEM32799
+        END
     END
 END
 
@@ -280,23 +298,34 @@ BEGIN
     POPUP "menu"
     BEGIN
         MENUITEM "打开",                        ID_MENUITEM32775
-        MENUITEM SEPARATOR
         MENUITEM "关闭",                        ID_MENUITEM32776
+        MENUITEM "属性",                        ID_MENUITEM32800
     END
 END
 
 IDR_MENU3 MENU DISCARDABLE 
 BEGIN
-    POPUP "设置"
+    POPUP "控制器管理"
+    BEGIN
+        MENUITEM "增加",                        ID_MENUITEM32785
+        MENUITEM "修改",                        ID_MENUITEM32786
+        MENUITEM "删除",                        ID_MENUITEM32787
+        MENUITEM "退出",                        ID_MENUITEM32792
+    END
+    POPUP "用户管理"
     BEGIN
         MENUITEM "更改用户名",                  ID_MENUITEM32781
         MENUITEM "更改密码",                    ID_MENUITEM32780
-        MENUITEM "设置关闭时间",                ID_MENUITEM32782
+    END
+    POPUP "运行方式"
+    BEGIN
+        MENUITEM "自动",                        ID_MENUITEM32788
+        MENUITEM "手动",                        ID_MENUITEM32789
+        MENUITEM "定时",                        ID_MENUITEM32790
     END
     POPUP "帮助"
     BEGIN
-        MENUITEM "内容",                        ID_MENUITEM32783
-        MENUITEM "关于",                        ID_MENUITEM32779
+        MENUITEM "关于",                        ID_MENUITEM32791
     END
 END
 
@@ -307,6 +336,7 @@ END
 //
 
 IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\login.bmp"
+IDB_BITMAP2             BITMAP  DISCARDABLE     "res\\frame.bmp"
 #endif    // Chinese (中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
