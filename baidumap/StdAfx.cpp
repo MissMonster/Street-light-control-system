@@ -1,6 +1,11 @@
-// stdafx.cpp : source file that includes just the standard includes
-//	baidumap.pch will be the pre-compiled header
-//	stdafx.obj will contain the pre-compiled type information
+/**************************************
+ *FILE    :stdafx.cpp
+ *PROJECT :NULL
+ *AUTHOR  :707wk
+ *CREATED :4/22/2015
+ *TEXT    :DataStructure for Street light control system
+ *EMAIL   :gtsoft_wk@foxmail.com
+***************************************/
 
 #include "stdafx.h"
 

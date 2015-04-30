@@ -7,29 +7,31 @@ LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "baidumap.h"
 
-ClassCount=5
+ClassCount=6
 Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
-ResourceCount=8
-Resource2=IDD_DIALOG2
-Resource3=IDD_DIALOG3
-Resource4=IDR_MENU1
+ResourceCount=9
+Resource2=IDR_MENU1
+Resource3=IDD_BAIDUMAP_DIALOG
+Resource4=IDD_DIALOG1
 Resource1=IDR_MAINFRAME
 Class3=login
-Resource5=IDD_DIALOG1
-Resource6=IDR_MENU2
+Resource5=IDD_DIALOG4
+Resource6=IDD_DIALOG2
 Class4=controlinfo
-Resource7=IDD_BAIDUMAP_DIALOG
+Resource7=IDR_MENU2
 Class5=aboutdlg
-Resource8=IDR_MENU3
+Resource8=IDD_DIALOG3
+Class6=brightness
+Resource9=IDR_MENU3
 
 [CLS:CBaidumapApp]
 Type=0
 HeaderFile=baidumap.h
 ImplementationFile=baidumap.cpp
 Filter=N
-LastObject=ID_MENUITEM32773
+LastObject=ID_MENUITEM32802
 BaseClass=CWinApp
 VirtualFilter=AC
 
@@ -40,7 +42,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=CBaidumapDlg
+LastObject=IDC_EXPLORER1
 
 
 
@@ -75,10 +77,11 @@ CommandCount=10
 [MNU:IDR_MENU2]
 Type=1
 Class=CBaidumapApp
-Command1=ID_MENUITEM32775
-Command2=ID_MENUITEM32776
-Command3=ID_MENUITEM32800
-CommandCount=3
+Command1=ID_MENUITEM32802
+Command2=ID_MENUITEM32775
+Command3=ID_MENUITEM32776
+Command4=ID_MENUITEM32800
+CommandCount=4
 
 [DLG:IDD_DIALOG1]
 Type=1
@@ -158,4 +161,25 @@ ImplementationFile=aboutdlg.cpp
 BaseClass=CDialog
 Filter=D
 LastObject=aboutdlg
+
+[DLG:IDD_DIALOG4]
+Type=1
+Class=brightness
+ControlCount=7
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_SLIDER2,msctls_trackbar32,1342242825
+Control4=IDC_EDIT1,edit,1342244864
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_STATIC,static,1342308352
+Control7=IDC_STATIC,static,1342308352
+
+[CLS:brightness]
+Type=0
+HeaderFile=brightness.h
+ImplementationFile=brightness.cpp
+BaseClass=CDialog
+Filter=D
+VirtualFilter=dWC
+LastObject=brightness
 

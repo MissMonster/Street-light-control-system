@@ -106,6 +106,10 @@ SOURCE=.\baidumapDlg.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\brightness.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\controlinfo.cpp
 # End Source File
 # Begin Source File
@@ -140,6 +144,10 @@ SOURCE=.\baidumap.h
 # Begin Source File
 
 SOURCE=.\baidumapDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\brightness.h
 # End Source File
 # Begin Source File
 

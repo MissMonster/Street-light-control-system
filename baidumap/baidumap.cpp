@@ -1,10 +1,17 @@
-// baidumap.cpp : Defines the class behaviors for the application.
-//
+/**************************************
+ *FILE    :baidumap.cpp
+ *PROJECT :NULL
+ *AUTHOR  :707wk
+ *CREATED :4/22/2015
+ *TEXT    :DataStructure for Street light control system
+ *EMAIL   :gtsoft_wk@foxmail.com
+***************************************/
 
 #include "stdafx.h"
 #include "baidumap.h"
 #include "baidumapDlg.h"
 #include "login.h"
+#include "brightness.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,6 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 BEGIN_MESSAGE_MAP(CBaidumapApp, CWinApp)
 	//{{AFX_MSG_MAP(CBaidumapApp)
+	ON_COMMAND(ID_MENUITEM32800, OnMenuitem32800)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
@@ -76,3 +84,10 @@ BOOL CBaidumapApp::InitInstance()
 	return FALSE;
 }
 
+//Â·µÆÊôÐÔ
+void CBaidumapApp::OnMenuitem32800() 
+{
+	// TODO: Add your command handler code here
+	brightness dlg;
+	dlg.DoModal();
+}
