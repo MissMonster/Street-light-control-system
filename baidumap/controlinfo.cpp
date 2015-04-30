@@ -77,7 +77,7 @@ BOOL controlinfo::OnInitDialog()
 		
 		str.Format("%d",continfo.lightsum);
 		GetDlgItem(IDC_EDIT5)->SetWindowText(str);
-		
+
 		m_status.SetCurSel(continfo.theway);
 	}
 	return TRUE;  // return TRUE unless you set the focus to a control

@@ -58,6 +58,9 @@ protected:
 	afx_msg void OnMenuitem32792();
 	afx_msg void OnDblclkList3(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnMenuitem32802();
+	afx_msg void OnMenuitem32800();
+	afx_msg void OnMenuitem32781();
+	afx_msg void OnMenuitem32780();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

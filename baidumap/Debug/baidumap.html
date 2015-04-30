@@ -23,7 +23,7 @@
 <script type="text/javascript">
 	function initialize(){
 		// 百度地图API功能
-		map = new BMap.Map("allmap");
+		map = new BMap.Map("allmap",{minZoom:12});
 
 		/////////////////////////////////////////////////////////////////////
 		// 左上角，添加比例尺
@@ -47,6 +47,15 @@
 		var point = new BMap.Point(112.956087,28.190991);
 		map.centerAndZoom(point, 18);
 		map.enableScrollWheelZoom(true);//鼠标缩放
+
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r){
+			if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				var mk = new BMap.Marker(r.point);
+				map.panTo(r.point);
+			}
+			else alert("未能找到您的位置!");     
+		},{enableHighAccuracy: true})    
 	}
 	</script>
     

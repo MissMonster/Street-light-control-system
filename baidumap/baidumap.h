@@ -34,7 +34,6 @@ public:
 // Implementation
 
 	//{{AFX_MSG(CBaidumapApp)
-	afx_msg void OnMenuitem32800();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -35,7 +35,6 @@
 #define ID_MENUITEM32784                32784
 #define ID_MENUITEM32785                32785
 #define ID_MENUITEM32786                32786
-#define ID_MENUITEM32787                32787
 #define ID_MENUITEM32788                32788
 #define ID_MENUITEM32789                32789
 #define ID_MENUITEM32790                32790

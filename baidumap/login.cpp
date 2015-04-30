@@ -87,7 +87,7 @@ void login::OnOK()
 	this->UpdateData(true);
     CWnd *pWnd = NULL;
 	strtemp = this->m_user + "." + this->m_password; 
-    //if (this->m_user != "wangk"||this->m_password != "zxc")
+    //user:wangk password:zxc
 	if(BKDRHash((char*)strtemp.data())!=num)
     {
         MessageBox("用户名/密码错误!请重试");

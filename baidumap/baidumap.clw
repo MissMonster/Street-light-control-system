@@ -12,17 +12,17 @@ Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
 ResourceCount=9
-Resource2=IDR_MENU1
+Resource2=IDD_DIALOG2
 Resource3=IDD_BAIDUMAP_DIALOG
-Resource4=IDD_DIALOG1
+Resource4=IDD_DIALOG4
 Resource1=IDR_MAINFRAME
 Class3=login
-Resource5=IDD_DIALOG4
-Resource6=IDD_DIALOG2
+Resource5=IDD_DIALOG1
+Resource6=IDD_DIALOG3
 Class4=controlinfo
-Resource7=IDR_MENU2
+Resource7=IDR_MENU1
 Class5=aboutdlg
-Resource8=IDD_DIALOG3
+Resource8=IDR_MENU2
 Class6=brightness
 Resource9=IDR_MENU3
 
@@ -31,7 +31,7 @@ Type=0
 HeaderFile=baidumap.h
 ImplementationFile=baidumap.cpp
 Filter=N
-LastObject=ID_MENUITEM32802
+LastObject=ID_MENUITEM32800
 BaseClass=CWinApp
 VirtualFilter=AC
 
@@ -42,7 +42,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_EXPLORER1
+LastObject=ID_MENUITEM32780
 
 
 
@@ -108,16 +108,14 @@ VirtualFilter=dWC
 Type=1
 Class=CBaidumapDlg
 Command1=ID_MENUITEM32785
-Command2=ID_MENUITEM32786
-Command3=ID_MENUITEM32787
-Command4=ID_MENUITEM32792
-Command5=ID_MENUITEM32781
-Command6=ID_MENUITEM32780
-Command7=ID_MENUITEM32788
-Command8=ID_MENUITEM32789
-Command9=ID_MENUITEM32790
-Command10=ID_MENUITEM32791
-CommandCount=10
+Command2=ID_MENUITEM32792
+Command3=ID_MENUITEM32781
+Command4=ID_MENUITEM32780
+Command5=ID_MENUITEM32788
+Command6=ID_MENUITEM32789
+Command7=ID_MENUITEM32790
+Command8=ID_MENUITEM32791
+CommandCount=8
 
 [DLG:IDD_DIALOG2]
 Type=1
@@ -128,7 +126,7 @@ Control2=IDC_EDIT2,edit,1350631552
 Control3=IDC_EDIT3,edit,1350631552
 Control4=IDC_EDIT4,edit,1350631552
 Control5=IDC_EDIT5,edit,1350631552
-Control6=IDC_COMBO1,combobox,1344340226
+Control6=IDC_COMBO1,combobox,1344339970
 Control7=IDOK,button,1342242817
 Control8=IDCANCEL,button,1342242816
 Control9=IDC_STATIC,static,1342308352
@@ -165,14 +163,15 @@ LastObject=aboutdlg
 [DLG:IDD_DIALOG4]
 Type=1
 Class=brightness
-ControlCount=7
-Control1=IDOK,button,1342242817
-Control2=IDCANCEL,button,1342242816
-Control3=IDC_SLIDER2,msctls_trackbar32,1342242825
+ControlCount=8
+Control1=IDC_SLIDER2,msctls_trackbar32,1342242825
+Control2=IDOK,button,1342242817
+Control3=IDCANCEL,button,1342242816
 Control4=IDC_EDIT1,edit,1342244864
 Control5=IDC_STATIC,static,1342308352
 Control6=IDC_STATIC,static,1342308352
 Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342177294
 
 [CLS:brightness]
 Type=0

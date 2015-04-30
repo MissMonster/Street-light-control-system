@@ -17,6 +17,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+extern unsigned char light_brightness;
+
 /////////////////////////////////////////////////////////////////////////////
 // brightness dialog
 
@@ -55,9 +58,10 @@ BOOL brightness::OnInitDialog()
 	// TODO: Add extra initialization here
 	m_slider.SetRange(0,255);//设置滑动范围
 	m_slider.SetTicFreq(10);//每10个单位画一刻度
+	m_slider.SetPos(light_brightness);
 
 	CString str;
-	str="0";
+	str.Format("%d",light_brightness);
 	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -67,13 +71,11 @@ BOOL brightness::OnInitDialog()
 void brightness::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
 {
 	// TODO: Add your message handler code here and/or call default
-	//if (nSBCode == SB_THUMBTRACK)	
-    {
-		CString str;
-		int index=m_slider.GetPos();
-		str.Format("%d",index);
-		GetDlgItem(IDC_EDIT1)->SetWindowText(str);
-    }
+	CString str;
+	int index=m_slider.GetPos();
+	light_brightness=index;
+	str.Format("%d",index);
+	GetDlgItem(IDC_EDIT1)->SetWindowText(str);
 	
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }

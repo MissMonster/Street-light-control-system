@@ -16,6 +16,7 @@
 #include "brightness.h"
 #include "DataStructure.h"
 #include "aboutdlg.h"
+#include "login.h"
 #include <iostream>
 #include <vector>
 
@@ -78,6 +79,9 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32792, OnMenuitem32792)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST3, OnDblclkList3)
 	ON_COMMAND(ID_MENUITEM32802, OnMenuitem32802)
+	ON_COMMAND(ID_MENUITEM32800, OnMenuitem32800)
+	ON_COMMAND(ID_MENUITEM32781, OnMenuitem32781)
+	ON_COMMAND(ID_MENUITEM32780, OnMenuitem32780)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -434,7 +438,9 @@ void CBaidumapDlg::OnMenuitem32777()
 			tempone.current=1+rand()%10*0.1;
 			tempone.Latitude=controller[nItem-1].Latitude+rand()%1000*0.00001;
 			tempone.Longitude=controller[nItem-1].Longitude+rand()%1000*0.00001;
+			tempone.temperature=100+rand()%10+rand()%10*0.1;
 			tempone.status=rand()%3;
+			tempone.bright=rand()%255;
 			controller[nItem-1].lightline.push_back(tempone);
 		}
 
@@ -502,7 +508,9 @@ void CBaidumapDlg::OnMenuitem32775()
 	{
 		int nItem = m_list_light.GetNextSelectedItem(pos);
 		controller[controller_number].lightline[nItem].status=1;
+		controller[controller_number].lightline[nItem].bright=255;
 		m_list_light.SetItemText(nItem,1,"开启");
+		m_list_light.SetItemText(nItem,2,"255");
 	}
 }
 
@@ -516,7 +524,9 @@ void CBaidumapDlg::OnMenuitem32776()
 		
 		int nItem = m_list_light.GetNextSelectedItem(pos);
 		controller[controller_number].lightline[nItem].status=0;
+		controller[controller_number].lightline[nItem].bright=0;
 		m_list_light.SetItemText(nItem,1,"关闭");
+		m_list_light.SetItemText(nItem,2,"0");
 	}
 }
 /////////////////////////////////////////////////////////////////////
@@ -543,7 +553,6 @@ void CBaidumapDlg::OnMenuitem32784()
 
 	/////////////////////////////////////////////////////////////////////
 	//在列表上显示路灯
-	
 	m_list_light.DeleteAllItems();//重绘路灯列表
 	for(int i=0;i<controller[nItem].lightsum;i++)
 	{
@@ -551,14 +560,6 @@ void CBaidumapDlg::OnMenuitem32784()
 		//CString temp;
 		str.Format(_T("%04d"),controller[nItem].lightline[i].id);
 		m_list_light.InsertItem(i,str);
-		
-		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].voltage);
-		
-		str.Format(_T("%8.3lf"),controller[nItem].lightline[i].current);
-		
-		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
-		
-		str.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
 		
 		switch(controller[nItem].lightline[i].status)
 		{
@@ -573,6 +574,24 @@ void CBaidumapDlg::OnMenuitem32784()
 			break;
 		}
 		m_list_light.SetItemText(i,1,str);
+		
+		str.Format(_T("%d"),controller[nItem].lightline[i].bright);
+		m_list_light.SetItemText(i,2,str);
+		
+		str.Format(_T("%.02f"),controller[nItem].lightline[i].voltage);
+		m_list_light.SetItemText(i,3,str);
+		
+		str.Format(_T("%0.2f"),controller[nItem].lightline[i].current);
+		m_list_light.SetItemText(i,4,str);
+		
+		str.Format(_T("%.02f"),controller[nItem].lightline[i].temperature);
+		m_list_light.SetItemText(i,5,str);
+		
+		str.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
+		m_list_light.SetItemText(i,6,str);
+		
+		str.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
+		m_list_light.SetItemText(i,7,str);
 		
 		latnum.Format(_T("%lf"),controller[nItem].lightline[i].Latitude);
 		longnum.Format(_T("%lf"),controller[nItem].lightline[i].Longitude);
@@ -650,5 +669,51 @@ void CBaidumapDlg::OnMenuitem32802()
 		latnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Latitude);
 		longnum.Format(_T("%lf"),controller[controller_number].lightline[nItem].Longitude);
 		web.CallJScript("movetoplace",latnum,longnum);
+	}
+}
+
+//路灯属性
+void CBaidumapDlg::OnMenuitem32800() 
+{
+	// TODO: Add your command handler code here
+	brightness dlg;
+	POSITION pos;
+	int nItem; //保存选中行的行号
+	
+	pos = m_list_light.GetFirstSelectedItemPosition();
+	if(pos)
+	{
+		nItem = m_list_light.GetNextSelectedItem(pos); 
+	}
+	else return ;
+
+	light_brightness=controller[controller_number].lightline[nItem].bright;
+	if(dlg.DoModal()==IDOK)
+	{
+		controller[controller_number].lightline[nItem].bright=light_brightness;
+		CString str;
+		str.Format("%d",light_brightness);
+		m_list_light.SetItemText(nItem,2,str);
+	}
+}
+
+//修改用户名
+void CBaidumapDlg::OnMenuitem32781() 
+{
+	// TODO: Add your command handler code here
+	login ldlg;
+	if(ldlg.DoModal()==IDOK)
+	{
+		MessageBox("ok","修改用户名",MB_OK);
+	}
+}
+
+void CBaidumapDlg::OnMenuitem32780() 
+{
+	// TODO: Add your command handler code here
+	login ldlg;
+	if(ldlg.DoModal()==IDOK)
+	{
+		MessageBox("ok","修改密码",MB_OK);
 	}
 }
