@@ -25,6 +25,7 @@
 #define IDC_EDIT5                       1013
 #define IDC_LIST3                       1014
 #define IDC_SLIDER2                     1016
+#define ID_OK                           1017
 #define ID_MENUITEM32773                32773
 #define ID_MENUITEM32774                32774
 #define ID_MENUITEM32775                32775
@@ -55,7 +56,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32803
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

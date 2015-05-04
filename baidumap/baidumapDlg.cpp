@@ -82,6 +82,12 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32800, OnMenuitem32800)
 	ON_COMMAND(ID_MENUITEM32781, OnMenuitem32781)
 	ON_COMMAND(ID_MENUITEM32780, OnMenuitem32780)
+	ON_COMMAND(ID_MENUITEM32794, OnMenuitem32794)
+	ON_COMMAND(ID_MENUITEM32795, OnMenuitem32795)
+	ON_COMMAND(ID_MENUITEM32796, OnMenuitem32796)
+	ON_COMMAND(ID_MENUITEM32797, OnMenuitem32797)
+	ON_COMMAND(ID_MENUITEM32798, OnMenuitem32798)
+	ON_COMMAND(ID_MENUITEM32799, OnMenuitem32799)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -190,7 +196,13 @@ BOOL CBaidumapDlg::OnInitDialog()
 			tempone.Longitude=controller[i].Longitude+rand()%1000*0.00001;
 			tempone.temperature=100+rand()%10+rand()%10*0.1;
 			tempone.status=rand()%3;
-			tempone.bright=rand()%255;
+
+			if(tempone.status==_OPENLIGHT_)
+			{
+				tempone.bright=1+rand()%254;
+			}
+			else tempone.bright=0;
+
 			controller[i].lightline.push_back(tempone);
 
 			//将故障路灯信息输出到故障列表
@@ -300,13 +312,13 @@ void CBaidumapDlg::OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
 		
 		switch(controller[nItem].lightline[i].status)
 		{
-		case 0:
+		case _CLOSELIGHT_:
 			str="关闭";
 			break;
-		case 1:
+		case _OPENLIGHT_:
 			str="开启";
 			break;
-		case 2:
+		case _BADLIGHT_:
 			str="故障";
 			break;
 		}
@@ -440,7 +452,13 @@ void CBaidumapDlg::OnMenuitem32777()
 			tempone.Longitude=controller[nItem-1].Longitude+rand()%1000*0.00001;
 			tempone.temperature=100+rand()%10+rand()%10*0.1;
 			tempone.status=rand()%3;
-			tempone.bright=rand()%255;
+			
+			if(tempone.status!=_OPENLIGHT_)
+			{
+				tempone.bright=1+rand()%254;
+			}
+			else tempone.bright=0;
+
 			controller[nItem-1].lightline.push_back(tempone);
 		}
 
@@ -563,13 +581,13 @@ void CBaidumapDlg::OnMenuitem32784()
 		
 		switch(controller[nItem].lightline[i].status)
 		{
-		case 0:
+		case _CLOSELIGHT_:
 			str="关闭";
 			break;
-		case 1:
+		case _OPENLIGHT_:
 			str="开启";
 			break;
-		case 2:
+		case _BADLIGHT_:
 			str="故障";
 			break;
 		}
@@ -716,4 +734,221 @@ void CBaidumapDlg::OnMenuitem32780()
 	{
 		MessageBox("ok","修改密码",MB_OK);
 	}
+}
+
+void CBaidumapDlg::OnOK() 
+{
+	// TODO: Add extra validation here
+	
+	//CDialog::OnOK();
+}
+
+//全开
+void CBaidumapDlg::OnMenuitem32794() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if(controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_OPENLIGHT_;
+			controller[nItem].lightline[i].bright=255;
+		}
+	}
+
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if(controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"开启");
+				m_list_light.SetItemText(i,2,"255");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+
+//全关
+void CBaidumapDlg::OnMenuitem32795() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if(controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_CLOSELIGHT_;
+			controller[nItem].lightline[i].bright=0;
+		}
+	}
+
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if(controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"关闭");
+				m_list_light.SetItemText(i,2,"0");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+
+//单号灯开
+void CBaidumapDlg::OnMenuitem32796() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if((i+1)%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_OPENLIGHT_;
+			controller[nItem].lightline[i].bright=255;
+		}
+	}
+	
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if((i+1)%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"开启");
+				m_list_light.SetItemText(i,2,"255");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+
+//单号灯关
+void CBaidumapDlg::OnMenuitem32797() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if((i+1)%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_CLOSELIGHT_;
+			controller[nItem].lightline[i].bright=0;
+		}
+	}
+	
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if((i+1)%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"关闭");
+				m_list_light.SetItemText(i,2,"0");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+
+//双号灯开
+void CBaidumapDlg::OnMenuitem32798() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if(i%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_OPENLIGHT_;
+			controller[nItem].lightline[i].bright=255;
+		}
+	}
+	
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if(i%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"开启");
+				m_list_light.SetItemText(i,2,"255");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
+}
+
+//双号灯关
+void CBaidumapDlg::OnMenuitem32799() 
+{
+	// TODO: Add your command handler code here
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	int nItem = m_list.GetNextSelectedItem(pos);
+	//controller_number=nItem;
+	
+	/////////////////////////////////////////////////////////////////////
+	//
+	//m_list_light.DeleteAllItems();//重绘路灯列表
+	for(int i=0;i<controller[nItem].lightsum;i++)
+	{
+		if(i%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+		{
+			controller[nItem].lightline[i].status=_CLOSELIGHT_;
+			controller[nItem].lightline[i].bright=0;
+		}
+	}
+	
+	//判断选中的控制器是否显示在路灯列表
+	if(controller_number==nItem)
+	{
+		for(int i=0;i<controller[nItem].lightsum;i++)
+		{
+			if(i%2&&controller[nItem].lightline[i].status!=_BADLIGHT_)
+			{
+				m_list_light.SetItemText(i,1,"关闭");
+				m_list_light.SetItemText(i,2,"0");
+			}
+		}
+	}
+	/////////////////////////////////////////////////////////////////////
 }

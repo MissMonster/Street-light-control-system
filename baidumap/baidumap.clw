@@ -12,17 +12,17 @@ Class1=CBaidumapApp
 Class2=CBaidumapDlg
 
 ResourceCount=9
-Resource2=IDD_DIALOG2
-Resource3=IDD_BAIDUMAP_DIALOG
-Resource4=IDD_DIALOG4
+Resource2=IDD_DIALOG1
+Resource3=IDR_MENU2
+Resource4=IDD_DIALOG3
 Resource1=IDR_MAINFRAME
 Class3=login
-Resource5=IDD_DIALOG1
-Resource6=IDD_DIALOG3
+Resource5=IDD_BAIDUMAP_DIALOG
+Resource6=IDD_DIALOG2
 Class4=controlinfo
-Resource7=IDR_MENU1
+Resource7=IDD_DIALOG4
 Class5=aboutdlg
-Resource8=IDR_MENU2
+Resource8=IDR_MENU1
 Class6=brightness
 Resource9=IDR_MENU3
 
@@ -31,7 +31,7 @@ Type=0
 HeaderFile=baidumap.h
 ImplementationFile=baidumap.cpp
 Filter=N
-LastObject=ID_MENUITEM32800
+LastObject=ID_MENUITEM32799
 BaseClass=CWinApp
 VirtualFilter=AC
 
@@ -42,7 +42,7 @@ ImplementationFile=baidumapDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=ID_MENUITEM32780
+LastObject=ID_MENUITEM32794
 
 
 
@@ -50,13 +50,13 @@ LastObject=ID_MENUITEM32780
 Type=1
 Class=CBaidumapDlg
 ControlCount=8
-Control1=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
-Control2=IDC_LIST1,SysListView32,1350631433
-Control3=IDC_LIST2,SysListView32,1350631433
-Control4=IDC_STATIC,button,1342177287
+Control1=IDC_LIST1,SysListView32,1350631433
+Control2=IDC_LIST2,SysListView32,1350631433
+Control3=IDC_LIST3,SysListView32,1350631425
+Control4=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
 Control5=IDC_STATIC,button,1342177287
 Control6=IDC_STATIC,button,1342177287
-Control7=IDC_LIST3,SysListView32,1350631425
+Control7=IDC_STATIC,button,1342177287
 Control8=IDC_STATIC,button,1342177287
 
 [MNU:IDR_MENU1]

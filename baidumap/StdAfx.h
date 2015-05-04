@@ -25,3 +25,7 @@
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_STDAFX_H__424FCAF7_74E1_4CBB_A21C_E271551D6078__INCLUDED_)
+
+#define _CLOSELIGHT_	0	//¹Ø±Õ
+#define _OPENLIGHT_		1	//¿ªÆô
+#define _BADLIGHT_		2	//¹ÊÕÏ
