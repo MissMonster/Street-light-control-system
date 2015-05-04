@@ -60,7 +60,6 @@ protected:
 	afx_msg void OnMenuitem32802();
 	afx_msg void OnMenuitem32800();
 	afx_msg void OnMenuitem32781();
-	afx_msg void OnMenuitem32780();
 	virtual void OnOK();
 	afx_msg void OnMenuitem32794();
 	afx_msg void OnMenuitem32795();
@@ -68,6 +67,7 @@ protected:
 	afx_msg void OnMenuitem32797();
 	afx_msg void OnMenuitem32798();
 	afx_msg void OnMenuitem32799();
+	afx_msg void OnMenuitem32785();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

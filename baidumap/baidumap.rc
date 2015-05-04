@@ -157,6 +157,21 @@ BEGIN
     CONTROL         135,IDC_STATIC,"Static",SS_BITMAP,16,14,67,67
 END
 
+IDD_DIALOG5 DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "请输入新用户名和密码"
+FONT 9, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT1,140,15,67,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,140,37,67,12,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "确定",IDOK,88,73,50,14
+    PUSHBUTTON      "取消",IDCANCEL,158,73,50,14
+    CONTROL         135,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE,7,7,
+                    67,67
+    LTEXT           "新用户名:",IDC_STATIC,90,17,37,8
+    LTEXT           "新密码:",IDC_STATIC,90,39,29,8
+END
+
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
@@ -251,6 +266,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 90
     END
+
+    IDD_DIALOG5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -338,8 +361,7 @@ BEGIN
     END
     POPUP "用户管理"
     BEGIN
-        MENUITEM "更改用户名",                  ID_MENUITEM32781
-        MENUITEM "更改密码",                    ID_MENUITEM32780
+        MENUITEM "更改用户名和密码",            ID_MENUITEM32781
     END
     POPUP "运行方式"
     BEGIN

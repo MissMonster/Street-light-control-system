@@ -10,6 +10,7 @@
 #include "stdafx.h"
 #include "baidumap.h"
 #include "login.h"
+#include "DataStructure.h"
 
 #include <iostream>
 #include <string>
@@ -26,6 +27,17 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // login dialog
 
+// BKDR Hash
+unsigned int BKDRHash(char *str)
+{
+	unsigned int seed = 131; // 31 131 1313 13131 131313 etc..
+	unsigned int hash = 0;
+	while (*str)
+	{
+		hash = hash * seed + (*str++);
+	}
+	return (hash & 0x7FFFFFFF);
+}
 
 login::login(CWnd* pParent /*=NULL*/)
 	: CDialog(login::IDD, pParent)
@@ -54,18 +66,6 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // login message handlers
-
-// BKDR Hash
-unsigned int BKDRHash(char *str)
-{
-	unsigned int seed = 131; // 31 131 1313 13131 131313 etc..
-	unsigned int hash = 0;
-	while (*str)
-	{
-		hash = hash * seed + (*str++);
-	}
-	return (hash & 0x7FFFFFFF);
-}
 
 void login::OnOK() 
 {

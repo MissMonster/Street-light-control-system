@@ -61,7 +61,8 @@ BOOL CBaidumapApp::InitInstance()
 #endif
 
 	login ldlg;               //login windows
-	//if(ldlg.DoModal()== IDOK)
+	//wangk zxc
+	if(ldlg.DoModal()== IDOK)
 	{
 		CBaidumapDlg dlg;
 		m_pMainWnd = &dlg;

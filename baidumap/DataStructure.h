@@ -36,3 +36,4 @@ typedef struct controldata
 	vector<LIGHTDATA> lightline;//б╥╣ф╤сап
 
 }CONTROLDATA;
+

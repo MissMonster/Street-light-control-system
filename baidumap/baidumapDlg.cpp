@@ -17,6 +17,7 @@
 #include "DataStructure.h"
 #include "aboutdlg.h"
 #include "login.h"
+#include "newusermessage.h"
 #include <iostream>
 #include <vector>
 
@@ -81,13 +82,13 @@ BEGIN_MESSAGE_MAP(CBaidumapDlg, CDialog)
 	ON_COMMAND(ID_MENUITEM32802, OnMenuitem32802)
 	ON_COMMAND(ID_MENUITEM32800, OnMenuitem32800)
 	ON_COMMAND(ID_MENUITEM32781, OnMenuitem32781)
-	ON_COMMAND(ID_MENUITEM32780, OnMenuitem32780)
 	ON_COMMAND(ID_MENUITEM32794, OnMenuitem32794)
 	ON_COMMAND(ID_MENUITEM32795, OnMenuitem32795)
 	ON_COMMAND(ID_MENUITEM32796, OnMenuitem32796)
 	ON_COMMAND(ID_MENUITEM32797, OnMenuitem32797)
 	ON_COMMAND(ID_MENUITEM32798, OnMenuitem32798)
 	ON_COMMAND(ID_MENUITEM32799, OnMenuitem32799)
+	ON_COMMAND(ID_MENUITEM32785, OnMenuitem32785)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -415,6 +416,13 @@ void CBaidumapDlg::OnRclickList2(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
+//新增控制器 菜单栏
+void CBaidumapDlg::OnMenuitem32785() 
+{
+	// TODO: Add your command handler code here
+	OnMenuitem32777();
+}
+
 //增加控制器
 void CBaidumapDlg::OnMenuitem32777() 
 {
@@ -715,24 +723,16 @@ void CBaidumapDlg::OnMenuitem32800()
 	}
 }
 
-//修改用户名
+//修改用户名和密码
 void CBaidumapDlg::OnMenuitem32781() 
 {
 	// TODO: Add your command handler code here
 	login ldlg;
 	if(ldlg.DoModal()==IDOK)
 	{
-		MessageBox("ok","修改用户名",MB_OK);
-	}
-}
-
-void CBaidumapDlg::OnMenuitem32780() 
-{
-	// TODO: Add your command handler code here
-	login ldlg;
-	if(ldlg.DoModal()==IDOK)
-	{
-		MessageBox("ok","修改密码",MB_OK);
+		//MessageBox("ok","修改用户名",MB_OK);
+		newusermessage userdlg;
+		userdlg.DoModal();
 	}
 }
 

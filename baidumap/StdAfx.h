@@ -29,3 +29,5 @@
 #define _CLOSELIGHT_	0	//¹Ø±Õ
 #define _OPENLIGHT_		1	//¿ªÆô
 #define _BADLIGHT_		2	//¹ÊÕÏ
+
+
