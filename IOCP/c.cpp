@@ -3,8 +3,10 @@
 #pragma hdrstop 
 #pragma comment(lib, "ws2_32.lib") 
 #include <winsock2.h>
+#include <time.h>
 #include <stdio.h>
 #include <iostream>
+#include "DataStructure.h"
 
 using namespace std ;
 //---------------------------------------------------------------------------
@@ -66,9 +68,25 @@ int main(int argc,char*argv[])
     cout<<"开始发送测试包"<<endl ;
     //memset(buf,0,24);
     //while(true)
+    LAMP_STATUS data;
+
+	srand(time(NULL));
+	data.UID=rand()%10000;
+	data.NUM=20;
+	data.CMD=3;
+    int i;
+	for(i=0;i<20;i++)
     {
-        cout<<"发送："<<buf<<endl ;
-        if(send(sockClient,buf,432,0)<=0)
+	    data.DATA[i].ID=rand()%100000;
+		data.DATA[i].voltage=1.2;
+		data.DATA[i].current=2.3;
+		data.DATA[i].temp=3.4;
+		data.DATA[i].brightness=45;
+    }
+    {
+        cout<<"发送："<<endl ;
+		printf("%s:%d",(char*)&data,sizeof(data));
+        if(send(sockClient,(char*)&data,sizeof(data),0)<=0)
         {
             cout<<"send失败,可能连接断开"<<endl ;
             //break;

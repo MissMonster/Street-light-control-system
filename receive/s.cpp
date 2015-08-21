@@ -51,7 +51,7 @@
 #include "mysql/mysql.h"
 
 #define PORT            5555                 //端口号
-#define DATA_BUFSIZE    432                  //数据长度
+#define DATA_BUFSIZE    412                  //数据长度
 #define DATA_TMP_SIZE   100
 #define mysqlip         "127.0.0.1"      
 #define mysqlname       "light"    
@@ -172,16 +172,16 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			//data_tmp[tmp].BytesRECV=PerIoData->BytesRECV;
 			//memcpy(data_tmp[tmp].BytesSEND,PerIoData->BytesSEND,DATA_BUFSIZE);
 			//data_tmp[tmp].BytesSEND=PerIoData->BytesSEND;
-			//char str[432];
-			//memcpy(data_tmp[tmp].ip,PerIoData->ip,20);
-			//memcpy(&data_tmp[tmp].data,PerIoData->DataBuf.buf,432);
+			//char str[412];
+			memcpy(data_tmp[PerIoData->index].ip,PerIoData->ip,20);
+			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,412);
 			//char* p=(char*)&data_tmp[tmp].data;
-			//for(int i=0;i<432;i++)
+			//for(int i=0;i<412;i++)
 			//{
 			//	*p=str[i];
 			//	p++;
 			//}
-			printf("index=%d head=%d end=%d DATA_TMP_SIZE=%d :%s:%s:\n",PerIoData->index,head,end,DATA_TMP_SIZE,data_tmp[PerIoData->index].ip,(char*)&data_tmp[PerIoData->index].data);
+			printf("index=%d head=%d end=%d :%s:\n",PerIoData->index,head,end,data_tmp[PerIoData->index].ip);
 			//printf("%d ",tmp);
 			//data_tmp[tmp].DataBuf=PerIoData->DataBuf;
 			//memcpy(data_tmp[tmp].ip,PerIoData->ip,20);
@@ -201,7 +201,8 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			{
 				if (WSAGetLastError() != ERROR_IO_PENDING)
 				{
-					printf("WSASend() failed with error %d\n", WSAGetLastError());
+					printf("1WSASend() failed with error %d\n", WSAGetLastError());
+					getchar();
 					return 0;
 				}
 			}
@@ -266,11 +267,47 @@ DWORD WINAPI savedata(LPVOID channel)
 		client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
 		if(client_num>0)
 		{
-			printf("save data\n");
+			printf("start save\n");
 			for(;client_num>0;client_num--)
 			{
+				LAMP_DATA_TMP* p=data_tmp+head;
+				int len=p->data.NUM;
+				string str_into="replace into t_lightruninfo (time,id,controllerId,\
+streetlightId,streetlightVoltage,streetlightCurrent,\
+streetlightTemp,streetlightBrightness,streetlightWarning) values";
+				char str[500];
+				sprintf(str,"(NOW(),%d,'test',%d,%f,%f,%f,%d,'this is a test')",
+					p->data.UID,
+					p->data.DATA[0].ID,
+					p->data.DATA[0].voltage,
+					p->data.DATA[0].current,
+					p->data.DATA[0].temp,
+					p->data.DATA[0].brightness);
+					str_into+=str;
+				for(int i=1;i<len;i++)
+				{
+					char str[500];
+					sprintf(str,",(NOW(),%d,'test',%d,%f,%f,%f,%d,'this is a test')",
+						p->data.UID,
+						p->data.DATA[i].ID,
+						p->data.DATA[i].voltage,
+						p->data.DATA[i].current,
+						p->data.DATA[i].temp,
+						p->data.DATA[i].brightness);
+					str_into+=str;
+				}
+				//printf("%s\n",str_into.c_str);
+				//cout<<str_into<<endl;
+				if(mysql_query(&mysql,str_into.c_str())==NULL)
+				{
+					//printf("into success\n");
+				}
+				else
+				{
+					printf("into fail\n");
+				}
 				head=(head+1)%DATA_TMP_SIZE;
-				Sleep(1000);
+				//Sleep(1000);
 				sum++;
 			}
 			/*string sql="INSERT INTO userinfo (name, password, email) VALUES('"+sql1+"', '"+sql2+"', '"+sql3+"')" ;
@@ -347,7 +384,8 @@ void main(void)
 
 	if ((Ret = WSAStartup(0x0202, &wsaData)) != 0)
 	{
-		printf("WSAStartup failed with error %d\n", Ret);
+		printf("2WSAStartup failed with error %d\n", Ret);
+		getchar();
 		return;
 	}
 	printf("WSAStartup\n");
@@ -391,7 +429,8 @@ void main(void)
 	if ((Listen = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0,
 		WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
 	{
-		printf("WSASocket() failed with error %d\n", WSAGetLastError());
+		printf("3WSASocket() failed with error %d\n", WSAGetLastError());
+		getchar();
 		return;
 	}
 	printf("WSASocket()\n"); 
@@ -425,7 +464,7 @@ void main(void)
 		ZeroMemory(&client,sizeof(sockaddr_in));
 		if ((Accept = WSAAccept(Listen, PSOCKADDR(&client), &len, NULL, 0)) == SOCKET_ERROR)
 		{
-			printf("WSAAccept() failed with error %d\n", WSAGetLastError());
+			printf("4WSAAccept() failed with error %d\n", WSAGetLastError());
 			getchar();
 			return;
 		}
@@ -464,13 +503,18 @@ void main(void)
 		////////////////////////////////////////////////////////////////////////
 		//缓存用完则等待数据清空
 		int client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
+		//printf("%d\n",client_num);
 		if(client_num>=DATA_TMP_SIZE-1)
 		{
-			for(;client_num>DATA_TMP_SIZE-1;)
+			printf("writing ");
+			//getchar();
+			for(;client_num>=DATA_TMP_SIZE-10;)
 			{
+				printf(".");
 				Sleep(500);
 				client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
 			}
+			printf("\n");
 		}
 		////////////////////////////////////////////////////////////////////////
 
@@ -489,7 +533,7 @@ void main(void)
 		{
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
-				printf("WSARecv() failed with error %d\n", WSAGetLastError());
+				printf("5WSARecv() failed with error %d\n", WSAGetLastError());
 				getchar();
 				return;
 			}
