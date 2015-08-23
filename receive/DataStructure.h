@@ -42,6 +42,18 @@
 
 using namespace std;
 
+#define PORT            5555                 //端口号
+#define DATA_BUFSIZE    412                  //数据长度
+#define DATA_TMP_SIZE   100                  //缓存长度
+#define SAVEMIN         2                    //保存时间间隔
+
+////////////////////////////////////////////////////////////////////////
+#define mysqlip         "127.0.0.1"      
+#define mysqlname       "light"    
+#define mysqlpassword   "123456"        
+#define mysqldatatable  "light"   
+////////////////////////////////////////////////////////////////////////
+
 struct DATA_STATUS 
 {
     int ID ;
@@ -91,5 +103,22 @@ struct LAMP_DATA_TMP
 	char ip[20];
 	LAMP_STATUS data;//412
 };
+
+typedef struct
+{
+	OVERLAPPED Overlapped;
+	WSABUF DataBuf;
+	CHAR Buffer[DATA_BUFSIZE];
+	CHAR ip[20];
+	UINT port;
+	DWORD BytesSEND;
+	DWORD BytesRECV;
+	int index;
+} PER_IO_OPERATION_DATA, * LPPER_IO_OPERATION_DATA;
+
+typedef struct	 
+{
+	SOCKET Socket;
+} PER_HANDLE_DATA, * LPPER_HANDLE_DATA;
 
 #endif

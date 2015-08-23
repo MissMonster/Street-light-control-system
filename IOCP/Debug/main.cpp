@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
 	int i=0;
-	for(;i<100;i++)
+	for(;;i++)
 	{
 		printf("%d\r",i);
 		system("start c.exe");

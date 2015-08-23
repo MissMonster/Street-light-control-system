@@ -56,7 +56,7 @@ int main(int argc,char*argv[])
     }
     memset(&addrServer,0,sizeof(sockaddr_in));
     addrServer.sin_family=AF_INET ;
-    addrServer.sin_addr.s_addr=inet_addr("192.168.1.31");//222.247.47.182");//
+    addrServer.sin_addr.s_addr=inet_addr("127.0.0.1");//222.247.47.182");//
     addrServer.sin_port=htons(5555);//9090);
     cout<<"连接服务器..."<<endl ;
     if(connect(sockClient,(const struct sockaddr*)&addrServer,sizeof(sockaddr))!=0)

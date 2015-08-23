@@ -82,6 +82,10 @@ LINK32=link.exe
 # Name "s - Win32 Debug"
 # Begin Source File
 
+SOURCE=.\ControlCode.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\DataStructure.h
 # End Source File
 # Begin Source File

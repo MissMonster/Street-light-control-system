@@ -46,62 +46,62 @@
 #include <winsock2.h>  
 #include <mswsock.h> 
 #include <windows.h>
+#include <time.h>
 #include <stdio.h>
-#include "DataStructure.h"
+#include "ControlCode.h"                     //控制码
+#include "DataStructure.h"                   //数据结构
 #include "mysql/mysql.h"
-
-#define PORT            5555                 //端口号
-#define DATA_BUFSIZE    412                  //数据长度
-#define DATA_TMP_SIZE   100                 //缓存长度
-#define mysqlip         "127.0.0.1"      
-#define mysqlname       "light"    
-#define mysqlpassword   "123456"        
-#define mysqldatatable  "light"   
 
 MYSQL mysql;                                 //mysql数据库指针
 
-FILE* fpout;                                 //log指针
-
-typedef struct
-{
-	OVERLAPPED Overlapped;
-	WSABUF DataBuf;
-	CHAR Buffer[DATA_BUFSIZE];
-	CHAR ip[20];
-	UINT port;
-	DWORD BytesSEND;
-	DWORD BytesRECV;
-	int index;
-} PER_IO_OPERATION_DATA, * LPPER_IO_OPERATION_DATA;
-
-LAMP_DATA_TMP data_tmp[DATA_TMP_SIZE];
+LAMP_DATA_TMP data_tmp[DATA_TMP_SIZE];       //缓存
 int head;
 int end;
 
-typedef struct	 
+//存储错误信息
+void savelog(char str[])
 {
-	SOCKET Socket;
-} PER_HANDLE_DATA, * LPPER_HANDLE_DATA;
+	FILE* fpout;
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo=localtime(&rawtime);
+	fpout=fopen("log.txt","a");
+	if(fpout==NULL)
+	{
+		printf("error! log.txt can not writing\n");
+		return ;
+	}
+	fprintf(fpout,"[%4d-%02d-%02d %02d:%02d:%02d] ",
+		1900+timeinfo->tm_year,
+		1+timeinfo->tm_mon,
+		timeinfo->tm_mday,
+		timeinfo->tm_hour,
+		timeinfo->tm_min,
+		timeinfo->tm_sec);
+	fprintf(fpout,"%s\n",str);
+	fclose(fpout);
+}
 
 DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)	
 {	
 	HANDLE CompletionPort = (HANDLE) CompletionPortID;	
 	DWORD BytesTransferred;	
 	LPOVERLAPPED Overlapped;	
-	//LPPER_HANDLE_DATA PerHandleData;	
-	//LPPER_IO_OPERATION_DATA PerIoData;	
+	LPPER_HANDLE_DATA PerHandleData;	
+	LPPER_IO_OPERATION_DATA PerIoData;	
 	DWORD SendBytes, RecvBytes;	
 	DWORD Flags;	
 
 	while(TRUE)
 	{
-		LPPER_HANDLE_DATA PerHandleData;	
-		LPPER_IO_OPERATION_DATA PerIoData;	
+		//LPPER_HANDLE_DATA PerHandleData;	
+		//LPPER_IO_OPERATION_DATA PerIoData;	
 			  
 		if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,	
 			(LPDWORD)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)	
 		{	
-//			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());	
+			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());	
 //			return 0;	
 		}
 
@@ -119,7 +119,7 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 	
 			printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
-	/*
+/*
 			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,	
 				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)	
 			{	
@@ -138,10 +138,10 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 				{	
 					printf("closesocket() failed with error %d\n", WSAGetLastError());	
 					return 0;	
-				}	
-	
-				//GlobalFree(PerHandleData);	
-				//GlobalFree(PerIoData);	
+				}
+
+				GlobalFree(PerHandleData);	
+				GlobalFree(PerIoData);	
 				//continue;	
 			}	
 		}	
@@ -152,11 +152,15 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 //存储数据
 DWORD WINAPI savedata(LPVOID channel)
 {
-	//string 
+	time_t rawtime;
+    struct tm * timeinfo;
+    
 	int client_num;
-	printf("writing data\n");
 	int sum=0;
 	int error=0;
+	int flage=1;
+	
+	printf("writing data\n");
 	for(;;)
 	{
 		client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
@@ -228,24 +232,50 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 		else
 		{
 			Sleep(1000);
+			////////////////////////////////////////////////////////////////////////
+			//定时保存
+			time(&rawtime);
+			timeinfo=localtime(&rawtime);
+			if(flage&&timeinfo->tm_min%SAVEMIN==0)
+			{
+				if(mysql_query(&mysql,"INSERT INTO t_lightrunhistory SELECT * FROM t_lightruninfo")==NULL)
+				{
+					savelog("save history success");
+					printf("save history success\n");
+				}
+				else
+				{
+					savelog("save history fail");
+					printf("save history fail\n");
+				}
+				////////////////////////////////////////////////////////////////////////
+				//清空缓存
+				if(mysql_query(&mysql,"TRUNCATE TABLE t_lightruninfo")==NULL)
+				{
+					//printf("into success\n");
+					printf("table t_lightruninfo is clean\n");
+				}
+				else
+				{
+					printf("table t_lightruninfo clean fail\n");
+				}
+				////////////////////////////////////////////////////////////////////////
+				flage=0;
+			}
+			else
+			{
+				if(timeinfo->tm_min%SAVEMIN)
+				{
+					flage=1;
+				}
+			}
+			////////////////////////////////////////////////////////////////////////
 		}
 	}
 }
 
 void init()
 {
-	////////////////////////////////////////////////////////////////////////
-	//初始化日志
-	fpout=fopen("log.txt","a");
-	if(fpout==NULL)
-	{
-		printf("error! log.txt can not writing\n");
-	}
-	else
-	{
-		printf("log start\n");
-	}
-
 	////////////////////////////////////////////////////////////////////////
 	//初始化mysql
 	mysql_init(&mysql);
@@ -257,7 +287,7 @@ void init()
 	{
 		printf("mysql connect!\n");
 	}
-
+/*
 	//清空缓存
 	if(mysql_query(&mysql,"TRUNCATE TABLE t_lightruninfo")==NULL)
 	{
@@ -268,7 +298,7 @@ void init()
 	{
 		printf("table t_lightruninfo clean fail\n");
 	}
-
+*/
 	printf("data block %dB\n",sizeof(data_tmp[0]));
 	printf("data cash %.3fMB\n",sizeof(data_tmp)*1.0/1000/1000);
 
@@ -424,6 +454,7 @@ void main(void)
 		//printf("%d\n",client_num);
 		if(client_num>=DATA_TMP_SIZE-1)
 		{
+			savelog("缓存不足");
 			printf("writing ");
 			//getchar();
 			for(;client_num>=DATA_TMP_SIZE-10;)
@@ -463,7 +494,6 @@ void main(void)
 
 		//地址下移
 		end=(end+1)%DATA_TMP_SIZE;
-//_next:;
 	}
 }
 
