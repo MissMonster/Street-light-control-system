@@ -52,18 +52,15 @@
 
 #define PORT            5555                 //端口号
 #define DATA_BUFSIZE    412                  //数据长度
-#define DATA_TMP_SIZE   100
+#define DATA_TMP_SIZE   100                 //缓存长度
 #define mysqlip         "127.0.0.1"      
 #define mysqlname       "light"    
 #define mysqlpassword   "123456"        
 #define mysqldatatable  "light"   
 
-typedef char sBit8;
-MYSQL mysql;
-MYSQL_RES *res1;             //这个结构代表返回行的一个查询结果集
-MYSQL_ROW column1;           //一个行数据的类型安全(type-safe)的表示，表示数据行的列
+MYSQL mysql;                                 //mysql数据库指针
 
-FILE* fpout;
+FILE* fpout;                                 //log指针
 
 typedef struct
 {
@@ -86,174 +83,71 @@ typedef struct
 	SOCKET Socket;
 } PER_HANDLE_DATA, * LPPER_HANDLE_DATA;
 
-DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
-{
-	HANDLE CompletionPort = (HANDLE) CompletionPortID;
-	DWORD BytesTransferred;
-	// LPOVERLAPPED Overlapped;
-	LPPER_HANDLE_DATA PerHandleData;
-	LPPER_IO_OPERATION_DATA PerIoData;
-	DWORD SendBytes;
-	//DWORD RecvBytes;
-	//DWORD Flags;
-	//int tmp;
+DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)	
+{	
+	HANDLE CompletionPort = (HANDLE) CompletionPortID;	
+	DWORD BytesTransferred;	
+	LPOVERLAPPED Overlapped;	
+	//LPPER_HANDLE_DATA PerHandleData;	
+	//LPPER_IO_OPERATION_DATA PerIoData;	
+	DWORD SendBytes, RecvBytes;	
+	DWORD Flags;	
 
 	while(TRUE)
 	{
-		//printf("2");
-		if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,
-			(LPDWORD)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)
-		{
-			//			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());
-			//			return 0;
+		LPPER_HANDLE_DATA PerHandleData;	
+		LPPER_IO_OPERATION_DATA PerIoData;	
+			  
+		if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,	
+			(LPDWORD)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)	
+		{	
+//			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());	
+//			return 0;	
 		}
-	
-		// First check to see if an error has occured on the socket and if so
-		// then close the socket and cleanup the SOCKET_INFORMATION structure
-		// associated with the socket.
-	
-		if (BytesTransferred == 0)
-		{
-			//printf("[%s:%u] is closed!!\n",PerIoData->ip,PerIoData->port);	 
-			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
-			{
-				printf("closesocket() failed with error %d\n", WSAGetLastError());
-				return 0;
-			}
-		
-			GlobalFree(PerHandleData);
-			GlobalFree(PerIoData);
-			continue;
-		}
-	
-		// Check to see if the BytesRECV field equals zero. If this is so, then
-		// this means a WSARecv call just completed so update the BytesRECV field
-		// with the BytesTransferred value from the completed WSARecv() call.
-	
-		if (PerIoData->BytesRECV == 0)
-		{
-			PerIoData->BytesRECV = BytesTransferred;
-			PerIoData->BytesSEND = 0;
-		}
-		else
-		{
-			PerIoData->BytesSEND += BytesTransferred;
-		}
-	
-		if (PerIoData->BytesRECV > PerIoData->BytesSEND)
-		{
-			//recv and send
-			// Post another WSASend() request.
-			// Since WSASend() is not gauranteed to send all of the bytes requested,
-			// continue posting WSASend() calls until all received bytes are sent.
-		
-			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-		
-			PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;
-			PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;
 
-			/*个判断问题...
-			int client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
-			for(;client_num>=DATA_TMP_SIZE-1;)
-			{
-				//for(;end==head;)
-				{
-					Sleep(10);
-				}
-				client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
-			}*/
-			//tmp=end;
-			//end=(end+1)%DATA_TMP_SIZE;
-			
-			//卧槽居然不能直接用内存拷贝
-			//2015年8月19日内存溢出
-			//memcpy(data_tmp[tmp].Buffer,PerIoData->Buffer,DATA_BUFSIZE);
-			//memcpy(data_tmp[tmp].BytesRECV,PerIoData->BytesRECV,DATA_BUFSIZE);
-			//data_tmp[tmp].BytesRECV=PerIoData->BytesRECV;
-			//memcpy(data_tmp[tmp].BytesSEND,PerIoData->BytesSEND,DATA_BUFSIZE);
-			//data_tmp[tmp].BytesSEND=PerIoData->BytesSEND;
-			//char str[412];
-			memcpy(data_tmp[PerIoData->index].ip,PerIoData->ip,20);
-			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,412);
-			//char* p=(char*)&data_tmp[tmp].data;
-			//for(int i=0;i<412;i++)
-			//{
-			//	*p=str[i];
-			//	p++;
-			//}
-			printf("index=%d head=%d end=%d :%s:\n",PerIoData->index,head,end,data_tmp[PerIoData->index].ip);
-			//printf("%d ",tmp);
-			//data_tmp[tmp].DataBuf=PerIoData->DataBuf;
-			//memcpy(data_tmp[tmp].ip,PerIoData->ip,20);
-			//strcpy(data_tmp[tmp].ip,PerIoData->ip);
-			//printf("%d ",sizeof(PerIoData->ip));
-			//memcpy(data_tmp[tmp].Overlapped,PerIoData->Overlapped,DATA_BUFSIZE);
-			//data_tmp[tmp].Overlapped=PerIoData->Overlapped;
-			//memcpy(data_tmp[tmp].port,PerIoData->port,DATA_BUFSIZE);
-			//data_tmp[tmp].port=PerIoData->port;
-			//printf("data cash %.3fMB\n",sizeof(data_tmp)*1.0/1000/1000);
-			//data
-			//printf("[%s:%u]->%s\n",PerIoData->ip,PerIoData->port,PerIoData->DataBuf.buf);
-			strcpy(PerIoData->DataBuf.buf,"light");
-		
-			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,
-				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
-			{
-				if (WSAGetLastError() != ERROR_IO_PENDING)
-				{
-					printf("1WSASend() failed with error %d\n", WSAGetLastError());
-					getchar();
-					return 0;
-				}
-			}
-			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);		
-
-			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
-			{
-				printf("closesocket() failed with error %d\n", WSAGetLastError());
-				return 0;
-			}
-			
-			GlobalFree(PerHandleData);
-			GlobalFree(PerIoData);
-
-			if (PerIoData->BytesRECV == 0)
-			{
-				PerIoData->BytesRECV = BytesTransferred;
-				PerIoData->BytesSEND = 0;
-			}
-			else
-			{
-				PerIoData->BytesSEND += BytesTransferred;
-			}
-
-			//continue;
-		}
-		/*else
+		////////////////////////////////////////////////////////////////////////
+		if(BytesTransferred>0)
 		{
-			PerIoData->BytesRECV = 0;
-		
-			// Now that there are no more bytes to send post another WSARecv() request.
-		
-			Flags = 0;
-			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-		
-			PerIoData->DataBuf.len = DATA_BUFSIZE;
-			PerIoData->DataBuf.buf = PerIoData->Buffer;
-		
-			if (WSARecv(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
-				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
-			{
-				if (WSAGetLastError() != ERROR_IO_PENDING)
-				{
-					printf("WSARecv() failed with error %d\n", WSAGetLastError());
-					return 0;
-				}
-			}
-		}*/
-	}
-	return 0;
-}
+			// Post another WSASend() request.	
+			// Since WSASend() is not gauranteed to send all of the bytes requested,	
+			// continue posting WSASend() calls until all received bytes are sent.	
+	
+			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));	
+	
+			PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;	
+			PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;	
+	
+			printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
+			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
+	/*
+			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,	
+				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)	
+			{	
+				if (WSAGetLastError() != ERROR_IO_PENDING)	
+				{	
+					printf("WSASend() failed with error %d\n", WSAGetLastError());	
+					return 0;	
+				}	
+			}	
+			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);			  
+*/
+			//if (BytesTransferred == 0)	
+			{	
+				printf("[%s:%u]end!!\n",PerIoData->ip,PerIoData->port);	 
+				if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)	
+				{	
+					printf("closesocket() failed with error %d\n", WSAGetLastError());	
+					return 0;	
+				}	
+	
+				//GlobalFree(PerHandleData);	
+				//GlobalFree(PerIoData);	
+				//continue;	
+			}	
+		}	
+		////////////////////////////////////////////////////////////////////////	
+	}	
+}  
 
 //存储数据
 DWORD WINAPI savedata(LPVOID channel)
@@ -262,17 +156,22 @@ DWORD WINAPI savedata(LPVOID channel)
 	int client_num;
 	printf("writing data\n");
 	int sum=0;
+	int error=0;
 	for(;;)
 	{
 		client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
 		if(client_num>0)
 		{
-			printf("start save\n");
+			//printf("start save\n");
 			for(;client_num>0;client_num--)
 			{
 				LAMP_DATA_TMP* p=data_tmp+head;
 				int len=p->data.NUM;
-				string str_into="replace into t_lightruninfo (time,id,controllerId,\
+				if(len>0)
+				{
+				////////////////////////////////////////////////////////////////////////
+				string str_into="\
+replace into t_lightruninfo (time,id,controllerId,\
 streetlightId,streetlightVoltage,streetlightCurrent,\
 streetlightTemp,streetlightBrightness,streetlightWarning) values";
 				char str[500];
@@ -283,7 +182,9 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 					p->data.DATA[0].current,
 					p->data.DATA[0].temp,
 					p->data.DATA[0].brightness);
-					str_into+=str;
+				str_into+=str;
+
+				if(len!=20)printf("NUM=%d len=%d\n",head,len);
 				for(int i=1;i<len;i++)
 				{
 					char str[500];
@@ -305,6 +206,12 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 				else
 				{
 					printf("into fail\n");
+					//mysql_real_connect(&mysql, mysqlip , mysqlname, mysqlpassword, mysqldatatable, 3306, NULL, 0);
+				}
+				}
+				else
+				{
+					error++;
 				}
 				head=(head+1)%DATA_TMP_SIZE;
 				//Sleep(1000);
@@ -316,7 +223,7 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 			{
 				return -1;
 			}*/
-			printf("save %d is end\n",sum);
+			printf("save=%d error=%d\n",sum,error);
 		}
 		else
 		{
@@ -349,6 +256,17 @@ void init()
 	else
 	{
 		printf("mysql connect!\n");
+	}
+
+	//清空缓存
+	if(mysql_query(&mysql,"TRUNCATE TABLE t_lightruninfo")==NULL)
+	{
+		//printf("into success\n");
+		printf("table t_lightruninfo is clean\n");
+	}
+	else
+	{
+		printf("table t_lightruninfo clean fail\n");
 	}
 
 	printf("data block %dB\n",sizeof(data_tmp[0]));
@@ -448,7 +366,7 @@ void main(void)
 
 	// Prepare socket for listening
 
-	if (listen(Listen, 5) == SOCKET_ERROR)
+	if (listen(Listen, SOMAXCONN) == SOCKET_ERROR)
 	{
 		printf("listen() failed with error %d\n", WSAGetLastError());
 		return;
@@ -518,6 +436,7 @@ void main(void)
 		}
 		////////////////////////////////////////////////////////////////////////
 
+		//PerIoData->ip=data_tmp[end].ip;
 		ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 		strncpy(PerIoData->ip,inet_ntoa(client.sin_addr),20);
 		PerIoData->port=ntohs(client.sin_port);
@@ -526,21 +445,25 @@ void main(void)
 		PerIoData->DataBuf.len = DATA_BUFSIZE;
 		PerIoData->DataBuf.buf = PerIoData->Buffer;
 		PerIoData->index=end;//存储地址
+		//PerIoData->DataBuf.buf = (char*)&data_tmp[PerIoData->index].data;
+		
 
 		Flags = 0;
-		if (WSARecv(Accept, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
+		if(WSARecv(Accept, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
 			&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
 				printf("5WSARecv() failed with error %d\n", WSAGetLastError());
-				getchar();
-				return;
+				//getchar();
+				//return;
+				//goto _next;
 			}
 		}
 
 		//地址下移
 		end=(end+1)%DATA_TMP_SIZE;
+//_next:;
 	}
 }
 

@@ -85,7 +85,7 @@ int main(int argc,char*argv[])
     }
     {
         cout<<"发送："<<endl ;
-		printf("%s:%d",(char*)&data,sizeof(data));
+		printf(":%d",sizeof(data));
         if(send(sockClient,(char*)&data,sizeof(data),0)<=0)
         {
             cout<<"send失败,可能连接断开"<<endl ;
@@ -95,7 +95,7 @@ int main(int argc,char*argv[])
 		//cout<<"001"<<endl;
         memset(buf,0,24);
         //cout<<"002"<<endl;
-        
+        /*
 		//接收服务端应答
         if(recv(sockClient,buf,24,0)<=0)
         {
@@ -106,9 +106,9 @@ int main(int argc,char*argv[])
 		//cout<<"003"<<endl;
         cout<<"服务器应答："<<buf<<endl ;
         memset(buf,0,24);
-        
-        Sleep(200);
-        n++;
+        */
+        //Sleep(200);
+        //n++;
     }
     if(0)
 	{
