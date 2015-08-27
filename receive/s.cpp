@@ -118,6 +118,7 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;	
 	
 			printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
+			memcpy(&data_tmp[PerIoData->index].ip,PerIoData->ip,DATA_BUFSIZE);
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
 /*
 			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,	
@@ -173,34 +174,89 @@ DWORD WINAPI savedata(LPVOID channel)
 				int len=p->data.NUM;
 				if(len>0)
 				{
-				////////////////////////////////////////////////////////////////////////
-				string str_into="\
+					string str_into;
+					if(p->data.CMD==CONDITION)
+					{
+						////////////////////////////////////////////////////////////////////////
+						//±£´æÂ·µÆ×´Ì¬
+						str_into="\
 replace into t_lightruninfo (time,id,controllerId,\
 streetlightId,streetlightVoltage,streetlightCurrent,\
-streetlightTemp,streetlightBrightness,streetlightWarning) values";
-				char str[500];
-				sprintf(str,"(NOW(),%d,'test',%d,%f,%f,%f,%d,'this is a test')",
-					p->data.UID,
-					p->data.DATA[0].ID,
-					p->data.DATA[0].voltage,
-					p->data.DATA[0].current,
-					p->data.DATA[0].temp,
-					p->data.DATA[0].brightness);
-				str_into+=str;
+streetlightTemp,streetlightBrightness,streetlightWarning,flage) values";
+						char str[500];
+						sprintf(str,"(NOW(),1,%d,%d,%f,%f,%f,%d,'this is a test','1')",
+							p->data.UID,
+							p->data.DATA[0].ID,
+							p->data.DATA[0].voltage,
+							p->data.DATA[0].current,
+							p->data.DATA[0].temp,
+							p->data.DATA[0].brightness);
+						str_into+=str;
 
-				if(len!=20)printf("NUM=%d len=%d\n",head,len);
-				for(int i=1;i<len;i++)
-				{
-					char str[500];
-					sprintf(str,",(NOW(),%d,'test',%d,%f,%f,%f,%d,'this is a test')",
-						p->data.UID,
-						p->data.DATA[i].ID,
-						p->data.DATA[i].voltage,
-						p->data.DATA[i].current,
-						p->data.DATA[i].temp,
-						p->data.DATA[i].brightness);
-					str_into+=str;
-				}
+						//if(len!=20)printf("NUM=%d len=%d\n",head,len);
+						for(int i=1;i<len;i++)
+						{
+							char str[500];
+							sprintf(str,",(NOW(),1,%d,%d,%f,%f,%f,%d,'this is a test','1')",
+								p->data.UID,
+								p->data.DATA[i].ID,
+								p->data.DATA[i].voltage,
+								p->data.DATA[i].current,
+								p->data.DATA[i].temp,
+								p->data.DATA[i].brightness);
+							str_into+=str;
+						}
+						////////////////////////////////////////////////////////////////////////
+					}
+					else if(p->data.CMD==LOCATION)
+					{
+						////////////////////////////////////////////////////////////////////////
+						//±£´æÂ·µÆÎ»ÖÃ
+						str_into="\
+replace into t_lightlocation (id,controllerId,\
+streetlightId,Longitude,Latitude) values";
+						char str[500];
+						sprintf(str,"(1,%d,%d,%f,%f)",
+							p->data.UID,
+							p->data.DATA[0].ID,
+							p->data.DATA[0].voltage,
+							p->data.DATA[0].current);
+						str_into+=str;
+						
+						//if(len!=20)printf("NUM=%d len=%d\n",head,len);
+						for(int i=1;i<len;i++)
+						{
+							char str[500];
+							sprintf(str,",(1,%d,%d,%f,%f)",
+								p->data.UID,
+								p->data.DATA[i].ID,
+								p->data.DATA[i].voltage,
+								p->data.DATA[i].current);
+							str_into+=str;
+						}
+						////////////////////////////////////////////////////////////////////////
+					}
+					else if(p->data.CMD==CONTROLLER)
+					{
+						////////////////////////////////////////////////////////////////////////
+						//±£´æ¿ØÖÆÆ÷Î»ÖÃ
+						str_into="\
+replace into t_lightlocation (controllerId,\
+controllerLongitude,controllerLatitude,flage) values";
+						char str[500];
+						sprintf(str,"(%d,%f,%f,'1')",
+							p->data.UID,
+							p->data.DATA[0].voltage,
+							p->data.DATA[0].current);
+						str_into+=str;
+						////////////////////////////////////////////////////////////////////////
+					}
+					else
+					{
+						char str[100];
+						sprintf(str,"client CMD is %X",p->data.CMD);
+						savelog(str);
+					}
 				//printf("%s\n",str_into.c_str);
 				//cout<<str_into<<endl;
 				if(mysql_query(&mysql,str_into.c_str())==NULL)
@@ -250,7 +306,7 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 				}
 				////////////////////////////////////////////////////////////////////////
 				//Çå¿Õ»º´æ
-				if(mysql_query(&mysql,"TRUNCATE TABLE t_lightruninfo")==NULL)
+				if(mysql_query(&mysql,"UPDATE t_lightruninfo SET flage='0'")==NULL)
 				{
 					//printf("into success\n");
 					printf("table t_lightruninfo is clean\n");
@@ -258,6 +314,16 @@ streetlightTemp,streetlightBrightness,streetlightWarning) values";
 				else
 				{
 					printf("table t_lightruninfo clean fail\n");
+				}
+				////////////////////////////////////////////////////////////////////////
+				if(mysql_query(&mysql,"UPDATE t_controllerinfo SET flage='0'")==NULL)
+				{
+					//printf("into success\n");
+					printf("table t_controllerinfo is clean\n");
+				}
+				else
+				{
+					printf("table t_controllerinfo clean fail\n");
 				}
 				////////////////////////////////////////////////////////////////////////
 				flage=0;

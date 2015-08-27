@@ -43,3 +43,4 @@
 #define ALONECLOSE 0X06  //监控中心向远端灯控制器发送的 LED 路灯单灯关控制指令
 #define CONDITION  0X07  //远端灯控制器向监控中心上传 LED 路灯状态信息
 #define LOCATION   0X08  //远端灯控制器向监控中心上传 LED 路灯位置信息
+#define CONTROLLER 0X09  //远端灯控制器向监控中心上传 控制器位置信息

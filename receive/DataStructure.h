@@ -59,9 +59,9 @@ struct DATA_STATUS
     int ID ;
     //路灯编号
     float current ;
-    //电流值
+    //电流值/经度
     float voltage ;
-    //电压值
+    //电压值/纬度
     float temp ;
     //温度值
     BYTE brightness ;
