@@ -117,8 +117,8 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;	
 			PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;	
 	
-			printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
-			memcpy(&data_tmp[PerIoData->index].ip,PerIoData->ip,DATA_BUFSIZE);
+			//printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
+			memcpy(&data_tmp[PerIoData->index].ip,PerIoData->ip,20);
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
 /*
 			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,	
@@ -134,7 +134,7 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 */
 			//if (BytesTransferred == 0)	
 			{	
-				printf("[%s:%u]end!!\n",PerIoData->ip,PerIoData->port);	 
+				//printf("[%s:%u]end!!\n",PerIoData->ip,PerIoData->port);	 
 				if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)	
 				{	
 					printf("closesocket() failed with error %d\n", WSAGetLastError());	
@@ -150,6 +150,43 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 	}	
 }  
 
+void savetabledata()
+{
+	
+		if(mysql_query(&mysql,"INSERT INTO t_lightrunhistory SELECT * FROM t_lightruninfo")==NULL)
+		{
+			savelog("save history success");
+			printf("save history success\n");
+		}
+		else
+		{
+			savelog("save history fail");
+			printf("save history fail\n");
+		}
+		////////////////////////////////////////////////////////////////////////
+		//Çå¿Õ»º´æ
+		if(mysql_query(&mysql,"UPDATE t_lightruninfo SET flage='0'")==NULL)
+		{
+			//printf("into success\n");
+			printf("table t_lightruninfo is clean\n");
+		}
+		else
+		{
+			printf("table t_lightruninfo clean fail\n");
+		}
+		////////////////////////////////////////////////////////////////////////
+		if(mysql_query(&mysql,"UPDATE t_controllerinfo SET flage='0'")==NULL)
+		{
+			//printf("into success\n");
+			printf("table t_controllerinfo is clean\n");
+		}
+		else
+		{
+			printf("table t_controllerinfo clean fail\n");
+		}
+		////////////////////////////////////////////////////////////////////////
+		
+}
 //´æ´¢Êý¾Ý
 DWORD WINAPI savedata(LPVOID channel)
 {
@@ -241,10 +278,11 @@ streetlightId,Longitude,Latitude) values";
 						////////////////////////////////////////////////////////////////////////
 						//±£´æ¿ØÖÆÆ÷Î»ÖÃ
 						str_into="\
-replace into t_lightlocation (controllerId,\
+replace into t_lightlocation (IP,controllerId,\
 controllerLongitude,controllerLatitude,flage) values";
 						char str[500];
-						sprintf(str,"(%d,%f,%f,'1')",
+						sprintf(str,"('%s',%d,%f,%f,'1')",
+							p->ip,
 							p->data.UID,
 							p->data.DATA[0].voltage,
 							p->data.DATA[0].current);
@@ -257,21 +295,28 @@ controllerLongitude,controllerLatitude,flage) values";
 						sprintf(str,"client CMD is %X",p->data.CMD);
 						savelog(str);
 					}
-				//printf("%s\n",str_into.c_str);
-				//cout<<str_into<<endl;
-				if(mysql_query(&mysql,str_into.c_str())==NULL)
-				{
-					//printf("into success\n");
-				}
-				else
-				{
-					printf("into fail\n");
-					//mysql_real_connect(&mysql, mysqlip , mysqlname, mysqlpassword, mysqldatatable, 3306, NULL, 0);
-				}
+					////////////////////////////////////////////////////////////////////////
+					//ÎÔ²Û£¬ÕâbugÒþ²Ø¹»ÉîµÄ
+					p->data.NUM=0;
+					////////////////////////////////////////////////////////////////////////
+					//printf("%s\n",str_into.c_str);
+					//cout<<str_into<<endl;
+					if(mysql_query(&mysql,str_into.c_str())==NULL)
+					{
+						//printf("into success\n");
+					}
+					else
+					{
+						printf("into fail\n");
+						//mysql_real_connect(&mysql, mysqlip , mysqlname, mysqlpassword, mysqldatatable, 3306, NULL, 0);
+					}
 				}
 				else
 				{
 					error++;
+					char str[100];
+					sprintf(str,"client [%s] WSARecv() failed with error 10054",p->ip);
+					savelog(str);
 				}
 				head=(head+1)%DATA_TMP_SIZE;
 				//Sleep(1000);
@@ -283,7 +328,7 @@ controllerLongitude,controllerLatitude,flage) values";
 			{
 				return -1;
 			}*/
-			printf("save=%d error=%d\n",sum,error);
+			printf("save=%d error=%d\r",sum,error);
 		}
 		else
 		{
@@ -294,6 +339,7 @@ controllerLongitude,controllerLatitude,flage) values";
 			timeinfo=localtime(&rawtime);
 			if(flage&&timeinfo->tm_min%SAVEMIN==0)
 			{
+				//savetabledata();
 				if(mysql_query(&mysql,"INSERT INTO t_lightrunhistory SELECT * FROM t_lightruninfo")==NULL)
 				{
 					savelog("save history success");
@@ -479,8 +525,8 @@ void main(void)
 		if ((Accept = WSAAccept(Listen, PSOCKADDR(&client), &len, NULL, 0)) == SOCKET_ERROR)
 		{
 			printf("4WSAAccept() failed with error %d\n", WSAGetLastError());
-			getchar();
-			return;
+			//getchar();
+			//return;
 		}
 
 		// Create a socket information structure to associate with the socket
@@ -488,8 +534,8 @@ void main(void)
 			sizeof(PER_HANDLE_DATA))) == NULL)
 		{
 			printf("GlobalAlloc() failed with error %d\n", GetLastError());
-			getchar();
-			return;
+			//getchar();
+			//return;
 		}
 
 		// Associate the accepted socket with the original completion port.
@@ -500,8 +546,8 @@ void main(void)
 			0) == NULL)
 		{
 			printf("CreateIoCompletionPort failed with error %d\n", GetLastError());
-			getchar();
-			return;
+			//getchar();
+			//return;
 		}
 
 		// Create per I/O socket information structure to associate with the	 
@@ -510,8 +556,8 @@ void main(void)
 		if ((PerIoData = (LPPER_IO_OPERATION_DATA) GlobalAlloc(GPTR,			 sizeof(PER_IO_OPERATION_DATA))) == NULL)
 		{
 			printf("GlobalAlloc() failed with error %d\n", GetLastError());
-			getchar();
-			return;
+			//getchar();
+			//return;
 		}
 
 		////////////////////////////////////////////////////////////////////////
