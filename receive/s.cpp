@@ -94,99 +94,79 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 	DWORD Flags;	
 
 	while(TRUE)
-	{
-		//LPPER_HANDLE_DATA PerHandleData;	
-		//LPPER_IO_OPERATION_DATA PerIoData;	
-			  
+	{  
 		if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,	
 			(LPDWORD)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)	
 		{	
-			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());	
-//			return 0;	
+			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());		
 		}
 
 		////////////////////////////////////////////////////////////////////////
 		if(BytesTransferred>0)
 		{
-			// Post another WSASend() request.	
-			// Since WSASend() is not gauranteed to send all of the bytes requested,	
-			// continue posting WSASend() calls until all received bytes are sent.	
-	
 			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));	
 	
 			PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;	
 			PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;	
 	
-			//printf("[%s:%u:%d]start",PerIoData->ip,PerIoData->port,PerIoData->index);
+			printf("[%s:%u:%d]recv",PerIoData->ip,PerIoData->port,PerIoData->index);
 			memcpy(&data_tmp[PerIoData->index].ip,PerIoData->ip,20);
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
-/*
-			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,	
-				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)	
+	
+			printf("[%s:%u]end\n",PerIoData->ip,PerIoData->port);	 
+			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)	
 			{	
-				if (WSAGetLastError() != ERROR_IO_PENDING)	
-				{	
-					printf("WSASend() failed with error %d\n", WSAGetLastError());	
-					return 0;	
-				}	
-			}	
-			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);			  
-*/
-			//if (BytesTransferred == 0)	
-			{	
-				//printf("[%s:%u]end!!\n",PerIoData->ip,PerIoData->port);	 
-				if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)	
-				{	
-					printf("closesocket() failed with error %d\n", WSAGetLastError());	
-					return 0;	
-				}
-
-				GlobalFree(PerHandleData);	
-				GlobalFree(PerIoData);	
-				//continue;	
-			}	
+				printf("closesocket() failed with error %d\n", WSAGetLastError());	
+				return 0;	
+			}
+			GlobalFree(PerHandleData);	
+			GlobalFree(PerIoData);	
 		}	
 		////////////////////////////////////////////////////////////////////////	
 	}	
-}  
-
-void savetabledata()
-{
-	
-		if(mysql_query(&mysql,"INSERT INTO t_lightrunhistory SELECT * FROM t_lightruninfo")==NULL)
-		{
-			savelog("save history success");
-			printf("save history success\n");
-		}
-		else
-		{
-			savelog("save history fail");
-			printf("save history fail\n");
-		}
-		////////////////////////////////////////////////////////////////////////
-		//清空缓存
-		if(mysql_query(&mysql,"UPDATE t_lightruninfo SET flage='0'")==NULL)
-		{
-			//printf("into success\n");
-			printf("table t_lightruninfo is clean\n");
-		}
-		else
-		{
-			printf("table t_lightruninfo clean fail\n");
-		}
-		////////////////////////////////////////////////////////////////////////
-		if(mysql_query(&mysql,"UPDATE t_controllerinfo SET flage='0'")==NULL)
-		{
-			//printf("into success\n");
-			printf("table t_controllerinfo is clean\n");
-		}
-		else
-		{
-			printf("table t_controllerinfo clean fail\n");
-		}
-		////////////////////////////////////////////////////////////////////////
-		
 }
+
+void saveerror(int UID,DATA_STATUS light)
+{
+	string str_into="\
+INSERT into t_errorinfo (time,controllerId,\
+streetlightId,lightVoltage,ightCurrent,lightTemp) values";
+	char str[500];
+	sprintf(str,"(NOW(),%d,%d,%f,%f,%f)",
+			UID,
+			light.ID,
+			light.voltage,
+			light.current,
+			light.temp);
+	str_into+=str;
+
+	if(mysql_query(&mysql,str_into.c_str())==NULL)
+	{
+		//printf("into success\n");
+	}
+	else
+	{
+		printf("error save fail\n");
+	}
+}
+
+void controlleractive(int UID)
+{
+	string str_into="UPDATA into t_lightlocation (controllerId,flage) values";
+	char str[100];
+	sprintf(str,"(%d,'1')",UID);
+	str_into+=str;
+
+	if(mysql_query(&mysql,str_into.c_str())==NULL)
+	{
+		//printf("into success\n");
+	}
+	else
+	{
+		printf("controller save fail\n");
+	}
+}
+
 //存储数据
 DWORD WINAPI savedata(LPVOID channel)
 {
@@ -204,6 +184,7 @@ DWORD WINAPI savedata(LPVOID channel)
 		client_num=(end+DATA_TMP_SIZE-head)%DATA_TMP_SIZE;
 		if(client_num>0)
 		{
+			Sleep(1000);
 			//printf("start save\n");
 			for(;client_num>0;client_num--)
 			{
@@ -230,6 +211,13 @@ streetlightTemp,streetlightBrightness,streetlightWarning,flage) values";
 							p->data.DATA[0].brightness);
 						str_into+=str;
 
+						if(p->data.DATA[0].voltage==0||
+							p->data.DATA[0].current==0||
+							p->data.DATA[0].temp==0)
+						{
+							saveerror(p->data.UID,p->data.DATA[0]);
+						}
+
 						//if(len!=20)printf("NUM=%d len=%d\n",head,len);
 						for(int i=1;i<len;i++)
 						{
@@ -242,6 +230,13 @@ streetlightTemp,streetlightBrightness,streetlightWarning,flage) values";
 								p->data.DATA[i].temp,
 								p->data.DATA[i].brightness);
 							str_into+=str;
+
+							if(p->data.DATA[0].voltage==0||
+								p->data.DATA[0].current==0||
+								p->data.DATA[0].temp==0)
+							{
+								saveerror(p->data.UID,p->data.DATA[0]);
+							}
 						}
 						////////////////////////////////////////////////////////////////////////
 					}
@@ -278,7 +273,7 @@ streetlightId,Longitude,Latitude) values";
 						////////////////////////////////////////////////////////////////////////
 						//保存控制器位置
 						str_into="\
-replace into t_lightlocation (IP,controllerId,\
+replace into t_controllerinfo (IP,controllerId,\
 controllerLongitude,controllerLatitude,flage) values";
 						char str[500];
 						sprintf(str,"('%s',%d,%f,%f,'1')",
@@ -292,7 +287,7 @@ controllerLongitude,controllerLatitude,flage) values";
 					else
 					{
 						char str[100];
-						sprintf(str,"client CMD is %X",p->data.CMD);
+						sprintf(str,"client [%s] CMD is %X",p->ip,p->data.CMD);
 						savelog(str);
 					}
 					////////////////////////////////////////////////////////////////////////
@@ -301,6 +296,10 @@ controllerLongitude,controllerLatitude,flage) values";
 					////////////////////////////////////////////////////////////////////////
 					//printf("%s\n",str_into.c_str);
 					//cout<<str_into<<endl;
+					////////////////////////////////////////////////////////////////////////
+					controlleractive(p->data.UID);
+					////////////////////////////////////////////////////////////////////////
+					
 					if(mysql_query(&mysql,str_into.c_str())==NULL)
 					{
 						//printf("into success\n");
@@ -322,12 +321,6 @@ controllerLongitude,controllerLatitude,flage) values";
 				//Sleep(1000);
 				sum++;
 			}
-			/*string sql="INSERT INTO userinfo (name, password, email) VALUES('"+sql1+"', '"+sql2+"', '"+sql3+"')" ;
-			
-			if(mysql_query(&mysql,sql.c_str())==0)
-			{
-				return -1;
-			}*/
 			printf("save=%d error=%d\r",sum,error);
 		}
 		else
@@ -350,6 +343,28 @@ controllerLongitude,controllerLatitude,flage) values";
 					savelog("save history fail");
 					printf("save history fail\n");
 				}
+				////////////////////////////////////////////////////////////////////////
+				//清空故障信息
+				if(mysql_query(&mysql,"TRUNCATE TABLE t_errorinfo")==NULL)
+				{
+					//printf("into success\n");
+					printf("table t_errorinfo is clean\n");
+				}
+				else
+				{
+					printf("table t_errorinfo clean fail\n");
+				}
+				if(mysql_query(&mysql,"INSERT INTO t_errorinfohistory SELECT * FROM t_errorinfo")==NULL)
+				{
+					savelog("save errorhistory success");
+					printf("save errorhistory success\n");
+				}
+				else
+				{
+					savelog("save errorhistory fail");
+					printf("save errorhistory fail\n");
+				}
+
 				////////////////////////////////////////////////////////////////////////
 				//清空缓存
 				if(mysql_query(&mysql,"UPDATE t_lightruninfo SET flage='0'")==NULL)
@@ -600,7 +615,6 @@ void main(void)
 				printf("5WSARecv() failed with error %d\n", WSAGetLastError());
 				//getchar();
 				//return;
-				//goto _next;
 			}
 		}
 
