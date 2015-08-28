@@ -112,6 +112,20 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			printf("[%s:%u:%d]recv",PerIoData->ip,PerIoData->port,PerIoData->index);
 			memcpy(&data_tmp[PerIoData->index].ip,PerIoData->ip,20);
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
+
+			memcpy(PerIoData->DataBuf.buf,"ok",3);
+			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,
+				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
+ 			{
+				if (WSAGetLastError() != ERROR_IO_PENDING)
+				{
+					printf("1WSASend() failed with error %d\n", WSAGetLastError());
+					getchar();
+					return 0;
+				}
+			}
+			cout<<PerIoData->DataBuf.buf<<endl;
+			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);
 	
 			printf("[%s:%u]end\n",PerIoData->ip,PerIoData->port);	 
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)	
