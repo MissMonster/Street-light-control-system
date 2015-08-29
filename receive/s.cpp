@@ -136,7 +136,10 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 				//return 0;	
 				}	
 			}	
-			else cout<<':'<<PerIoData->DataBuf.buf<<':';
+			else
+			{
+				cout<<":"<<PerIoData->DataBuf.buf<<":";
+			}
 			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);
 	
 			printf("[%s:%u]end\n",PerIoData->ip,PerIoData->port);	 
