@@ -83,6 +83,7 @@ void savelog(char str[])
 	fclose(fpout);
 }
 
+//工作线程
 DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)	
 {	
 	HANDLE CompletionPort = (HANDLE) CompletionPortID;	
@@ -100,9 +101,20 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 		{	
 			printf("GetQueuedCompletionStatus failed with error %d\n", GetLastError());		
 		}
-
+		//printf("\n:%d:%d:\n",PerIoData->BytesRECV,PerIoData->BytesSEND);
+		if (PerIoData->BytesRECV == 0)	
+		{	
+			PerIoData->BytesRECV = BytesTransferred;	
+			PerIoData->BytesSEND = 0;	
+		}	
+		else	
+		{	
+			PerIoData->BytesSEND += BytesTransferred;	
+		}	
+		//if (BytesTransferred > 0)	
+		if (PerIoData->BytesRECV > PerIoData->BytesSEND)
 		////////////////////////////////////////////////////////////////////////
-		if(BytesTransferred>0)
+		//if(BytesTransferred>0)
 		{
 			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));	
 	
@@ -114,17 +126,17 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 			memcpy(&data_tmp[PerIoData->index].data,PerIoData->DataBuf.buf,DATA_BUFSIZE);
 
 			memcpy(PerIoData->DataBuf.buf,"ok",3);
-			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,
-				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
- 			{
-				if (WSAGetLastError() != ERROR_IO_PENDING)
-				{
-					printf("1WSASend() failed with error %d\n", WSAGetLastError());
-					getchar();
-					return 0;
-				}
-			}
-			cout<<PerIoData->DataBuf.buf<<endl;
+			//strcpy(PerIoData->Buffer,"ok");
+			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));		
+			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)	
+			{	
+				if (WSAGetLastError() != ERROR_IO_PENDING)	
+				{	
+					printf("WSASend() failed with error %d\n", WSAGetLastError());	
+				//return 0;	
+				}	
+			}	
+			else cout<<':'<<PerIoData->DataBuf.buf<<':';
 			ZeroMemory(PerIoData->DataBuf.buf,PerIoData->DataBuf.len);
 	
 			printf("[%s:%u]end\n",PerIoData->ip,PerIoData->port);	 
@@ -619,7 +631,6 @@ void main(void)
 		PerIoData->index=end;//存储地址
 		//PerIoData->DataBuf.buf = (char*)&data_tmp[PerIoData->index].data;
 		
-
 		Flags = 0;
 		if(WSARecv(Accept, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
 			&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
@@ -636,4 +647,3 @@ void main(void)
 		end=(end+1)%DATA_TMP_SIZE;
 	}
 }
-

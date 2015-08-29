@@ -49,11 +49,13 @@ int main(int argc,char*argv[])
     addrServer.sin_family=AF_INET ;
     addrServer.sin_addr.s_addr=inet_addr("127.0.0.1");//222.247.47.182");//
     addrServer.sin_port=htons(5555);//9090);
+theend:;
     cout<<"连接服务器..."<<endl ;
     if(connect(sockClient,(const struct sockaddr*)&addrServer,sizeof(sockaddr))!=0)
     {
         cout<<"connect 失败"<<endl ;
         WSACleanup();
+		Sleep(1000);
         goto theend ;
     }
     cout<<"开始发送测试包"<<endl ;
@@ -64,7 +66,7 @@ int main(int argc,char*argv[])
 	srand(time(NULL));
 	data.UID=rand()%10000;
 	data.NUM=20;
-	data.CMD=rand()%2+7;
+	data.CMD=rand()%3+7;
     int i;
 	for(i=0;i<20;i++)
     {
@@ -80,9 +82,10 @@ int main(int argc,char*argv[])
     {
         cout<<"send失败,可能连接断开"<<endl ;
         //break;
+		Sleep(1000);
         goto theend ;
     }
-    	//接收服务端应答
+    //接收服务端应答
 	char buf[24];
 	if(recv(sockClient,buf,24,0)<=0)
 	{
@@ -93,16 +96,6 @@ int main(int argc,char*argv[])
 	//cout<<"003"<<endl;
 	cout<<"服务器应答："<<buf<<endl ;
 	memset(buf,0,24);
-    if(0)
-	{
-		theend :
-		WSACleanup();
-		//getchar();
-		Sleep(5000);
-	}
-	else
-	{
-		WSACleanup();
-	}
+	WSACleanup();
     return 0 ;
 }
