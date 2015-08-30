@@ -43,9 +43,9 @@
 using namespace std;
 
 #define PORT            5555                 //端口号
-#define DATA_BUFSIZE    412                  //数据长度
-#define DATA_TMP_SIZE   100                  //缓存长度
-#define SAVEMIN         2                    //保存时间间隔
+#define DATA_BUFSIZE    sizeof(LAMP_STATUS)  //数据长度
+#define DATA_TMP_SIZE   1000                 //缓存长度
+#define SAVEMIN         10                    //保存时间间隔
 
 ////////////////////////////////////////////////////////////////////////
 #define mysqlip         "127.0.0.1"      
