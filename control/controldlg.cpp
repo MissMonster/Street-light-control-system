@@ -1,11 +1,9 @@
-// controldlg.cpp : implementation file
+// controlDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
-#include "LampServer.h"
-#include "controldlg.h"
-//#include "webbrowser3.h"
-//#include "WebPage.h"
+#include "control.h"
+#include "controlDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,64 +12,96 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// controldlg dialog
+// CControlDlg dialog
 
-
-controldlg::controldlg(CWnd* pParent /*=NULL*/)
-	: CDialog(controldlg::IDD, pParent)
+CControlDlg::CControlDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CControlDlg::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(controldlg)
+	//{{AFX_DATA_INIT(CControlDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
+	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-
-void controldlg::DoDataExchange(CDataExchange* pDX)
+void CControlDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(controldlg)
-	DDX_Control(pDX, IDC_EXPLORER1, m_web);
+	//{{AFX_DATA_MAP(CControlDlg)
+		// NOTE: the ClassWizard will add DDX and DDV calls here
 	//}}AFX_DATA_MAP
 }
 
-
-BEGIN_MESSAGE_MAP(controldlg, CDialog)
-	//{{AFX_MSG_MAP(controldlg)
+BEGIN_MESSAGE_MAP(CControlDlg, CDialog)
+	//{{AFX_MSG_MAP(CControlDlg)
 	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// controldlg message handlers
+// CControlDlg message handlers
 
-BOOL controldlg::OnInitDialog() 
+BOOL CControlDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	// TODO: Add extra initialization here
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
-
-	CString path;
-    GetModuleFileName(NULL,path.GetBufferSetLength(MAX_PATH+1),MAX_PATH);
-    path.ReleaseBuffer();
-    int pos = path.ReverseFind('\\');
-    path = path.Left(pos);
-	path+="\\baidumap.html";
-	m_web.Navigate(path, NULL, NULL, NULL, NULL);
-
-	web.SetDocument(m_web.GetDocument());
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	
+	// TODO: Add extra initialization here
+	
+	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void controldlg::OnPaint() 
+// If you add a minimize button to your dialog, you will need the code below
+//  to draw the icon.  For MFC applications using the document/view model,
+//  this is automatically done for you by the framework.
+
+void CControlDlg::OnPaint() 
 {
-	CPaintDC dc(this); // device context for painting
+	if (IsIconic())
+	{
+		CPaintDC dc(this); // device context for painting
+
+		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+
+		// Center icon in client rectangle
+		int cxIcon = GetSystemMetrics(SM_CXICON);
+		int cyIcon = GetSystemMetrics(SM_CYICON);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width() - cxIcon + 1) / 2;
+		int y = (rect.Height() - cyIcon + 1) / 2;
+
+		// Draw the icon
+		dc.DrawIcon(x, y, m_hIcon);
+	}
+	else
+	{
+		CDialog::OnPaint();
+	}
+}
+
+// The system calls this to obtain the cursor to display while the user drags
+//  the minimized window.
+HCURSOR CControlDlg::OnQueryDragIcon()
+{
+	return (HCURSOR) m_hIcon;
+}
+
+void CControlDlg::OnOK() 
+{
+	// TODO: Add extra validation here
 	
-	// TODO: Add your message handler code here
+	//CDialog::OnOK();
+}
+
+void CControlDlg::OnCancel() 
+{
+	// TODO: Add extra cleanup here
 	
-	// Do not call CDialog::OnPaint() for painting messages
+	CDialog::OnCancel();
 }

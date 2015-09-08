@@ -1,5 +1,5 @@
-#if !defined(AFX_USERCONTROL_H__3048E473_9596_42E3_877C_4A79D97DE287__INCLUDED_)
-#define AFX_USERCONTROL_H__3048E473_9596_42E3_877C_4A79D97DE287__INCLUDED_
+#if !defined(AFX_USERCONTROL_H__9B27A62C_8841_4499_8F99_0AEF443E4FA2__INCLUDED_)
+#define AFX_USERCONTROL_H__9B27A62C_8841_4499_8F99_0AEF443E4FA2__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -18,7 +18,7 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(usercontrol)
-	enum { IDD = IDD_DIALOG6 };
+	enum { IDD = IDD_usercontrol };
 		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
@@ -35,8 +35,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(usercontrol)
-	virtual void OnOK();
-	virtual void OnCancel();
+		// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -44,4 +43,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_USERCONTROL_H__3048E473_9596_42E3_877C_4A79D97DE287__INCLUDED_)
+#endif // !defined(AFX_USERCONTROL_H__9B27A62C_8841_4499_8F99_0AEF443E4FA2__INCLUDED_)

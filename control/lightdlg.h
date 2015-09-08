@@ -1,9 +1,5 @@
-//{{AFX_INCLUDES()
-#include "webbrowser3.h"
-#include "WebPage.h"
-//}}AFX_INCLUDES
-#if !defined(AFX_LIGHTDLG_H__A32B4E20_2DD4_461E_9A36_96D95ACDECDB__INCLUDED_)
-#define AFX_LIGHTDLG_H__A32B4E20_2DD4_461E_9A36_96D95ACDECDB__INCLUDED_
+#if !defined(AFX_LIGHTDLG_H__165F3BB3_1917_41FB_A224_52CFAB3A7326__INCLUDED_)
+#define AFX_LIGHTDLG_H__165F3BB3_1917_41FB_A224_52CFAB3A7326__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -22,10 +18,8 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(lightdlg)
-	enum { IDD = IDD_DIALOG2 };
-	CListCtrl	m_list2;
-	CListCtrl	m_list1;
-	CWebBrowser2	m_web;
+	enum { IDD = IDD_lightdlg };
+		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
@@ -39,12 +33,9 @@ public:
 // Implementation
 protected:
 
-	HICON m_hIcon;
-	CWebPage web;
 	// Generated message map functions
 	//{{AFX_MSG(lightdlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
+		// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -52,4 +43,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_LIGHTDLG_H__A32B4E20_2DD4_461E_9A36_96D95ACDECDB__INCLUDED_)
+#endif // !defined(AFX_LIGHTDLG_H__165F3BB3_1917_41FB_A224_52CFAB3A7326__INCLUDED_)

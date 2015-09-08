@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "LampServer.h"
+#include "control.h"
 #include "usercontrol.h"
 
 #ifdef _DEBUG
@@ -35,22 +35,9 @@ void usercontrol::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(usercontrol, CDialog)
 	//{{AFX_MSG_MAP(usercontrol)
+		// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // usercontrol message handlers
-
-void usercontrol::OnOK() 
-{
-	// TODO: Add extra validation here
-	
-	//CDialog::OnOK();
-}
-
-void usercontrol::OnCancel() 
-{
-	// TODO: Add extra cleanup here
-	
-	CDialog::OnCancel();
-}

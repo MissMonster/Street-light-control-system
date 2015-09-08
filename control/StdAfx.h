@@ -3,8 +3,8 @@
 //      are changed infrequently
 //
 
-#if !defined(AFX_STDAFX_H__3707F1B3_A5D6_428B_BDE4_C1052660915B__INCLUDED_)
-#define AFX_STDAFX_H__3707F1B3_A5D6_428B_BDE4_C1052660915B__INCLUDED_
+#if !defined(AFX_STDAFX_H__B8A523C1_5BCC_4851_858E_F1ECC33B3E5D__INCLUDED_)
+#define AFX_STDAFX_H__B8A523C1_5BCC_4851_858E_F1ECC33B3E5D__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -22,17 +22,7 @@
 
 #include <afxsock.h>		// MFC socket extensions
 
-#include<winsock.h>
-#pragma comment(lib,"wsock32.lib")
-
-#pragma warning(disable:4146)
-#import "C:/Program Files/Common Files/System/ado/msado15.dll"no_namespaces rename ("EOF","rsEOF") 
-#pragma warning(default:4146) 
-
-#include "Mysql.h"
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-#include "webbrowser3.h"
-#include "WebPage.h"
 
-#endif // !defined(AFX_STDAFX_H__3707F1B3_A5D6_428B_BDE4_C1052660915B__INCLUDED_)
+#endif // !defined(AFX_STDAFX_H__B8A523C1_5BCC_4851_858E_F1ECC33B3E5D__INCLUDED_)

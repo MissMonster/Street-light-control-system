@@ -1,9 +1,5 @@
-//{{AFX_INCLUDES()
-#include "webbrowser3.h"
-#include "WebPage.h"
-//}}AFX_INCLUDES
-#if !defined(AFX_ERRORMSGDLG_H__333D73DB_2A21_4E3D_9119_9610616A141F__INCLUDED_)
-#define AFX_ERRORMSGDLG_H__333D73DB_2A21_4E3D_9119_9610616A141F__INCLUDED_
+#if !defined(AFX_ERRORMSGDLG_H__5F877A72_5BD8_4400_A65D_C8419069D1A1__INCLUDED_)
+#define AFX_ERRORMSGDLG_H__5F877A72_5BD8_4400_A65D_C8419069D1A1__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -22,9 +18,8 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(errormsgdlg)
-	enum { IDD = IDD_DIALOG5 };
-	CListCtrl	m_list1;
-	CWebBrowser2	m_web;
+	enum { IDD = IDD_errormsgdlg };
+		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
@@ -38,12 +33,9 @@ public:
 // Implementation
 protected:
 
-	HICON m_hIcon;
-	CWebPage web;
 	// Generated message map functions
 	//{{AFX_MSG(errormsgdlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
+		// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -51,4 +43,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_ERRORMSGDLG_H__333D73DB_2A21_4E3D_9119_9610616A141F__INCLUDED_)
+#endif // !defined(AFX_ERRORMSGDLG_H__5F877A72_5BD8_4400_A65D_C8419069D1A1__INCLUDED_)

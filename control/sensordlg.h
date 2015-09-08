@@ -1,9 +1,5 @@
-//{{AFX_INCLUDES()
-#include "webbrowser3.h"
-#include "WebPage.h"
-//}}AFX_INCLUDES
-#if !defined(AFX_SENSORDLG_H__F9D713EB_BBF4_49E3_9ACE_72FE2202CAF7__INCLUDED_)
-#define AFX_SENSORDLG_H__F9D713EB_BBF4_49E3_9ACE_72FE2202CAF7__INCLUDED_
+#if !defined(AFX_SENSORDLG_H__C92A39DB_2F7D_4B5C_BCD4_B22533F17D92__INCLUDED_)
+#define AFX_SENSORDLG_H__C92A39DB_2F7D_4B5C_BCD4_B22533F17D92__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -22,9 +18,8 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(sensordlg)
-	enum { IDD = IDD_DIALOG3 };
-	CListCtrl	m_list1;
-	CWebBrowser2	m_web;
+	enum { IDD = IDD_sensordlg };
+		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
@@ -38,12 +33,9 @@ public:
 // Implementation
 protected:
 
-	HICON m_hIcon;
-	CWebPage web;
 	// Generated message map functions
 	//{{AFX_MSG(sensordlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
+		// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -51,4 +43,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_SENSORDLG_H__F9D713EB_BBF4_49E3_9ACE_72FE2202CAF7__INCLUDED_)
+#endif // !defined(AFX_SENSORDLG_H__C92A39DB_2F7D_4B5C_BCD4_B22533F17D92__INCLUDED_)
