@@ -90,6 +90,18 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\about.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\changename.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\changepassword.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\control.cpp
 # End Source File
 # Begin Source File
@@ -137,6 +149,18 @@ SOURCE=.\usercontrol.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\about.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\changename.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\changepassword.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\control.h
@@ -191,11 +215,27 @@ SOURCE=.\usercontrol.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\res\changename.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\changepassword.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\control.ico
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\control.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=".\res\QQͼƬ20150907134507.bmp"
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\start.bmp
 # End Source File
 # Begin Source File
 

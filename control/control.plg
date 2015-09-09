@@ -6,20 +6,32 @@
 --------------------Configuration: control - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPEAB4.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP670F.tmp" with contents
 [
-/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/control.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"D:\c\light\control\land.cpp"
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/control.pdb" /debug /machine:I386 /out:"Debug/control.exe" /pdbtype:sept 
+.\Debug\about.obj
+.\Debug\changename.obj
+.\Debug\changepassword.obj
+.\Debug\control.obj
+.\Debug\controlDlg.obj
+.\Debug\controlmanage.obj
+.\Debug\errormsgdlg.obj
+.\Debug\land.obj
+.\Debug\lightcontrldlg.obj
+.\Debug\lightdlg.obj
+.\Debug\sensordlg.obj
+.\Debug\StdAfx.obj
+.\Debug\usercontrol.obj
+.\Debug\control.res
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPEAB4.tmp" 
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP670F.tmp"
 <h3>Output Window</h3>
-Compiling...
-land.cpp
+Linking...
 
 
 
 <h3>Results</h3>
-land.obj - 0 error(s), 0 warning(s)
+control.exe - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

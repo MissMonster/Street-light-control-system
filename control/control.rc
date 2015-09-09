@@ -78,8 +78,27 @@ STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP |
     WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "路灯远程控制"
+MENU IDR_MENU1
 FONT 9, "宋体"
 BEGIN
+    CONTROL         133,IDC_STATIC,"Static",SS_BITMAP,395,7,151,287
+    PUSHBUTTON      "用户管理",IDC_BUTTON1,7,37,90,41
+    PUSHBUTTON      "远端灯控制器管理",IDC_BUTTON2,7,79,90,44
+    PUSHBUTTON      "LED路灯监控",IDC_BUTTON3,7,124,90,39
+    PUSHBUTTON      "传感器实时管理",IDC_BUTTON4,7,164,90,43
+    PUSHBUTTON      "LED路灯控制",IDC_BUTTON5,7,208,90,45
+    PUSHBUTTON      "故障告警信息管理",IDC_BUTTON6,7,254,90,42
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,103,18,286,
+                    138
+    CONTROL         "List2",IDC_LIST2,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,103,171,286,120
+    GROUPBOX        "控制器信息",IDC_STATIC,99,7,294,158
+    GROUPBOX        "故障告警信息",IDC_STATIC,99,159,294,137
+    EDITTEXT        IDC_EDIT1,38,16,40,12,ES_AUTOHSCROLL | ES_READONLY | NOT 
+                    WS_BORDER
+    GROUPBOX        "状态",IDC_STATIC,7,7,90,25
 END
 
 IDD_LANDED DIALOGEX 0, 0, 232, 91
@@ -150,6 +169,51 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "故障告警信息管理"
 FONT 9, "宋体"
 BEGIN
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 362, 103
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "关于"
+FONT 9, "宋体"
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,155,82,50,14
+    CONTROL         130,IDC_STATIC,"Static",SS_BITMAP,7,7,147,63
+    LTEXT           "版权所有 (C) 2015 湖南师范大学工程与设计学院",
+                    IDC_STATIC,169,57,177,8
+    LTEXT           "编译环境:Microsoft Visual C++ 6.0",IDC_STATIC,190,17,
+                    133,8
+    LTEXT           "编译系统:Windows 7 64位",IDC_STATIC,190,31,93,8
+END
+
+IDD_changepassword DIALOG DISCARDABLE  0, 0, 268, 111
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "修改密码"
+FONT 9, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT1,150,14,86,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,150,34,86,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,150,54,86,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "确定修改",IDOK,99,81,83,23
+    PUSHBUTTON      "取消",IDCANCEL,189,81,50,23
+    LTEXT           "原密码:",IDC_STATIC,82,17,29,8
+    LTEXT           "新密码:",IDC_STATIC,82,37,29,8
+    LTEXT           "再次输入新密码:",IDC_STATIC,82,57,61,8
+    CONTROL         136,IDC_STATIC,"Static",SS_BITMAP,7,7,20,20
+END
+
+IDD_changename DIALOG DISCARDABLE  0, 0, 251, 83
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "修改用户名"
+FONT 9, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT1,139,18,83,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "确定",IDOK,95,54,82,22
+    PUSHBUTTON      "取消",IDCANCEL,179,54,50,22
+    CONTROL         135,IDC_STATIC,"Static",SS_BITMAP,7,7,68,68
+    LTEXT           "新用户名:",IDC_STATIC,95,21,37,8
 END
 
 
@@ -267,6 +331,30 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 296
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 354
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_changepassword, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+
+    IDD_changename, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 244
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 76
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -277,6 +365,33 @@ END
 //
 
 IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\user.bmp"
+IDB_BITMAP2             BITMAP  DISCARDABLE     "res\\QQ图片20150907134507.bmp"
+IDB_BITMAP3             BITMAP  DISCARDABLE     "res\\start.bmp"
+IDB_BITMAP4             BITMAP  DISCARDABLE     "res\\changename.bmp"
+IDB_BITMAP5             BITMAP  DISCARDABLE     "res\\changepassword.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "文件"
+    BEGIN
+        MENUITEM "退出",                        ID_MENUITEM32771
+    END
+    POPUP "用户信息"
+    BEGIN
+        MENUITEM "修改用户名",                  ID_MENUITEM32774
+        MENUITEM "修改密码",                    ID_MENUITEM32773
+    END
+    POPUP "帮助"
+    BEGIN
+        MENUITEM "关于",                        ID_MENUITEM32772
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

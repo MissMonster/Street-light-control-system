@@ -20,7 +20,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CControlDlg)
 	enum { IDD = IDD_CONTROL_DIALOG };
-		// NOTE: the ClassWizard will add data members here
+	CEdit	m_sync_text;
+	CListCtrl	m_list2;
+	CListCtrl	m_list1;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -31,6 +33,8 @@ public:
 
 // Implementation
 protected:
+	static DWORD WINAPI Threadsyncdate(LPVOID channel);
+	void setsynctext(char str[]);
 	HICON m_hIcon;
 
 	// Generated message map functions
@@ -40,6 +44,17 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	virtual void OnOK();
 	virtual void OnCancel();
+	afx_msg void OnMenuitem32771();
+	afx_msg void OnMenuitem32772();
+	afx_msg void OnButton1();
+	afx_msg void OnButton2();
+	afx_msg void OnButton3();
+	afx_msg void OnButton4();
+	afx_msg void OnButton5();
+	afx_msg void OnButton6();
+	afx_msg void OnMenuitem32773();
+	afx_msg void OnMenuitem32774();
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

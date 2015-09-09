@@ -1,9 +1,9 @@
-// land.cpp : implementation file
+// changename.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "control.h"
-#include "land.h"
+#include "changename.h"
 #include "mysql/mysql.h"
 
 //////////////////////////////////////////////////////////
@@ -23,36 +23,33 @@ extern struct serverset serverinfo;
 extern struct userdata  userinfo;
 
 /////////////////////////////////////////////////////////////////////////////
-// land dialog
+// changename dialog
 
-land::land(CWnd* pParent /*=NULL*/)
-	: CDialog(land::IDD, pParent)
+changename::changename(CWnd* pParent /*=NULL*/)
+	: CDialog(changename::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(land)
+	//{{AFX_DATA_INIT(changename)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
-
-void land::DoDataExchange(CDataExchange* pDX)
+void changename::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(land)
-	DDX_Control(pDX, IDC_EDIT2, m_password);
-	DDX_Control(pDX, IDC_EDIT1, m_name);
+	//{{AFX_DATA_MAP(changename)
+	DDX_Control(pDX, IDC_EDIT1, m_newname);
 	//}}AFX_DATA_MAP
 }
 
-
-BEGIN_MESSAGE_MAP(land, CDialog)
-	//{{AFX_MSG_MAP(land)
+BEGIN_MESSAGE_MAP(changename, CDialog)
+	//{{AFX_MSG_MAP(changename)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// land message handlers
+// changename message handlers
 
-void land::OnOK() 
+void changename::OnOK() 
 {
 	// TODO: Add extra validation here
 	MYSQL_RES *res;     //查询结果集
@@ -64,13 +61,11 @@ void land::OnOK()
 		MessageBox("数据库无法连接!");
 		return ;
 	}
-
+	
 	CString str1;
-	CString str2;
-	m_name.GetWindowText(str1);
-	m_password.GetWindowText(str2);
+	m_newname.GetWindowText(str1);
 
-	string query = "select * from t_userinfo where name='"+str1+"' and password='"+str2+"'";
+	string query = "select * from t_userinfo where name='"+str1+"'";
 	//////////////////////////////////////////////////////////
 	//MessageBoxA(query.c_str());
 	//////////////////////////////////////////////////////////
@@ -84,28 +79,41 @@ void land::OnOK()
 	column = mysql_fetch_row(res);
 	//////////////////////////////////////////////////////////
 	//获取符合条件数据条数
-	if(mysql_num_rows(res)==0)
+	if(mysql_num_rows(res)!=0)
 	{
-		MessageBox("用户名或密码错误!");
-		m_password.SetWindowText("");
+		MessageBox("用户名已存在,请重新输入!");
+		//m_newname.SetWindowText("");
 		return ;
 	}
+	
+	query = "update t_userinfo set name='"+str1+"' where name='"+userinfo.name+"'";
 	//////////////////////////////////////////////////////////
-	//存储用户名和权限
-	sprintf(userinfo.name,str1.GetBuffer(0));
-	userinfo.jurisdiction=atoi(column[2]);
+	//MessageBoxA(query.c_str());
 	//////////////////////////////////////////////////////////
-	//记录登录时间
-	CString strtime;
-	strtime.Format("UPDATE t_userinfo SET time=now() WHERE name='%s'",userinfo.name);
-	//MessageBox(strtime);
-	mysql_query(&mysql,strtime.GetBuffer(0));
+	if(mysql_real_query(&mysql,query.c_str(),(UINT)query.size())!=NULL)
+	{
+		MessageBox("数据库无法连接!");
+		return ;
+	}
+	else
+	{
+		MessageBox("用户名修改成功,请重新登录以使修改生效!");
+	}
+
+	strcpy(userinfo.name,str1.GetBuffer(0));
 	//////////////////////////////////////////////////////////
 
 	CDialog::OnOK();
 }
 
-BOOL land::OnInitDialog() 
+void changename::OnCancel() 
+{
+	// TODO: Add extra cleanup here
+	
+	CDialog::OnCancel();
+}
+
+BOOL changename::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
 	

@@ -25,4 +25,7 @@
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
+#include <time.h>
+#include "DataStructure.h"
+
 #endif // !defined(AFX_STDAFX_H__B8A523C1_5BCC_4851_858E_F1ECC33B3E5D__INCLUDED_)

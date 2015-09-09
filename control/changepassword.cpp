@@ -1,9 +1,9 @@
-// land.cpp : implementation file
+// changepassword.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "control.h"
-#include "land.h"
+#include "changepassword.h"
 #include "mysql/mysql.h"
 
 //////////////////////////////////////////////////////////
@@ -23,36 +23,37 @@ extern struct serverset serverinfo;
 extern struct userdata  userinfo;
 
 /////////////////////////////////////////////////////////////////////////////
-// land dialog
+// changepassword dialog
 
-land::land(CWnd* pParent /*=NULL*/)
-	: CDialog(land::IDD, pParent)
+changepassword::changepassword(CWnd* pParent /*=NULL*/)
+	: CDialog(changepassword::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(land)
+	//{{AFX_DATA_INIT(changepassword)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
 
-void land::DoDataExchange(CDataExchange* pDX)
+void changepassword::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(land)
-	DDX_Control(pDX, IDC_EDIT2, m_password);
-	DDX_Control(pDX, IDC_EDIT1, m_name);
+	//{{AFX_DATA_MAP(changepassword)
+	DDX_Control(pDX, IDC_EDIT3, m_newpassword2);
+	DDX_Control(pDX, IDC_EDIT2, m_newpassword1);
+	DDX_Control(pDX, IDC_EDIT1, m_oldpassword);
 	//}}AFX_DATA_MAP
 }
 
 
-BEGIN_MESSAGE_MAP(land, CDialog)
-	//{{AFX_MSG_MAP(land)
+BEGIN_MESSAGE_MAP(changepassword, CDialog)
+	//{{AFX_MSG_MAP(changepassword)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// land message handlers
+// changepassword message handlers
 
-void land::OnOK() 
+void changepassword::OnOK() 
 {
 	// TODO: Add extra validation here
 	MYSQL_RES *res;     //查询结果集
@@ -64,13 +65,22 @@ void land::OnOK()
 		MessageBox("数据库无法连接!");
 		return ;
 	}
-
+	
 	CString str1;
 	CString str2;
-	m_name.GetWindowText(str1);
-	m_password.GetWindowText(str2);
+	CString str3;
+	m_oldpassword.GetWindowText(str1);
+	m_newpassword1.GetWindowText(str2);
+	m_newpassword2.GetWindowText(str3);
 
-	string query = "select * from t_userinfo where name='"+str1+"' and password='"+str2+"'";
+	if(str2!=str3)
+	{
+		MessageBox("密码不一致!");
+		return ;
+	}
+	
+	string query = "select * from t_userinfo where name='";
+	query=query+userinfo.name+"' and password='"+str1.GetBuffer(0)+"'";
 	//////////////////////////////////////////////////////////
 	//MessageBoxA(query.c_str());
 	//////////////////////////////////////////////////////////
@@ -86,49 +96,32 @@ void land::OnOK()
 	//获取符合条件数据条数
 	if(mysql_num_rows(res)==0)
 	{
-		MessageBox("用户名或密码错误!");
-		m_password.SetWindowText("");
+		MessageBox("密码错误!");
+		m_oldpassword.SetWindowText("");
 		return ;
 	}
 	//////////////////////////////////////////////////////////
-	//存储用户名和权限
-	sprintf(userinfo.name,str1.GetBuffer(0));
-	userinfo.jurisdiction=atoi(column[2]);
+	
+	query = "update t_userinfo set password='"+str2+"' where name='"+userinfo.name+"'";
 	//////////////////////////////////////////////////////////
-	//记录登录时间
-	CString strtime;
-	strtime.Format("UPDATE t_userinfo SET time=now() WHERE name='%s'",userinfo.name);
-	//MessageBox(strtime);
-	mysql_query(&mysql,strtime.GetBuffer(0));
+	//MessageBoxA(query.c_str());
 	//////////////////////////////////////////////////////////
+	if(mysql_real_query(&mysql,query.c_str(),(UINT)query.size())!=NULL)
+	{
+		MessageBox("数据库无法连接!");
+		return ;
+	}
+	else
+	{
+		MessageBox("密码修改成功!");
+	}
 
 	CDialog::OnOK();
 }
 
-BOOL land::OnInitDialog() 
+void changepassword::OnCancel() 
 {
-	CDialog::OnInitDialog();
+	// TODO: Add extra cleanup here
 	
-	// TODO: Add extra initialization here
-	//////////////////////////////////////////////////////////
-	//屏蔽输入法
-	HIMC m_hImc;    // 全局或者成员变量
-	HWND hWnd=GetDlgItem(IDC_EDIT1)->m_hWnd ;
-    if(hWnd&&IsWindow(hWnd))
-    {
-        // Get input context for backup.
-        m_hImc=ImmGetContext(hWnd);
-        
-        // Remove association the testing
-        if(m_hImc)
-			ImmAssociateContext(hWnd,NULL);
-        
-        // Release input context
-        ImmReleaseContext(hWnd,m_hImc);
-        :: SetFocus(hWnd);
-    }
-	//////////////////////////////////////////////////////////
-	
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	CDialog::OnCancel();
 }
