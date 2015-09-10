@@ -101,6 +101,7 @@ void land::OnOK()
 	//MessageBox(strtime);
 	mysql_query(&mysql,strtime.GetBuffer(0));
 	//////////////////////////////////////////////////////////
+	mysql_close(&mysql);
 
 	CDialog::OnOK();
 }

@@ -19,7 +19,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(usercontrol)
 	enum { IDD = IDD_usercontrol };
-		// NOTE: the ClassWizard will add data members here
+	CComboBox	m_newjurisdiction;
+	CEdit	m_newpassword;
+	CEdit	m_newname;
+	CEdit	m_usernum;
+	CListCtrl	m_userlist;
 	//}}AFX_DATA
 
 
@@ -32,10 +36,16 @@ public:
 
 // Implementation
 protected:
+	void deleteuser(string name);
+	void syncuserinfo();
 
 	// Generated message map functions
 	//{{AFX_MSG(usercontrol)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
+	afx_msg void OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnMenudeluser();
+	afx_msg void Onadduser();
+	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

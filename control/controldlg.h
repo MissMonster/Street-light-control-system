@@ -33,6 +33,8 @@ public:
 
 // Implementation
 protected:
+	void syncerrorinfo();
+	void synccontrollerinfo();
 	static DWORD WINAPI Threadsyncdate(LPVOID channel);
 	void setsynctext(char str[]);
 	HICON m_hIcon;

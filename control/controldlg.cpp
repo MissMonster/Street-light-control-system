@@ -92,10 +92,12 @@ BOOL CControlDlg::OnInitDialog()
 	CString title="路灯远程控制    登录用户:";
 	title+=userinfo.name;
 	title+="  用户组:";
+	CWnd *pWnd = GetDlgItem(IDC_BUTTON1);
 	switch(userinfo.jurisdiction)
 	{
 	case 1:
 		title+="普通用户";
+		pWnd->EnableWindow(FALSE);
 		break;
 	case 2:
 		title+="管理员";
@@ -112,13 +114,21 @@ BOOL CControlDlg::OnInitDialog()
         | LVS_EX_GRIDLINES			// 画出网格线
 		);
 	
-	m_list1.InsertColumn(0,"IP"	     ,LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(1,"识别码"	 ,LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(2,"名称"	 ,LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(3,"路灯数量",LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(4,"运行方式",LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(5,"经度"	 ,LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(6,"纬度"	 ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(0,"IP"	      ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(1,"识别码"	  ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(2,"信息"	  ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(3,"经度"     ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(4,"纬度"     ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(5,"路灯数量" ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(6,"运行方式" ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(7,"电压上限" ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(8,"电压下限" ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(9,"电流上限" ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(10,"电流下限",LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(11,"温度上限",LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(12,"温度下限",LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(13,"故障情况",LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(14,"在线"	  ,LVCFMT_CENTER, 70,0);
 
 	//设置列表主题
 	m_list2.SetExtendedStyle(
@@ -127,15 +137,25 @@ BOOL CControlDlg::OnInitDialog()
         | LVS_EX_GRIDLINES			// 画出网格线
 		);
 	
-	m_list2.InsertColumn(0,"时间"	 ,LVCFMT_CENTER, 70,0);
-	m_list2.InsertColumn(1,"控制器"	 ,LVCFMT_CENTER, 70,0);
-	m_list2.InsertColumn(2,"路灯号"	 ,LVCFMT_CENTER, 70,0);
-	m_list2.InsertColumn(3,"故障原因",LVCFMT_CENTER, 70,0);
-	m_list2.InsertColumn(4,"处理情况",LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(0,"时间"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(1,"设备类型" ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(2,"标识码"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(3,"路灯编号" ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(4,"类型"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(5,"电压"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(6,"电流"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(7,"温度"     ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(8,"经度"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(9,"纬度"	  ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(10,"信息"    ,LVCFMT_CENTER, 70,0);
+	m_list2.InsertColumn(11,"处理情况",LVCFMT_CENTER, 70,0);
 
 	//创建更新线程
-	DWORD dwThreadID = NULL;
-	HANDLE hThread=CreateThread(NULL,0,CControlDlg::Threadsyncdate,NULL,NULL,(LPDWORD)&dwThreadID);
+	//DWORD dwThreadID = NULL;
+	//HANDLE hThread=CreateThread(NULL,0,CControlDlg::Threadsyncdate,NULL,NULL,(LPDWORD)&dwThreadID);
+
+	synccontrollerinfo();
+	syncerrorinfo();
 
 	SetTimer(1,1000,NULL);
 	
@@ -211,11 +231,11 @@ void CControlDlg::OnMenuitem32772()
 void CControlDlg::OnButton1() 
 {
 	// TODO: Add your control notification handler code here
-	if(userinfo.jurisdiction!=2)
+/*	if(userinfo.jurisdiction!=2)
 	{
 		MessageBox("没有权限!");
 		return ;
-	}
+	}*/
 
 	ShowWindow(SW_HIDE);
 	
@@ -307,243 +327,6 @@ void CControlDlg::setsynctext(char str[])
 //更新缓存
 DWORD WINAPI CControlDlg::Threadsyncdate(LPVOID channel)
 {
-	MYSQL_RES *res;     //查询结果集
-	MYSQL_ROW column;   //数据行的列
-	MYSQL mysql;
-	sqlite3* db ;
-	time_t rawtime;
-	struct tm * timeinfo;
-	
-	//////////////////////////////////////////////////////////
-	//又用到了统计字符串算法
-	//算法详见https://github.com/707wk/Senior-middle-school/blob/master/Filling%20in%20the%20gaps.c
-	//////////////////////////////////////////////////////////
-	for(;;)
-	{
-		time(&rawtime);
-		timeinfo=localtime(&rawtime);
-		if(flage&&timeinfo->tm_min%10==6)
-		{
-			flage=2;
-			mysql_init(&mysql);
-			if(mysql_real_connect(&mysql, serverinfo.ip , serverinfo.name, serverinfo.password, serverinfo.database, serverinfo.port, NULL, 0) == NULL)
-			{
-				AfxMessageBox("数据库无法连接!");
-				return 0;
-			}
-			/*
-			if(fopen("cache.db","r")==NULL)
-			{
-				AfxMessageBox("未找到本地数据库!",NULL,MB_OK);
-				return 0;
-			}
-			int result=sqlite3_open("cache.db",&db);
-			if(result!=SQLITE_OK)
-			{
-				AfxMessageBox("本地数据库连接失败!",NULL,MB_OK);
-				return 0;
-			}
-			*/
-			mysql_query(&mysql,"SET NAMES 'UTF-8'");
-
-			//////////////////////////////////////////////////////////
-			//同步t_controllerinfo
-			if(mysql_query(&mysql,"select * from t_controllerinfo")==NULL)
-			{
-				res=mysql_store_result(&mysql);//保存查询到的数据到result
-
-				int j=mysql_num_fields(res);
-				while(column=mysql_fetch_row(res))//获取具体的数据
-				{
-					//CString str="replace into t_controllerinfo values(";
-					for(int i=0;i<j;i++)
-					{
-						/*
-						//str+=column[i];
-						char tmp[100];
-						if(i<j-1)
-						{
-							sprintf(tmp,"%s",column[i]);
-							if(strcmp("(null)",tmp))
-							{
-								sprintf(tmp,"'%s',",column[i]);
-							}
-							else
-							{
-								strcpy(tmp,"null,");
-							}
-						}
-						else 
-						{
-							sprintf(tmp,"'%s');",column[i]);
-						}
-						//AfxMessageBox(tmp);
-						str+=tmp;
-						//str+=column[i];
-						*/
-					}
-					//AfxMessageBox(str);
-					//char* errMsg;
-					/*
-					if(SQLITE_OK!=sqlite3_exec(db,str.GetBuffer(0),0,0,NULL))
-					{
-						AfxMessageBox("插入错误",NULL,MB_OK);
-					}
-					*/
-					//break;
-				}
-			}
-			//////////////////////////////////////////////////////////
-/*
-			//////////////////////////////////////////////////////////
-			//同步t_errorinfo
-			if(mysql_query(&mysql,"select * from t_errorinfo")==NULL)
-			{
-				res=mysql_store_result(&mysql);//保存查询到的数据到result
-
-				int j=mysql_num_fields(res);
-				while(column=mysql_fetch_row(res))//获取具体的数据
-				{
-					CString str="replace into t_errorinfo values(";
-					for(int i=0;i<j;i++)
-					{
-						//str+=column[i];
-						char tmp[100];
-						if(i<j-1)
-						{
-							sprintf(tmp,"%s",column[i]);
-							if(strcmp("(null)",tmp))
-							{
-								sprintf(tmp,"'%s',",column[i]);
-							}
-							else
-							{
-								strcpy(tmp,"null,");
-							}
-						}
-						else 
-						{
-							sprintf(tmp,"'%s');",column[i]);
-						}
-						//AfxMessageBox(tmp);
-						str+=tmp;
-						//str+=column[i];
-					}
-					//AfxMessageBox(str);
-					//char* errMsg;
-					if(SQLITE_OK!=sqlite3_exec(db,str.GetBuffer(0),0,0,NULL))
-					{
-						AfxMessageBox("插入错误",NULL,MB_OK);
-					}
-					//break;
-				}
-			}
-			//////////////////////////////////////////////////////////
-
-			//////////////////////////////////////////////////////////
-			//同步t_lightlocation
-			if(mysql_query(&mysql,"select * from t_lightlocation")==NULL)
-			{
-				res=mysql_store_result(&mysql);//保存查询到的数据到result
-
-				int j=mysql_num_fields(res);
-				while(column=mysql_fetch_row(res))//获取具体的数据
-				{
-					CString str="replace into t_lightlocation values(";
-					for(int i=0;i<j;i++)
-					{
-						//str+=column[i];
-						char tmp[100];
-						if(i<j-1)
-						{
-							sprintf(tmp,"%s",column[i]);
-							if(strcmp("(null)",tmp))
-							{
-								sprintf(tmp,"'%s',",column[i]);
-							}
-							else
-							{
-								strcpy(tmp,"null,");
-							}
-						}
-						else 
-						{
-							sprintf(tmp,"'%s');",column[i]);
-						}
-						//AfxMessageBox(tmp);
-						str+=tmp;
-						//str+=column[i];
-					}
-					//AfxMessageBox(str);
-					//char* errMsg;
-					if(SQLITE_OK!=sqlite3_exec(db,str.GetBuffer(0),0,0,NULL))
-					{
-						AfxMessageBox("插入错误",NULL,MB_OK);
-					}
-					//break;
-				}
-			}
-			//////////////////////////////////////////////////////////
-
-			//////////////////////////////////////////////////////////
-			//同步t_lightruninfo
-			if(mysql_query(&mysql,"select * from t_lightruninfo")==NULL)
-			{
-				res=mysql_store_result(&mysql);//保存查询到的数据到result
-
-				int j=mysql_num_fields(res);
-				while(column=mysql_fetch_row(res))//获取具体的数据
-				{
-					CString str="replace into t_lightruninfo values(";
-					for(int i=0;i<j;i++)
-					{
-						//str+=column[i];
-						char tmp[100];
-						if(i<j-1)
-						{
-							sprintf(tmp,"%s",column[i]);
-							if(strcmp("(null)",tmp))
-							{
-								sprintf(tmp,"'%s',",column[i]);
-							}
-							else
-							{
-								strcpy(tmp,"null,");
-							}
-						}
-						else 
-						{
-							sprintf(tmp,"'%s');",column[i]);
-						}
-						//AfxMessageBox(tmp);
-						str+=tmp;
-						//str+=column[i];
-					}
-					//AfxMessageBox(str);
-					//char* errMsg;
-					if(SQLITE_OK!=sqlite3_exec(db,str.GetBuffer(0),0,0,NULL))
-					{
-						AfxMessageBox("插入错误",NULL,MB_OK);
-					}
-					//break;
-				}
-			}
-			//////////////////////////////////////////////////////////
-	*/		
-			mysql_close(&mysql);
-			//sqlite3_close(db);
-			
-			flage=0;
-		}
-		else
-		{
-			Sleep(10*1000);
-			if(timeinfo->tm_min%10!=6)
-			{
-				flage=1;
-			}
-		}
-	}
 	return 0;
 }
 
@@ -553,16 +336,98 @@ void CControlDlg::OnTimer(UINT nIDEvent)
 	switch(nIDEvent)
 	{
 	case 1:
-		if(flage==2)
+		time_t rawtime;
+		struct tm * timeinfo;
+		time(&rawtime);
+		timeinfo=localtime(&rawtime);
+		if(flage&&timeinfo->tm_min%10==6)
 		{
 			setsynctext("同步中");
+			synccontrollerinfo();
+			syncerrorinfo();
+			
+			flage=0;
 		}
 		else
 		{
 			setsynctext("已同步");
+			if(timeinfo->tm_min%10!=6)
+			{
+				flage=1;
+			}
 		}
 		break;
 	}
 	
 	CDialog::OnTimer(nIDEvent);
+}
+
+void CControlDlg::synccontrollerinfo()
+{
+	MYSQL_RES *res;     //查询结果集
+	MYSQL_ROW column;   //数据行的列
+	MYSQL mysql;
+	mysql_init(&mysql);
+	if(mysql_real_connect(&mysql, serverinfo.ip , serverinfo.name, serverinfo.password, serverinfo.database, serverinfo.port, NULL, 0) == NULL)
+	{
+		MessageBox("数据库无法连接!");
+	}
+	mysql_query(&mysql,"SET NAMES 'UTF-8'");
+	
+	//////////////////////////////////////////////////////////
+	//同步t_controllerinfo
+	if(mysql_query(&mysql,"select * from t_controllerinfo")==NULL)
+	{
+		res=mysql_store_result(&mysql);//保存查询到的数据到result
+		
+		int j=mysql_num_fields(res);
+		int index=0;
+		m_list1.DeleteAllItems();
+		while(column=mysql_fetch_row(res))//获取具体的数据
+		{
+			//CString str="replace into t_controllerinfo values(";
+			m_list1.InsertItem(index,column[0]);
+			for(int i=1;i<j;i++)
+			{
+				m_list1.SetItemText(index,i,column[i]);
+			}
+			index++;
+		}
+	}
+	mysql_close(&mysql);
+}
+
+void CControlDlg::syncerrorinfo()
+{
+	MYSQL_RES *res;     //查询结果集
+	MYSQL_ROW column;   //数据行的列
+	MYSQL mysql;
+	mysql_init(&mysql);
+	if(mysql_real_connect(&mysql, serverinfo.ip , serverinfo.name, serverinfo.password, serverinfo.database, serverinfo.port, NULL, 0) == NULL)
+	{
+		MessageBox("数据库无法连接!");
+	}
+	mysql_query(&mysql,"SET NAMES 'UTF-8'");
+	
+	//////////////////////////////////////////////////////////
+	//同步t_errorinfo
+	if(mysql_query(&mysql,"select * from t_errorinfo")==NULL)
+	{
+		res=mysql_store_result(&mysql);//保存查询到的数据到result
+		
+		int j=mysql_num_fields(res);
+		int index=0;
+		m_list2.DeleteAllItems();
+		while(column=mysql_fetch_row(res))//获取具体的数据
+		{
+			//CString str="replace into t_controllerinfo values(";
+			m_list2.InsertItem(index,column[0]);
+			for(int i=1;i<j;i++)
+			{
+				m_list2.SetItemText(index,i,column[i]);
+			}
+			index++;
+		}
+	}
+	mysql_close(&mysql);
 }

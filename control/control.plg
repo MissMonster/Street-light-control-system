@@ -6,7 +6,14 @@
 --------------------Configuration: control - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP670F.tmp" with contents
+Creating command line "rc.exe /l 0x804 /fo"Debug/control.res" /d "_DEBUG" /d "_AFXDLL" "D:\c\light\control\control.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB5BB.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/control.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\c\light\control\controlDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPB5BB.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB5BC.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/control.pdb" /debug /machine:I386 /out:"Debug/control.exe" /pdbtype:sept 
 .\Debug\about.obj
@@ -24,8 +31,12 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP670F.tmp" with 
 .\Debug\usercontrol.obj
 .\Debug\control.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP670F.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPB5BC.tmp"
 <h3>Output Window</h3>
+Compiling resources...
+Compiling...
+Skipping... (no relevant changes detected)
+controlDlg.cpp
 Linking...
 
 

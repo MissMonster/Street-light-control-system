@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CControlDlg
+LastClass=usercontrol
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "control.h"
@@ -11,30 +11,31 @@ ClassCount=12
 Class1=CControlApp
 Class2=CControlDlg
 
-ResourceCount=13
-Resource2=IDD_CONTROL_DIALOG
+ResourceCount=14
+Resource2=IDD_changename
 Resource1=IDR_MAINFRAME
 Class3=land
 Resource3=IDD_lightdlg
-Resource4=IDD_LANDED
-Resource5=IDD_lightcontrldlg
-Resource6=IDD_errormsgdlg
-Resource7=IDD_usercontrol
-Resource8=IDD_controldlg
+Resource4=IDR_MENU1
+Resource5=IDD_usercontrol
+Resource6=IDD_LANDED
+Resource7=IDD_CONTROL_DIALOG
+Resource8=IDD_sensordlg
 Class4=controlmanage
 Class5=errormsgdlg
 Class6=lightcontrldlg
 Class7=lightdlg
 Class8=sensordlg
 Class9=usercontrol
-Resource9=IDD_changename
+Resource9=IDD_controldlg
 Class10=about
-Resource10=IDD_ABOUT
+Resource10=IDD_lightcontrldlg
 Resource11=IDD_changepassword
 Class11=changepassword
-Resource12=IDD_sensordlg
+Resource12=IDD_ABOUT
 Class12=changename
-Resource13=IDR_MENU1
+Resource13=IDD_errormsgdlg
+Resource14=IDR_MENU2
 
 [CLS:CControlApp]
 Type=0
@@ -57,15 +58,15 @@ LastObject=IDC_EDIT1
 Type=1
 Class=CControlDlg
 ControlCount=13
-Control1=IDC_STATIC,static,1342177294
-Control2=IDC_BUTTON1,button,1342242816
-Control3=IDC_BUTTON2,button,1342242816
-Control4=IDC_BUTTON3,button,1342242816
-Control5=IDC_BUTTON4,button,1342242816
-Control6=IDC_BUTTON5,button,1342242816
-Control7=IDC_BUTTON6,button,1342242816
-Control8=IDC_LIST1,SysListView32,1350631433
-Control9=IDC_LIST2,SysListView32,1350631437
+Control1=IDC_LIST1,SysListView32,1350631433
+Control2=IDC_LIST2,SysListView32,1350631437
+Control3=IDC_BUTTON1,button,1342242816
+Control4=IDC_BUTTON2,button,1342242816
+Control5=IDC_BUTTON3,button,1342242816
+Control6=IDC_BUTTON4,button,1342242816
+Control7=IDC_BUTTON5,button,1342242816
+Control8=IDC_BUTTON6,button,1342242816
+Control9=IDC_STATIC,static,1342177294
 Control10=IDC_STATIC,button,1342177287
 Control11=IDC_STATIC,button,1342177287
 Control12=IDC_EDIT1,edit,1342244992
@@ -94,7 +95,19 @@ VirtualFilter=dWC
 [DLG:IDD_usercontrol]
 Type=1
 Class=usercontrol
-ControlCount=0
+ControlCount=12
+Control1=IDC_LIST1,SysListView32,1350631433
+Control2=IDC_EDIT1,edit,1350631552
+Control3=IDC_EDIT2,edit,1350631584
+Control4=IDC_BUTTON1,button,1342242816
+Control5=IDC_STATIC,button,1342177287
+Control6=IDC_STATIC,button,1342177287
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_STATIC,static,1342308352
+Control10=IDC_COMBO1,combobox,1344339971
+Control11=IDC_EDIT4,edit,1342244992
+Control12=IDC_STATIC,button,1342177287
 
 [DLG:IDD_controldlg]
 Type=1
@@ -167,7 +180,8 @@ HeaderFile=usercontrol.h
 ImplementationFile=usercontrol.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=usercontrol
+LastObject=ID_MENUITEM32778
+VirtualFilter=dWC
 
 [DLG:IDD_ABOUT]
 Type=1
@@ -238,4 +252,10 @@ BaseClass=CDialog
 Filter=D
 LastObject=IDC_EDIT1
 VirtualFilter=dWC
+
+[MNU:IDR_MENU2]
+Type=1
+Class=usercontrol
+Command1=ID_MENUITEM32778
+CommandCount=1
 

@@ -14,6 +14,7 @@
 #define IDB_BITMAP4                     135
 #define IDB_BITMAP5                     136
 #define IDD_changename                  137
+#define IDR_MENU2                       138
 #define IDD_LANDED                      140
 #define IDD_usercontrol                 141
 #define IDD_controldlg                  142
@@ -31,19 +32,23 @@
 #define IDC_LIST1                       1006
 #define IDC_LIST2                       1007
 #define IDC_EDIT3                       1008
+#define IDC_COMBO1                      1011
+#define IDC_EDIT4                       1020
 #define IDC_EDIT1                       1023
 #define ID_MENUITEM32771                32771
 #define ID_MENUITEM32772                32772
 #define ID_MENUITEM32773                32773
 #define ID_MENUITEM32774                32774
+#define ID_MENUITEM32777                32777
+#define ID_MENUITEM32778                32778
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1009
+#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_COMMAND_VALUE         32779
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
