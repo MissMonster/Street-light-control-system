@@ -1,3 +1,6 @@
+//{{AFX_INCLUDES()
+#include "webbrowser2.h"
+//}}AFX_INCLUDES
 #if !defined(AFX_CONTROLMANAGE_H__6831B0E8_33C5_48F7_8093_DBD4A5A68364__INCLUDED_)
 #define AFX_CONTROLMANAGE_H__6831B0E8_33C5_48F7_8093_DBD4A5A68364__INCLUDED_
 
@@ -19,7 +22,21 @@ public:
 // Dialog Data
 	//{{AFX_DATA(controlmanage)
 	enum { IDD = IDD_controldlg };
-		// NOTE: the ClassWizard will add data members here
+	CComboBox	m_controllerAutorun;
+	CEdit	m_tempThreadholdLow;
+	CEdit	m_tempThreadholdHigh;
+	CEdit	m_currentThreadholdLow;
+	CEdit	m_currentThreadholdHigh;
+	CEdit	m_voltageThreadholdLow;
+	CEdit	m_voltageThreadholdHigh;
+	CEdit	m_controllerLatitude;
+	CEdit	m_controllerLongitude;
+	CEdit	m_streetlightNum;
+	CEdit	m_controllerInfo;
+	CEdit	m_controllerId;
+	CComboBox	m_controld;
+	CWebBrowser2	m_web;
+	CWebPage web;
 	//}}AFX_DATA
 
 
@@ -32,10 +49,20 @@ public:
 
 // Implementation
 protected:
+	void Onaddcontrol();
 
 	// Generated message map functions
 	//{{AFX_MSG(controlmanage)
-		// NOTE: the ClassWizard will add member functions here
+	virtual void OnOK();
+	virtual void OnCancel();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnButton3();
+	afx_msg void OnButton4();
+	afx_msg void OnSelchangeCombo1();
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnButton1();
+	afx_msg void OnButton2();
+
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

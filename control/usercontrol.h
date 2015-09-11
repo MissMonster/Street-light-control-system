@@ -24,6 +24,7 @@ public:
 	CEdit	m_newname;
 	CEdit	m_usernum;
 	CListCtrl	m_userlist;
+
 	//}}AFX_DATA
 
 
