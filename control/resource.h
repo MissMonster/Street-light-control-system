@@ -46,6 +46,7 @@
 #define IDC_EDIT11                      1030
 #define IDC_EDIT12                      1031
 #define IDC_EXPLORER1                   1032
+#define IDC_EXPLORER2                   1033
 #define ID_MENUITEM32771                32771
 #define ID_MENUITEM32772                32772
 #define ID_MENUITEM32773                32773
@@ -56,9 +57,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        148
+#define _APS_NEXT_RESOURCE_VALUE        150
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

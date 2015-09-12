@@ -65,6 +65,7 @@ BOOL usercontrol::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here
+	/*
 	//////////////////////////////////////////////////////////
 	//屏蔽输入法
 	HIMC m_hImc;    // 全局或者成员变量
@@ -83,7 +84,7 @@ BOOL usercontrol::OnInitDialog()
         :: SetFocus(hWnd);
     }
 	//////////////////////////////////////////////////////////
-
+	*/
 	//设置列表主题
 	m_userlist.SetExtendedStyle(
 		LVS_EX_FLATSB				// 扁平风格滚动
@@ -240,6 +241,7 @@ void usercontrol::Onadduser()
 
 	CString str="insert into t_userinfo (name,password,jurisdiction) VALUES('"+name+"','"+password+"',"+jurisdiction+")";
 	//MessageBox(str);
+	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.GetBuffer(0))!=NULL)
 	{
 		MessageBox("添加用户失败!");

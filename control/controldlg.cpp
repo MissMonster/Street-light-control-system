@@ -116,7 +116,7 @@ BOOL CControlDlg::OnInitDialog()
 	
 	m_list1.InsertColumn(0,"IP"	      ,LVCFMT_CENTER, 70,0);
 	m_list1.InsertColumn(1,"识别码"	  ,LVCFMT_CENTER, 70,0);
-	m_list1.InsertColumn(2,"信息"	  ,LVCFMT_CENTER, 70,0);
+	m_list1.InsertColumn(2,"名称"	  ,LVCFMT_CENTER, 70,0);
 	m_list1.InsertColumn(3,"经度"     ,LVCFMT_CENTER, 70,0);
 	m_list1.InsertColumn(4,"纬度"     ,LVCFMT_CENTER, 70,0);
 	m_list1.InsertColumn(5,"路灯数量" ,LVCFMT_CENTER, 70,0);

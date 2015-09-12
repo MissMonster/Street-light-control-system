@@ -6,13 +6,13 @@
 --------------------Configuration: control - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPE156.tmp" with contents
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP558A.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/control.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"D:\c\light\control\controlmanage.cpp"
+"D:\c\light\control\lightcontrldlg.cpp"
 ]
-Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPE156.tmp" 
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPE157.tmp" with contents
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP558A.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP558B.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/control.pdb" /debug /machine:I386 /out:"Debug/control.exe" /pdbtype:sept 
 .\Debug\about.obj
@@ -33,10 +33,10 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPE157.tmp" with 
 .\Debug\WebPage.obj
 .\Debug\control.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPE157.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP558B.tmp"
 <h3>Output Window</h3>
 Compiling...
-controlmanage.cpp
+lightcontrldlg.cpp
 Linking...
 
 

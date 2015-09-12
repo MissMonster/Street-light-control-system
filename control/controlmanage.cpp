@@ -99,7 +99,7 @@ BOOL controlmanage::OnInitDialog()
 	m_controllerAutorun.AddString("自动");
 	m_controllerAutorun.AddString("手动");
 
-	SetTimer(1,1000,NULL);
+	SetTimer(1,100,NULL);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -160,6 +160,7 @@ void controlmanage::OnButton4()
 		return ;
 	}
 
+	clearall();
 	Onaddcontrol();
 	mysql_close(&mysql);
 }
@@ -248,7 +249,30 @@ void controlmanage::OnTimer(UINT nIDEvent)
 			break;
 		}
 		web.SetDocument(m_web.GetDocument());
+		KillTimer(1);/*
+		SetTimer(2,100,NULL);
+		MessageBox("加载网页中...","web");
 		KillTimer(1);
+		break;
+	case 2:
+		if(m_web.GetDocument()==NULL)
+		{
+			break;
+		}
+		web.SetDocument(m_web.GetDocument());
+		//KillTimer(1);
+		HWND hWnd=:: FindWindow(NULL,"web");
+		//查找标题为B的窗口，返回窗口句柄
+		//如果窗口句柄存在
+		if(hWnd)
+		{
+			//Sleep(1000);
+			::SendMessage(hWnd,WM_SYSCOMMAND,SC_CLOSE,NULL);
+			//关闭这个窗口,如果Messagebox的对话框没有MB_YESNO或者MB_OKCANCEL这样类似的属性，这个也可以实现关闭
+			//keybd_event(13,0,0,0);
+			//模拟回车键按下
+			KillTimer(2);
+		}*/
 		break;
 	}
 	
@@ -274,10 +298,6 @@ void controlmanage::OnButton2()
 	// TODO: Add your control notification handler code here
 	CString column[12];
 	m_controllerId.GetWindowText(column[0]);
-	if(column[0]=="")
-	{
-		return ;
-	}
 	m_controllerInfo.GetWindowText(column[1]);
 	m_controllerLongitude.GetWindowText(column[2]);
 	m_controllerLatitude.GetWindowText(column[3]);
@@ -289,6 +309,20 @@ void controlmanage::OnButton2()
 	m_tempThreadholdHigh.GetWindowText(column[9]);
 	m_tempThreadholdLow.GetWindowText(column[10]);
 	m_controllerAutorun.GetWindowText(column[11]);
+
+	if(column[0]=="")
+	{
+		return ;
+	}
+
+	for(int i=1;i<12;i++)
+	{
+		if(column[i]=="")
+		{
+			MessageBox("信息未完整");
+			return ;
+		}
+	}
 	//MessageBox(column[5]);
 	MYSQL mysql;
 	mysql_init(&mysql);
@@ -328,3 +362,19 @@ void controlmanage::OnButton2()
 	mysql_close(&mysql);
 }
 
+//清空
+void controlmanage::clearall()
+{
+	m_controllerId.SetWindowText("");
+	m_controllerInfo.SetWindowText("");
+	m_controllerLongitude.SetWindowText("");
+	m_controllerLatitude.SetWindowText("");
+	m_streetlightNum.SetWindowText("");
+	m_voltageThreadholdHigh.SetWindowText("");
+	m_voltageThreadholdLow.SetWindowText("");
+	m_currentThreadholdHigh.SetWindowText("");
+	m_currentThreadholdLow.SetWindowText("");
+	m_tempThreadholdHigh.SetWindowText("");
+	m_tempThreadholdLow.SetWindowText("");
+	m_controllerAutorun.SetWindowText("");
+}

@@ -49,6 +49,7 @@ public:
 
 // Implementation
 protected:
+	void clearall();
 	void Onaddcontrol();
 
 	// Generated message map functions

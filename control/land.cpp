@@ -74,6 +74,7 @@ void land::OnOK()
 	//////////////////////////////////////////////////////////
 	//MessageBoxA(query.c_str());
 	//////////////////////////////////////////////////////////
+	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_real_query(&mysql,query.c_str(),(UINT)query.size())!=NULL)
 	{
 		MessageBox("数据库无法连接!");
@@ -111,6 +112,7 @@ BOOL land::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	// TODO: Add extra initialization here
+	/*
 	//////////////////////////////////////////////////////////
 	//屏蔽输入法
 	HIMC m_hImc;    // 全局或者成员变量
@@ -129,6 +131,7 @@ BOOL land::OnInitDialog()
         :: SetFocus(hWnd);
     }
 	//////////////////////////////////////////////////////////
+	*/
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

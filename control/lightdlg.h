@@ -1,3 +1,6 @@
+//{{AFX_INCLUDES()
+#include "webbrowser2.h"
+//}}AFX_INCLUDES
 #if !defined(AFX_LIGHTDLG_H__165F3BB3_1917_41FB_A224_52CFAB3A7326__INCLUDED_)
 #define AFX_LIGHTDLG_H__165F3BB3_1917_41FB_A224_52CFAB3A7326__INCLUDED_
 
@@ -19,7 +22,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(lightdlg)
 	enum { IDD = IDD_lightdlg };
-		// NOTE: the ClassWizard will add data members here
+	CListCtrl	m_lightlist;
+	CEdit	m_streetlightBrightness;
+	CEdit	m_end;
+	CEdit	m_start;
+	CEdit	m_controllerInfo;
+	CComboBox	m_controld;
+	CWebBrowser2	m_web;
+	CWebPage web;
 	//}}AFX_DATA
 
 
@@ -32,10 +42,15 @@ public:
 
 // Implementation
 protected:
+	void showalllightinfo();
+	void Onaddcontrol();
 
 	// Generated message map functions
 	//{{AFX_MSG(lightdlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual void OnOK();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSelchangeCombo1();
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
