@@ -81,15 +81,14 @@ void changepassword::OnOK()
 	
 	string query = "select * from t_userinfo where name='";
 	query=query+userinfo.name+"' and password='"+str1.GetBuffer(0)+"'";
-	//////////////////////////////////////////////////////////
-	//MessageBoxA(query.c_str());
-	//////////////////////////////////////////////////////////
+
 	if(mysql_real_query(&mysql,query.c_str(),(UINT)query.size())!=NULL)
 	{
 		MessageBox("数据库无法连接!");
 		return ;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////
 	res = mysql_store_result(&mysql);
 	column = mysql_fetch_row(res);
 	//////////////////////////////////////////////////////////
@@ -104,7 +103,7 @@ void changepassword::OnOK()
 	
 	query = "update t_userinfo set password='"+str2+"' where name='"+userinfo.name+"'";
 	//////////////////////////////////////////////////////////
-	//MessageBoxA(query.c_str());
+
 	//////////////////////////////////////////////////////////
 	if(mysql_real_query(&mysql,query.c_str(),(UINT)query.size())!=NULL)
 	{

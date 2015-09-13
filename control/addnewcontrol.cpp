@@ -94,7 +94,6 @@ controllerLongitude,controllerLatitude,streetlightNum,controllerAutorun,flage) v
 	str=str+column[4].GetBuffer(0)+",";
 	str=str+column[5].GetBuffer(0)+",0)";
 	
-	//MessageBox(str.c_str());
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.c_str())!=NULL)
 	{

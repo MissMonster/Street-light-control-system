@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=lightcontrldlg
+LastClass=sensordlg
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "control.h"
@@ -11,16 +11,16 @@ ClassCount=13
 Class1=CControlApp
 Class2=CControlDlg
 
-ResourceCount=15
-Resource2=IDD_LANDED
+ResourceCount=16
+Resource2=IDD_changepassword
 Resource1=IDR_MAINFRAME
 Class3=land
-Resource3=IDD_addnewcontrol
+Resource3=IDD_LANDED
 Resource4=IDD_changename
-Resource5=IDD_CONTROL_DIALOG
-Resource6=IDD_controldlg
-Resource7=IDD_lightdlg
-Resource8=IDR_MENU1
+Resource5=IDD_sensordlg
+Resource6=IDD_lightdlg
+Resource7=IDR_MENU2
+Resource8=IDD_addnewcontrol
 Class4=controlmanage
 Class5=errormsgdlg
 Class6=lightcontrldlg
@@ -29,15 +29,16 @@ Class8=sensordlg
 Class9=usercontrol
 Resource9=IDD_usercontrol
 Class10=about
-Resource10=IDD_ABOUT
-Resource11=IDD_sensordlg
+Resource10=IDD_lightcontrldlg
+Resource11=IDD_controldlg
 Class11=changepassword
-Resource12=IDD_changepassword
+Resource12=IDD_ABOUT
 Class12=changename
 Resource13=IDD_errormsgdlg
-Resource14=IDD_lightcontrldlg
+Resource14=IDD_CONTROL_DIALOG
 Class13=addnewcontrol
-Resource15=IDR_MENU2
+Resource15=IDR_MENU1
+Resource16=IDR_MENU3
 
 [CLS:CControlApp]
 Type=0
@@ -174,7 +175,15 @@ Control17=IDC_STATIC,button,1342177287
 [DLG:IDD_sensordlg]
 Type=1
 Class=sensordlg
-ControlCount=0
+ControlCount=8
+Control1=IDC_STATIC,button,1342177287
+Control2=IDC_STATIC,button,1342177287
+Control3=IDC_STATIC,button,1342177287
+Control4=IDC_STATIC,static,1342308352
+Control5=IDC_LIST1,SysListView32,1350631425
+Control6=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
+Control7=IDC_COMBO1,combobox,1344340227
+Control8=IDC_BUTTON1,button,1342242816
 
 [DLG:IDD_lightcontrldlg]
 Type=1
@@ -211,7 +220,11 @@ Control27=IDC_EDIT9,edit,1350633600
 [DLG:IDD_errormsgdlg]
 Type=1
 Class=errormsgdlg
-ControlCount=0
+ControlCount=4
+Control1=IDC_STATIC,button,1342177287
+Control2=IDC_STATIC,button,1342177287
+Control3=IDC_LIST1,SysListView32,1350631693
+Control4=IDC_EXPLORER1,{8856F961-340A-11D0-A96B-00C04FD705A2},1342242816
 
 [CLS:controlmanage]
 Type=0
@@ -228,7 +241,8 @@ HeaderFile=errormsgdlg.h
 ImplementationFile=errormsgdlg.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=errormsgdlg
+LastObject=ID_MENUITEM32780
+VirtualFilter=dWC
 
 [CLS:lightcontrldlg]
 Type=0
@@ -254,7 +268,8 @@ HeaderFile=sensordlg.h
 ImplementationFile=sensordlg.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=sensordlg
+LastObject=IDC_COMBO1
+VirtualFilter=dWC
 
 [CLS:usercontrol]
 Type=0
@@ -368,4 +383,10 @@ BaseClass=CDialog
 Filter=D
 LastObject=IDC_EDIT1
 VirtualFilter=dWC
+
+[MNU:IDR_MENU3]
+Type=1
+Class=errormsgdlg
+Command1=ID_MENUITEM32779
+CommandCount=1
 

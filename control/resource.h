@@ -23,6 +23,7 @@
 #define IDD_lightcontrldlg              145
 #define IDD_errormsgdlg                 146
 #define IDD_addnewcontrol               147
+#define IDR_MENU3                       151
 #define IDC_BUTTON1                     1000
 #define IDC_BUTTON2                     1001
 #define IDC_BUTTON3                     1002
@@ -52,13 +53,15 @@
 #define ID_MENUITEM32773                32773
 #define ID_MENUITEM32774                32774
 #define ID_MENUITEM32778                32778
+#define ID_MENUITEM32779                32779
+#define ID_MENUITEM32780                32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        150
-#define _APS_NEXT_COMMAND_VALUE         32779
+#define _APS_NEXT_RESOURCE_VALUE        152
+#define _APS_NEXT_COMMAND_VALUE         32781
 #define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

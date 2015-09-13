@@ -290,18 +290,7 @@ streetlightTemp,streetlightBrightness from t_lightruninfo where controllerId=";
 void lightcontrldlg::OnButton1() 
 {
 	// TODO: Add your control notification handler code here
-	CString longnum;
-	CString latnum;
-	
-	m_Longitude.GetWindowText(longnum);
-	m_Latitude.GetWindowText(latnum);
 
-	if(longnum=="")return ;
-	if(latnum=="")return ;
-	
-	web.CallJScript("removeall");
-	web.CallJScript("setanipiont",longnum,latnum);
-	web.CallJScript("movetoplace",longnum,latnum);
 }
 
 //¹Ø±ÕÂ·µÆ
@@ -315,7 +304,18 @@ void lightcontrldlg::OnButton2()
 void lightcontrldlg::OnButton4() 
 {
 	// TODO: Add your control notification handler code here
+	CString longnum;
+	CString latnum;
+	
+	m_Longitude.GetWindowText(longnum);
+	m_Latitude.GetWindowText(latnum);
+	
+	if(longnum=="")return ;
+	if(latnum=="")return ;
 
+	web.CallJScript("removeall");
+	web.CallJScript("setanipiont",longnum,latnum);
+	web.CallJScript("movetoplace",longnum,latnum);
 }
 
 void lightcontrldlg::OnOK() 

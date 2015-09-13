@@ -33,8 +33,6 @@ static char THIS_FILE[] = __FILE__;
 extern struct serverset serverinfo;
 extern struct userdata  userinfo;
 
-int flage=-1;//同步标志
-
 /////////////////////////////////////////////////////////////////////////////
 // CControlDlg dialog
 
@@ -231,11 +229,14 @@ void CControlDlg::OnMenuitem32772()
 void CControlDlg::OnButton1() 
 {
 	// TODO: Add your control notification handler code here
-/*	if(userinfo.jurisdiction!=2)
-	{
-		MessageBox("没有权限!");
-		return ;
-	}*/
+	//////////////////////////////////////////////////////////////////////////
+	//要啥权限啊,好好的自行车不用
+	//if(userinfo.jurisdiction!=2)
+	//{
+	//	MessageBox("没有权限!");
+	//	return ;
+	//}
+	//////////////////////////////////////////////////////////////////////////
 
 	ShowWindow(SW_HIDE);
 	
@@ -330,9 +331,13 @@ DWORD WINAPI CControlDlg::Threadsyncdate(LPVOID channel)
 	return 0;
 }
 
+//定时器
 void CControlDlg::OnTimer(UINT nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
+	//////////////////////////////////////////////////////////////////////////
+	//卧槽,这方法写了几遍了都
+	static int flage=-1;//同步标志
 	switch(nIDEvent)
 	{
 	case 1:
@@ -362,6 +367,7 @@ void CControlDlg::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+//同步控制器信息
 void CControlDlg::synccontrollerinfo()
 {
 	MYSQL_RES *res;     //查询结果集
@@ -385,7 +391,6 @@ void CControlDlg::synccontrollerinfo()
 		m_list1.DeleteAllItems();
 		while(column=mysql_fetch_row(res))//获取具体的数据
 		{
-			//CString str="replace into t_controllerinfo values(";
 			m_list1.InsertItem(index,column[0]);
 			for(int i=1;i<j;i++)
 			{
@@ -397,6 +402,7 @@ void CControlDlg::synccontrollerinfo()
 	mysql_close(&mysql);
 }
 
+//同步错误信息
 void CControlDlg::syncerrorinfo()
 {
 	MYSQL_RES *res;     //查询结果集
@@ -420,7 +426,6 @@ void CControlDlg::syncerrorinfo()
 		m_list2.DeleteAllItems();
 		while(column=mysql_fetch_row(res))//获取具体的数据
 		{
-			//CString str="replace into t_controllerinfo values(";
 			m_list2.InsertItem(index,column[0]);
 			for(int i=1;i<j;i++)
 			{

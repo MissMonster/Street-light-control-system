@@ -1,3 +1,6 @@
+//{{AFX_INCLUDES()
+#include "webbrowser2.h"
+//}}AFX_INCLUDES
 #if !defined(AFX_SENSORDLG_H__C92A39DB_2F7D_4B5C_BCD4_B22533F17D92__INCLUDED_)
 #define AFX_SENSORDLG_H__C92A39DB_2F7D_4B5C_BCD4_B22533F17D92__INCLUDED_
 
@@ -19,7 +22,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(sensordlg)
 	enum { IDD = IDD_sensordlg };
-		// NOTE: the ClassWizard will add data members here
+	CListCtrl	m_sensorlist;
+	CComboBox	m_sensor;
+	CWebBrowser2	m_web;
+	CWebPage web;
 	//}}AFX_DATA
 
 
@@ -35,7 +41,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(sensordlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
+	afx_msg void OnTimer(UINT nIDEvent);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

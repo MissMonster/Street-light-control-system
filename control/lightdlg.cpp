@@ -121,7 +121,7 @@ void lightdlg::OnOK()
 	//////////////////////////////////////////////////////////////////////////
 	string str="update t_lightruninfo set streetlightBrightness=";
 	str=str+column[2].GetBuffer(0)+" where controllerId="+id.GetBuffer(0)+" and streetlightId>="+column[0].GetBuffer(0)+" and streetlightId<="+column[1].GetBuffer(0);
-	//MessageBox(str.c_str());
+
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.c_str())==NULL)
 	{
@@ -154,7 +154,6 @@ void lightdlg::Onaddcontrol()
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,"select controllerId from t_controllerinfo")==NULL)
 	{
-		//m_controld.ResetContent();
 		res=mysql_store_result(&mysql);//保存查询到的数据到result
 		while(column=mysql_fetch_row(res))//获取具体的数据
 		{
@@ -187,19 +186,15 @@ void lightdlg::OnSelchangeCombo1()
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.c_str())==NULL)
 	{
-		//m_controld.ResetContent();
 		res=mysql_store_result(&mysql);//保存查询到的数据到result
-		//while(column=mysql_fetch_row(res))//获取具体的数据
+		column=mysql_fetch_row(res);
+		if(column)
 		{
-			column=mysql_fetch_row(res);
-			if(column)
-			{
-				m_controllerInfo.SetWindowText(column[0]);
-			}
-			else
-			{
-				MessageBox("未找到控制器信息");
-			}
+			m_controllerInfo.SetWindowText(column[0]);
+		}
+		else
+		{
+			MessageBox("未找到控制器信息");
 		}
 	}
 	mysql_close(&mysql);
@@ -227,7 +222,7 @@ void lightdlg::showalllightinfo()
 	//显示当前控制器路灯列表
 	string str="select * from t_lightruninfo where controllerId=";
 	str+=id.GetBuffer(0);
-	//MessageBox(str.c_str());
+
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.c_str())==NULL)
 	{
@@ -252,7 +247,7 @@ void lightdlg::showalllightinfo()
 	//显示当前控制器所有路灯位置
 	str="select * from t_lightlocation where controllerId=";
 	str+=id.GetBuffer(0);
-	//MessageBox(str.c_str());
+
 	mysql_query(&mysql,"SET NAMES 'UTF-8'");
 	if(mysql_query(&mysql,str.c_str())==NULL)
 	{
@@ -291,30 +286,7 @@ void lightdlg::OnTimer(UINT nIDEvent)
 			break;
 		}
 		web.SetDocument(m_web.GetDocument());
-		KillTimer(1);/*
-		SetTimer(2,100,NULL);
-		MessageBox("加载网页中...","web");
 		KillTimer(1);
-		break;
-	case 2:
-		if(m_web.GetDocument()==NULL)
-		{
-			break;
-		}
-		web.SetDocument(m_web.GetDocument());
-		//KillTimer(1);
-		HWND hWnd=:: FindWindow(NULL,"web");
-		//查找标题为B的窗口，返回窗口句柄
-		//如果窗口句柄存在
-		if(hWnd)
-		{
-			//Sleep(1000);
-			::SendMessage(hWnd,WM_SYSCOMMAND,SC_CLOSE,NULL);
-			//关闭这个窗口,如果Messagebox的对话框没有MB_YESNO或者MB_OKCANCEL这样类似的属性，这个也可以实现关闭
-			//keybd_event(13,0,0,0);
-			//模拟回车键按下
-			KillTimer(2);
-		}*/
 		break;
 	}
 

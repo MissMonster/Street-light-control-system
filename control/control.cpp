@@ -65,6 +65,7 @@ BOOL CControlApp::InitInstance()
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
+	//读取配置文件
 	if(readserverset()!=0)
 	{
 		return FALSE;
@@ -103,14 +104,9 @@ int CControlApp::readserverset()
 		AfxMessageBox("未找到配置文件!");
 		return -1;
 	}
+
 	fscanf(fp,"server=%s\nusername=%s\npwd=%s\ndatabase=%s\nport=%d",
 		serverinfo.ip,serverinfo.name,serverinfo.password,serverinfo.database,&serverinfo.port);
-//	AfxMessageBox(serverinfo.database);
-//	AfxMessageBox(serverinfo.ip);
-//	AfxMessageBox(serverinfo.name);
-//	AfxMessageBox(serverinfo.password);
-//	char port[20];
-//	sprintf(port,"%d",serverinfo.port);
-//	AfxMessageBox(port);
+
 	return 0;
 }

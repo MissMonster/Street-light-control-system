@@ -190,7 +190,7 @@ void usercontrol::OnMenudeluser()
 	{
 		return ;
 	}
-	while(m_userlist.GetNextItem(-1,LVNI_ALL|LVNI_SELECTED)!=-1)//判断单/多行
+	//while(m_userlist.GetNextItem(-1,LVNI_ALL|LVNI_SELECTED)!=-1)//判断单/多行
 	{
 		POSITION pos = m_userlist.GetFirstSelectedItemPosition();
 		int nItem = m_userlist.GetNextSelectedItem(pos);

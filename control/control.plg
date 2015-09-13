@@ -6,7 +6,8 @@
 --------------------Configuration: control - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB364.tmp" with contents
+Creating command line "rc.exe /l 0x804 /fo"Debug/control.res" /d "_DEBUG" /d "_AFXDLL" "D:\c\light\control\control.rc"" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP6112.tmp" with contents
 [
 /nologo /subsystem:windows /incremental:yes /pdb:"Debug/control.pdb" /debug /machine:I386 /out:"Debug/control.exe" /pdbtype:sept 
 .\Debug\about.obj
@@ -27,8 +28,9 @@ Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSPB364.tmp" with 
 .\Debug\WebPage.obj
 .\Debug\control.res
 ]
-Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSPB364.tmp"
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP6112.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Linking...
 
 

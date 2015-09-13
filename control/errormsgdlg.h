@@ -1,3 +1,6 @@
+//{{AFX_INCLUDES()
+#include "webbrowser2.h"
+//}}AFX_INCLUDES
 #if !defined(AFX_ERRORMSGDLG_H__5F877A72_5BD8_4400_A65D_C8419069D1A1__INCLUDED_)
 #define AFX_ERRORMSGDLG_H__5F877A72_5BD8_4400_A65D_C8419069D1A1__INCLUDED_
 
@@ -19,7 +22,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(errormsgdlg)
 	enum { IDD = IDD_errormsgdlg };
-		// NOTE: the ClassWizard will add data members here
+	CListCtrl	m_errorinfo;
+	CWebBrowser2	m_web;
+	CWebPage web;
 	//}}AFX_DATA
 
 
@@ -32,10 +37,15 @@ public:
 
 // Implementation
 protected:
+	void showallerror();
 
 	// Generated message map functions
 	//{{AFX_MSG(errormsgdlg)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnRclickList1(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnMenuitem32779();
+	afx_msg void OnDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
