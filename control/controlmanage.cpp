@@ -96,8 +96,13 @@ BOOL controlmanage::OnInitDialog()
 
 	Onaddcontrol();
 
-	m_controllerAutorun.AddString("自动");
-	m_controllerAutorun.AddString("手动");
+	m_controllerAutorun.AddString("全关");
+	m_controllerAutorun.AddString("全开");
+	m_controllerAutorun.AddString("单号灯开");
+	m_controllerAutorun.AddString("单号灯关");
+	m_controllerAutorun.AddString("双号灯开");
+	m_controllerAutorun.AddString("双号灯关");
+	m_controllerAutorun.AddString("其他");
 
 	SetTimer(1,100,NULL);
 	

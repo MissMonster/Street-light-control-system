@@ -26,6 +26,7 @@
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #include <time.h>
+#include "ControlCode.h"
 #include "DataStructure.h"
 
 //#include "webbrowser2.h"

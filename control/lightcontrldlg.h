@@ -53,7 +53,6 @@ protected:
 	//{{AFX_MSG(lightcontrldlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnButton3();
 	afx_msg void OnSelchangeCombo1();
 	afx_msg void OnSelchangeCombo2();
 	afx_msg void OnButton1();

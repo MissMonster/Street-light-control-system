@@ -192,7 +192,14 @@ void lightdlg::OnSelchangeCombo1()
 		//while(column=mysql_fetch_row(res))//获取具体的数据
 		{
 			column=mysql_fetch_row(res);
-			m_controllerInfo.SetWindowText(column[0]);
+			if(column)
+			{
+				m_controllerInfo.SetWindowText(column[0]);
+			}
+			else
+			{
+				MessageBox("未找到控制器信息");
+			}
 		}
 	}
 	mysql_close(&mysql);
@@ -240,7 +247,7 @@ void lightdlg::showalllightinfo()
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////
-/*
+
 	//////////////////////////////////////////////////////////////////////////
 	//显示当前控制器所有路灯位置
 	str="select * from t_lightlocation where controllerId=";
@@ -251,19 +258,24 @@ void lightdlg::showalllightinfo()
 	{
 		res=mysql_store_result(&mysql);//保存查询到的数据到result
 		int j=mysql_num_fields(res);
-		CString qwe;
-		qwe.Format("%d",j);
-		MessageBox(qwe);
+
 		web.CallJScript("removeall");
 		
 		while(column=mysql_fetch_row(res))//获取具体的数据
 		{
 			web.CallJScript("setstapiont",column[3],column[4]);
 		}
-		web.CallJScript("movetoplace",column[3],column[4]);
+		if(column)
+		{
+			web.CallJScript("movetoplace",column[3],column[4]);
+		}
+		else
+		{
+			MessageBox("未找到路灯位置数据");
+		}
 	}
 	//////////////////////////////////////////////////////////////////////////
-*/
+
 	mysql_close(&mysql);
 }
 

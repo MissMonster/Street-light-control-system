@@ -122,8 +122,14 @@ BOOL addnewcontrol::OnInitDialog()
 	
 	// TODO: Add extra initialization here
 
-	m_controllerAutorun.AddString("自动");
-	m_controllerAutorun.AddString("手动");
+	m_controllerAutorun.AddString("全关");
+	m_controllerAutorun.AddString("全开");
+	m_controllerAutorun.AddString("单号灯开");
+	m_controllerAutorun.AddString("单号灯关");
+	m_controllerAutorun.AddString("双号灯开");
+	m_controllerAutorun.AddString("双号灯关");
+	m_controllerAutorun.AddString("其他");
+
 	m_controllerAutorun.SetCurSel(0);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control

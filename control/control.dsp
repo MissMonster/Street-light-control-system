@@ -183,6 +183,10 @@ SOURCE=.\control.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ControlCode.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\controlDlg.h
 # End Source File
 # Begin Source File

@@ -56,7 +56,6 @@ void lightcontrldlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(lightcontrldlg, CDialog)
 	//{{AFX_MSG_MAP(lightcontrldlg)
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BUTTON3, OnButton3)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnSelchangeCombo1)
 	ON_CBN_SELCHANGE(IDC_COMBO2, OnSelchangeCombo2)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
@@ -98,13 +97,6 @@ void lightcontrldlg::OnTimer(UINT nIDEvent)
 	}
 	
 	CDialog::OnTimer(nIDEvent);
-}
-
-//保存设置
-void lightcontrldlg::OnButton3() 
-{
-	// TODO: Add your control notification handler code here
-	MessageBox("谁猜出这按钮干啥的,我请他吃辣条～(￣▽￣～)(～￣▽￣)～");
 }
 
 //显示所有控制器
@@ -164,6 +156,16 @@ void lightcontrldlg::showalllight()
 		}
 	}
 	mysql_close(&mysql);
+
+	//////////////////////////////////////////////////////////////////////////
+	//清空信息
+	m_streetlightVoltage.SetWindowText("");
+	m_streetlightCurrent.SetWindowText("");
+	m_streetlightTemp.SetWindowText("");
+	m_streetlightBrightness.SetWindowText("");
+	m_Longitude.SetWindowText("");
+	m_Latitude.SetWindowText("");
+	//////////////////////////////////////////////////////////////////////////
 }
 
 //获取选中控制器
@@ -195,8 +197,15 @@ void lightcontrldlg::OnSelchangeCombo1()
 		//while(column=mysql_fetch_row(res))//获取具体的数据
 		{
 			column=mysql_fetch_row(res);
-			m_controllerInfo.SetWindowText(column[0]);
-			m_lightnum.SetWindowText(column[1]);
+			if(column)
+			{
+				m_controllerInfo.SetWindowText(column[0]);
+				m_lightnum.SetWindowText(column[1]);
+			}
+			else
+			{
+				MessageBox("未找到控制器数据");
+			}
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -235,10 +244,42 @@ streetlightTemp,streetlightBrightness from t_lightruninfo where controllerId=";
 		//while(column=mysql_fetch_row(res))//获取具体的数据
 		{
 			column=mysql_fetch_row(res);
-			m_streetlightVoltage.SetWindowText(column[0]);
-			m_streetlightCurrent.SetWindowText(column[1]);
-			m_streetlightTemp.SetWindowText(column[2]);
-			m_streetlightBrightness.SetWindowText(column[3]);
+			if(column)
+			{
+				m_streetlightVoltage.SetWindowText(column[0]);
+				m_streetlightCurrent.SetWindowText(column[1]);
+				m_streetlightTemp.SetWindowText(column[2]);
+				m_streetlightBrightness.SetWindowText(column[3]);
+			}
+			else
+			{
+				MessageBox("未找到路灯数据");
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////
+	str="select Longitude,Latitude from t_lightlocation where controllerId=";
+	str=str+cid.GetBuffer(0)+" and streetlightId="+lid.GetBuffer(0);
+	//MessageBox(str.c_str());
+	mysql_query(&mysql,"SET NAMES 'UTF-8'");
+	if(mysql_query(&mysql,str.c_str())==NULL)
+	{
+		//m_controld.ResetContent();
+		res=mysql_store_result(&mysql);//保存查询到的数据到result
+		//while(column=mysql_fetch_row(res))//获取具体的数据
+		{
+			column=mysql_fetch_row(res);
+			if(column)
+			{
+				m_Longitude.SetWindowText(column[0]);
+				m_Latitude.SetWindowText(column[1]);
+			}
+			else
+			{
+				MessageBox("未找到位置数据");
+			}
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -249,7 +290,18 @@ streetlightTemp,streetlightBrightness from t_lightruninfo where controllerId=";
 void lightcontrldlg::OnButton1() 
 {
 	// TODO: Add your control notification handler code here
+	CString longnum;
+	CString latnum;
 	
+	m_Longitude.GetWindowText(longnum);
+	m_Latitude.GetWindowText(latnum);
+
+	if(longnum=="")return ;
+	if(latnum=="")return ;
+	
+	web.CallJScript("removeall");
+	web.CallJScript("setanipiont",longnum,latnum);
+	web.CallJScript("movetoplace",longnum,latnum);
 }
 
 //关闭路灯
@@ -263,7 +315,7 @@ void lightcontrldlg::OnButton2()
 void lightcontrldlg::OnButton4() 
 {
 	// TODO: Add your control notification handler code here
-	
+
 }
 
 void lightcontrldlg::OnOK() 
